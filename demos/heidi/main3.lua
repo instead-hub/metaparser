@@ -1,13 +1,13 @@
 --$Name:Хейди$
+require "mp-ru"
+require "fmt"
+
 game.dsc = [[^Пример простой игры на Inform.
 ^Авторы: Роджер Фирт (Roger Firth) и Соня Кессерих (Sonja Kesserich).
 ^Перевод Юрия Салтыкова a.k.a. G.A. Garinson^
 ^Перевод на МЕТАПАРСЕР 3 выполнил Петр Косых.
 ^
 ]]
-
-require "mp-ru"
-require "fmt"
 
 room {
 	nam = "before_cottage";

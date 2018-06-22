@@ -1,5 +1,7 @@
 require "fmt"
-require "theme"
+if std.ref'@theme' then
+	std.ref'@theme'.set ('win.scroll.mode', 3)
+end
 
 local mrd = require "morph/mrd"
 local inp_split = " :.,!?"
@@ -1876,7 +1878,6 @@ std.mod_start(function()
 	mp:compl_fill(mp:compl(""))
 end)
 instead.mouse_filter(0)
-theme.set ('win.scroll.mode', 3)
 
 function instead.fading()
 	return instead.need_fading() or player_moved()
