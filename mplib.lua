@@ -490,9 +490,9 @@ function mp:content(w)
 			end
 		end
 	end
-	if #ooo > 0 then
-		p(std.scene_delim)
-	end
+--	if #ooo > 0 then
+--		p(std.scene_delim)
+--	end
 	oo = ooo
 	if #oo == 0 then
 		if mp.first == w and not something then

@@ -97,7 +97,7 @@ obj {
 			walk 'happyend'
 		end
 	end
-}:attr 'supporter,scenery'
+}:attr 'supporter,static'
 
 room {
 	nam = 'happyend';

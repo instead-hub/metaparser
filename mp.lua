@@ -525,6 +525,10 @@ function mp:norm(t)
 end
 
 function mp:eq(t1, t2, lev)
+	if t1:find("%*$") then
+		local t = t1:gsub("%*$", "")
+		return self:__startswith(t2, t)
+	end
 	if lev then
 		local l = utf_lev(t1, t2)
 		if l < lev then
@@ -1014,7 +1018,7 @@ function mp:compl(str)
 	end
 	local _, pre = self:compl_ctx()
 	for _, v in ipairs(poss) do
-		if self:startswith(v.word, pre) then
+		if self:startswith(v.word, pre) and not v.word:find("%*$") then
 			if not dups[v.word] then
 				dups[v.word] = true
 				table.insert(ret, v)
