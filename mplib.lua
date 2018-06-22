@@ -104,8 +104,9 @@ end
 
 function std.obj:scene()
 	local s = self
-	local title = iface:title(std.titleof(mp:visible_scope(s)))
-	if not std.me():where():type'room' then
+	local sc = mp:visible_scope(s)
+	local title = iface:title(std.titleof(sc))
+	if s ~= sc then
 		title = title .. ' '..(mp.msg.TITLE_INSIDE)
 	end
 	return title
