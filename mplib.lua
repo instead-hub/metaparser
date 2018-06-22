@@ -225,7 +225,7 @@ function std.obj:access()
 --			return nil, false
 --		end
 		table.insert(plw, v)
-		if v:has 'container' or v:has 'supporter' then
+		if v:has 'container' then -- or v:has 'supporter' then
 			return nil, false
 		end
 	end)
