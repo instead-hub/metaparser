@@ -50,9 +50,9 @@ mp.msg.DISROBE_BEFORE = function(w)
 end
 
 --"находиться"
-mp.msg.SCENE = "{#Me} {#word/находиться,#me,нст} {#if_has/here,supporter,на,в} {#here/пр,2}.";
-mp.msg.INSIDE_SCENE = "{#Me} {#word/находиться,#me,нст} {#if_has/where,supporter,на,в} {#where/пр,2}.";
-mp.msg.TITLE_INSIDE = "({#if_has/where,supporter,на,в} {#where/пр,2})";
+mp.msg.SCENE = "{#Me} {#word/находиться,#me,нст} {#if_has/#here,supporter,на,в} {#here/пр,2}.";
+mp.msg.INSIDE_SCENE = "{#Me} {#word/находиться,#me,нст} {#if_has/#where,supporter,на,в} {#where/пр,2}.";
+mp.msg.TITLE_INSIDE = "({#if_has/#where,supporter,на,в} {#where/пр,2})";
 
 mp.msg.COMPASS_EXAM = function(dir, ob)
 	if dir == 'u_to' then
@@ -96,7 +96,7 @@ mp.msg.OPEN = function(w)
 	local hint = w:gram().hint
 	pr (" (",mp.mrd:word('открыт/' .. hint), ")")
 end
-mp.msg.EXITBEFORE = "Возможно, {#me/дт} нужно сначала {#if_has/where,supporter,слезть с,вылезти из} {#where/рд}."
+mp.msg.EXITBEFORE = "Возможно, {#me/дт} нужно сначала {#if_has/#where,supporter,слезть с,вылезти из} {#where/рд}."
 
 mp.default_Event = "Exam"
 mp.default_Verb = "осмотреть"
@@ -112,7 +112,7 @@ mp.msg.Look.SUPPORTER = function(o)
 end
 --"включён"
 --"выключен"
-mp.msg.Exam.SWITCHSTATE = "{#First} сейчас {#if_has/first,on,{#word/включён,#first},{#word/выключен,#first}}."
+mp.msg.Exam.SWITCHSTATE = "{#First} сейчас {#if_has/#first,on,{#word/включён,#first},{#word/выключен,#first}}."
 mp.msg.Exam.NOTHING = "ничего нет."
 mp.msg.Exam.IS = "находится"
 mp.msg.Exam.ARE = "находятся"
@@ -132,11 +132,11 @@ mp.msg.LookUnder.NOTHING = "{#Me} не {#word/находить,нст,#me} по�
 --"закрыт"
 --"держать"
 --"залезать"
-mp.msg.Enter.ALREADY = "{#Me} уже {#if_has/first,supporter,на,в} {#first/пр,2}."
+mp.msg.Enter.ALREADY = "{#Me} уже {#if_has/#first,supporter,на,в} {#first/пр,2}."
 mp.msg.Enter.INV = "{#Me} не {#word/могу,#me,нст} зайти в то, что {#word/держать,#me,нст} в руках."
 mp.msg.Enter.IMPOSSIBLE = "Но в/на {#first/вн} невозможно войти, встать, сесть или лечь."
 mp.msg.Enter.CLOSED = "{#First} {#word/закрыт,#first}, и {#me} не {#word/мочь,#me,нст} зайти туда."
-mp.msg.Enter.ENTERED = "{#Me} {#word/залезать,нст,#me} {#if_has/first,supporter,на,в} {#first/вн}."
+mp.msg.Enter.ENTERED = "{#Me} {#word/залезать,нст,#me} {#if_has/#first,supporter,на,в} {#first/вн}."
 mp.msg.Enter.DOOR_NOWHERE = "{#First} никуда не ведёт."
 --"закрыт"
 mp.msg.Enter.DOOR_CLOSED = "{#First} {#word/закрыт,#first}."
@@ -144,16 +144,16 @@ mp.msg.Enter.DOOR_CLOSED = "{#First} {#word/закрыт,#first}."
 mp.msg.Walk.ALREADY = mp.msg.Enter.ALREADY
 mp.msg.Walk.WALK = "Но {#first} и так находится здесь."
 
-mp.msg.Enter.EXITBEFORE = "Сначала нужно {#if_has/where,supporter,слезть с {#where/рд}.,покинуть {#where/вн}.}"
+mp.msg.Enter.EXITBEFORE = "Сначала нужно {#if_has/#where,supporter,слезть с {#where/рд}.,покинуть {#where/вн}.}"
 
-mp.msg.Exit.NOTHERE = "Но {#me} сейчас не {#if_has/first,supporter,на,в} {#first/пр,2}."
+mp.msg.Exit.NOTHERE = "Но {#me} сейчас не {#if_has/#first,supporter,на,в} {#first/пр,2}."
 mp.msg.Exit.NOWHERE = "Но {#me/дт} некуда выходить."
 mp.msg.Exit.CLOSED = "Но {#first} {#word/закрыт,#first}."
 
 
 --"покидать"
 --"слезать"
-mp.msg.Exit.EXITED = "{#Me} {#if_has/first,supporter,{#word/слезать с,#me,нст} {#first/рд},{#word/покидать,#me,нст} {#first/вн}}."
+mp.msg.Exit.EXITED = "{#Me} {#if_has/#first,supporter,{#word/слезать с,#me,нст} {#first/рд},{#word/покидать,#me,нст} {#first/вн}}."
 
 mp.msg.Inv.NOTHING = "У {#me/рд} с собой ничего нет."
 mp.msg.Inv.INV = "У {#me/рд} с собой"
@@ -202,15 +202,15 @@ mp.msg.Take.STATIC = "{#First} жестко {#word/закреплён,#first}."
 mp.msg.Take.SCENERY = "{#First/вн} невозможно взять."
 mp.msg.Take.PARTOF = "{#First} является частью {#firstwhere/рд}."
 
-mp.msg.Remove.WHERE = "{#First} не находится {#if_has/second,supporter,на,в} {#second/пр,2}."
-mp.msg.Remove.REMOVE = "{#First} {#if_has/second,supporter,поднят,извлечён из} {#second/рд}."
+mp.msg.Remove.WHERE = "{#First} не находится {#if_has/#second,supporter,на,в} {#second/пр,2}."
+mp.msg.Remove.REMOVE = "{#First} {#if_has/#second,supporter,поднят,извлечён из} {#second/рд}."
 
 mp.msg.Drop.SELF = "У {#me/рд} не хватит ловкости."
 mp.msg.Drop.WORN = "{#First/вн} сначала нужно снять."
 --"помещать"
 mp.msg.Insert.INSERT = "{#Me} {#word/помещать,нст,#me} {#first/вн} в {#second/вн}."
 mp.msg.Insert.CLOSED = "{#Second} {#word/закрыт,#second}."
-mp.msg.Insert.NOTCONTAINER = "{#Second} не {#if_hint/second,plural,могут,может} что-либо содержать."
+mp.msg.Insert.NOTCONTAINER = "{#Second} не {#if_hint/#second,plural,могут,может} что-либо содержать."
 mp.msg.Insert.WHERE = "Нельзя поместить {#first/вн} внутрь себя."
 mp.msg.Insert.ALREADY = "Но {#first} уже и так {#word/находиться,#first} там."
 mp.msg.PutOn.NOTSUPPORTER = "Класть что-либо на {#second} бессмысленно."

@@ -1960,15 +1960,15 @@ function mp.shortcut.if_hint(hint)
 	local attr = w[2]
 	local ob = w[1]
 
-	if ob == 'first' then
+	if ob == '#first' then
 		ob = mp.first
-	elseif ob == 'second' then
+	elseif ob == '#second' then
 		ob = mp.second
-	elseif ob == 'me' then
+	elseif ob == '#me' then
 		ob = std.me()
-	elseif ob == 'where' then
+	elseif ob == '#where' then
 		ob = std.me():where()
-	elseif ob == 'here' then
+	elseif ob == '#here' then
 		ob = std.here()
 	else
 		std.err("Wrong object in if_has shortcut: "..hint, 2)
@@ -1987,15 +1987,15 @@ function mp.shortcut.if_has(hint)
 	local attr = w[2]
 	local ob = w[1]
 
-	if ob == 'first' then
+	if ob == '#first' then
 		ob = mp.first
-	elseif ob == 'second' then
+	elseif ob == '#second' then
 		ob = mp.second
-	elseif ob == 'me' then
+	elseif ob == '#me' then
 		ob = std.me()
-	elseif ob == 'where' then
+	elseif ob == '#where' then
 		ob = std.me():where()
-	elseif ob == 'here' then
+	elseif ob == '#here' then
 		ob = std.here()
 	else
 		std.err("Wrong object in if_has shortcut: "..hint, 2)
