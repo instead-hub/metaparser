@@ -869,8 +869,11 @@ function mrd:create(fname, crc)
 	end
 	if crc ~= sum then
 		dprint("Generating dict.mrd with sum: ", sum)
-		mrd:load("morph/morphs.mrd", dict)
-		mrd:dump(fname or 'dict.mrd', sum)
+		if mrd:load("morph/morphs.mrd", dict) then
+			mrd:dump(fname or 'dict.mrd', sum)
+		else
+			dprint("Can not find morph/morphs.mrd")
+		end
 	else
 		dprint("Using dict.mrd")
 	end
