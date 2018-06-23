@@ -550,7 +550,7 @@ end
 std.room:attr 'enterable,light'
 
 function mp:post_Any()
-	if std.here().noparser then return end
+	if std.here().noparser or game.noparser then return end
 	if game.player:need_scene() then
 --		pn(iface:nb'')
 		local l = game.player:look() -- objects [and scene]
@@ -992,6 +992,7 @@ function mp:inside(w, wh)
 			 if v == wh then return true end
 	end)
 end
+
 std.obj.inside = function(s, wh)
 	return mp:inside(s, wh)
 end

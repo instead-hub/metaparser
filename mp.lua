@@ -367,7 +367,7 @@ local function str_split(str, delim)
 end
 
 instead.get_inv = std.cacheable('inv', function(horiz)
-	if std.here().noparser then
+	if std.here().noparser or game.noparser then
 		return
 	end
 	local delim = instead.hinv_delim
@@ -1674,7 +1674,7 @@ function mp:key_history_next()
 end
 
 function mp:key_enter()
-	if std.here().noparser then
+	if std.here().noparser or game.noparser then
 		return
 	end
 	if (#self.history == 0 or self.history[1] ~= self.inp) and std.strip(self.inp) ~= '' then
