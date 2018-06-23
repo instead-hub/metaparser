@@ -404,12 +404,12 @@ obj {
 		local isfun = type(std.here()[d]) == 'function'
 		local r, v = std.call(std.here(), d)
 		if not v then
-			local r = std.call(std.here(), 'cant_go', s)
-			p (r or mp.msg.COMPASS_NOWAY)
+			local r, v = std.call(std.here(), 'cant_go', s)
+			p ((v and r) or mp.msg.COMPASS_NOWAY)
 			return
 		end
 		if isfun then
-			pr(r)
+			if r then p (r) end
 			return v
 		end
 		if std.object(r):type 'room' then
