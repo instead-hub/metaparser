@@ -1855,6 +1855,9 @@ function(cmd)
 		return true, false
 	end
 	if (cmd[1] == '@mp_key' and cmd[2] == 'enter') or cmd[1] == 'look' then
+		if std.here().noparser or game.noparser then
+			return true, false
+		end
 --		mp.inp = mp:docompl(mp.inp)
 		return mp:key_enter(cmd[1] == 'look')
 	end
