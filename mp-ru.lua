@@ -110,6 +110,15 @@ mp.msg.Look.HEREARE = "Здесь есть"
 mp.msg.Look.SUPPORTER = function(o)
 	p ("На ",o:noun'пр,2')
 end
+mp.msg.NOROOM = function(w)
+	if w == std.me() then
+		p ("У {#me/вн} слишком много вещей.")
+	elseif w:has'supporter' then
+		p ("На ", w:noun'пр,2', " больше нет места.")
+	else
+		p ("В ", w:noun'пр,2', " больше нет места.")
+	end
+end
 --"включён"
 --"выключен"
 mp.msg.Exam.SWITCHSTATE = "{#First} сейчас {#if_has/#first,on,{#word/включён,#first},{#word/выключен,#first}}."

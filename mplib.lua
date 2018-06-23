@@ -999,6 +999,10 @@ end
 function move(w, wh)
 	return mp:move(w, wh, true)
 end
+function mp:runorval(wh, fn, ...)
+	if type(wh[fn]) == 'function' then return wh[fn](...) end
+	return wh[fn]
+end
 function mp:move(w, wh, force)
 	wh = wh or std.here()
 	wh = std.object(wh)
@@ -1007,6 +1011,11 @@ function mp:move(w, wh, force)
 	local ww = {}
 
 	if not force then
+		local capacity = tonumber(self:runorval(wh, 'capacity'))
+		if capacity and #wh.obj >= capacity then
+			mp.msg.NOROOM(wh)
+			return false
+		end
 		w:where(ww)
 	end
 
