@@ -1159,11 +1159,7 @@ function mp:match(verb, w, compl)
 					found = pp
 					best_len = len
 					if word:find("%*$") then -- subst
-						word = ''
-						for i = k, k + len - 1 do
-							if word ~= '' then word = word .. ' ' end
-							word = word .. a[i]
-						end
+						word = found.ob:noun(found.morph, found.alias)
 					end
 				end
 			end
