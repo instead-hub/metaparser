@@ -1442,6 +1442,7 @@ function mp:call(ob, ev, ...)
 	local r, v = std.call(ob, ev, ...)
 --	std.cctx().txt = self.reaction
 	self.reaction = self.reaction or v or false
+
 	if self.debug.trace_action and v then
 		dprint("mp:call ", ob, ev, ...)
 		p("mp:call ", ob, " ", ev, " ")

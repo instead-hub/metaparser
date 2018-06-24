@@ -63,7 +63,7 @@ room {
 и глубоким удобным креслом, в котором можно свернуться
 клубочком и немного подремать.]];
 	['before_Exit,Walk'] = function(s, w)
-		if not pl:where() ^ 'Mantelpiece' then
+		if not pl:where() ^ 'mantelpiece' then
 			return false
 		end
 		if mp:compass_dir(w) == 'd_to' or
@@ -78,7 +78,7 @@ room {
 		return false
 	end;
 	before_Default = function(s, w, wh)
-		if not pl:where() ^ 'Mantelpiece' then
+		if not pl:where() ^ 'mantelpiece' then
 			return false
 		end
 		if w and not inside(w, 'mantelpiece') then

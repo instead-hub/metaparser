@@ -566,7 +566,7 @@ function mp:post_Any()
 			return nil, false
 		end
 		local r, v = std.call(o, 'daemon')
-		if r then pr(r) end
+		if r then p(r) end
 		if o:closed() then
 			return nil, false
 		end
@@ -1233,7 +1233,6 @@ function mp:PutOn(w, wh)
 		return
 	end
 	if not wh:has'supporter' then
-		mp:xaction("PutOn", w, wh)
 		p(mp.msg.PutOn.NOTSUPPORTER)
 		return
 	end
