@@ -32,7 +32,7 @@ Furniture = Class {
 }: attr 'static,supporter'
 
 Arrow = Class {
-	word = -"стрела|стрелы";
+	word = -"стрела,стрел*";
 	arrow = true;
 	description = "Все твои стрелы верны и остры.";
 	['before_Drop,Give,ThrowAt'] = "Ты не хочешь расставаться со своими острыми стрелами.";

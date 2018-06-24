@@ -1158,6 +1158,13 @@ function mp:match(verb, w, compl)
 					word = pp.word
 					found = pp
 					best_len = len
+					if word:find("%*$") then -- subst
+						word = ''
+						for i = k, k + len - 1 do
+							if word ~= '' then word = word .. ' ' end
+							word = word .. a[i]
+						end
+					end
 				end
 			end
 			if found then
@@ -1578,7 +1585,6 @@ end
 function mp:log(t)
 	if mp.logfile then
 		t = std.fmt(t)
-		print(t)
 		local f = io.open(mp.logfile, "a+b")
 		if not f then return end
 		f:write((t or '').."\n")
