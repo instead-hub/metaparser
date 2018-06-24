@@ -1724,6 +1724,17 @@ function mp:lookup_noun(w, lev)
 	if #res == 0 then
 		return res
 	end
+	local uniq = {}
+	for _, v in ipairs(res) do
+		local t = v.ob:noun(v.alias)
+		if not uniq[t] then
+			uniq[t] = v
+		end
+	end
+	res = {}
+	for k, v in pairs(uniq) do
+		table.insert(res, v)
+	end
 	table.sort(res, function(a, b)
 		return a.word:len() > b.word:len()
 	end)
