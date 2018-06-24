@@ -1132,7 +1132,7 @@ room {
 	title = "На верхушке дерева";
 	dsc = "На этой высоте цепляться за ствол уже не так удобно.";
 	d_to = 'clearing';
-    after_Drop = function(s, w)
+	after_Drop = function(s, w)
 		move(w, 'clearing')
         return false
 	end;
