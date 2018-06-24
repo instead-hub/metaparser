@@ -1134,7 +1134,7 @@ room {
 	d_to = 'clearing';
 	after_Drop = function(s, w)
 		move(w, 'clearing')
-        return false
+		return false
 	end;
 	obj = { 'branch' };
 }
