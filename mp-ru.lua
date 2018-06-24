@@ -42,6 +42,7 @@ mp.msg.WHEN_DARK = "Кромешная тьма."
 mp.msg.UNKNOWN_THEDARK = "Возможно, это потому что в темноте ничего не видно?"
 mp.msg.COMPASS_NOWAY = "Этот путь недоступен."
 mp.msg.COMPASS_EXAM_NO = "В этом направлении не видно ничего примечательного."
+mp.msg.ENUM = "шт."
 mp.msg.TAKE_BEFORE = function(w)
 	pn (iface:em("(сначала взяв "..w:noun'вн'..")"))
 end

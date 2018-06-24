@@ -438,6 +438,48 @@ local function if_has(w, a, t, f)
 	return w:has(a) and t or f
 end
 
+function mp:multidsc(oo, inv)
+	local t = {}
+	local dup = {}
+	for _, v in ipairs(oo) do
+		local n
+		if not v:has'concealed' then
+			if inv then
+				n = std.call(v, 'inv')
+			end
+			n = n or v:noun(1)
+			if dup[n] then
+				dup[n] = dup[n] + 1
+			else
+				table.insert(t, { ob = v, noun = n })
+				dup[n] = 1
+			end
+		end
+	end
+	for _, vv in ipairs(t) do
+		local v = vv.noun
+		local ob = vv.ob
+		if _ ~= 1 then
+			if _ == #t then
+				p (" ", mp.msg.AND or "and")
+			else
+				p ","
+			end
+		end
+		if dup[v] > 1 then
+			pr (vv.ob:noun('мн', 1), " (", dup[v], " ", mp.msg.ENUM, ")")
+		else
+			pr (v)
+			if ob:has'worn' then
+				mp.msg.WORN(ob)
+			elseif ob:has'openable' and ob:has'open' then
+				mp.msg.OPEN(ob)
+			end
+		end
+	end
+	p "."
+end
+
 mp.msg.Exam = {}
 function mp:content(w)
 	if w:type 'dlg' then
@@ -527,17 +569,7 @@ function mp:content(w)
 			end
 			p (mp.msg.Exam.ARE)
 		end
-		for _, v in ipairs(oo) do
-			if _ ~= 1 then
-				if _ == #oo then
-					p (" ", mp.msg.AND or "and")
-				else
-					p ","
-				end
-			end
-			pr (v:noun())
-		end
-		p "."
+		mp:multidsc(oo)
 	end
 -- expand?
 	for _, o in ipairs(oo) do
@@ -812,25 +844,7 @@ function mp:after_Inv()
 		return
 	end
 	p(mp.msg.Inv.INV)
-	for _, v in ipairs(oo) do
-		if not v:has'concealed' then
-			local r, rc = std.call(v, 'inv')
-			if not rc then
-				pr(v:noun(1))
-			end
-			if v:has'worn' then
-				mp.msg.WORN(v)
-			elseif v:has'openable' and v:has'open' then
-				mp.msg.OPEN(v)
-			end
-			if _ == #oo - 1 then
-				pr(" ",mp.msg.AND, " ")
-			elseif _ ~= #oo then
-				pr(', ')
-			end
-		end
-	end
-	pr(".")
+	mp:multidsc(oo, true)
 end
 
 mp.msg.Open = {}
