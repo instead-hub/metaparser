@@ -1375,7 +1375,7 @@ function mp:err(err)
 	elseif err == "MULTIPLE" then
 		pr (self.msg.MULTIPLE, " ", self.multi[1])
 		for k = 2, #self.multi do
-			if k ~= #self.multi - 1 then
+			if k == #self.multi then
 				pr (" ", mp.msg.HINT_AND, " ", self.multi[k])
 			else
 				pr (", ", self.multi[k])
@@ -1717,6 +1717,7 @@ function mp:lookup_noun(w, lev)
 			if k and len == #w then
 				d.ob = o
 				table.insert(res, d)
+				break
 			end
 		end
 	end
