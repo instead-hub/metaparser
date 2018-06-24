@@ -996,6 +996,11 @@ end
 std.obj.inside = function(s, wh)
 	return mp:inside(s, wh)
 end
+
+std.obj.move = function(s, wh)
+	return mp:move(s, wh)
+end
+
 function move(w, wh)
 	return mp:move(w, wh, true)
 end
