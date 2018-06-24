@@ -992,7 +992,9 @@ function mp:inside(w, wh)
 			 if v == wh then return true end
 	end)
 end
-
+function inside(w, wh)
+	return mp:inside(w, wh)
+end
 std.obj.inside = function(s, wh)
 	return mp:inside(s, wh)
 end

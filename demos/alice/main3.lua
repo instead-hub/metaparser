@@ -77,7 +77,7 @@ room {
 	['before_Examine,Enter,ThrowAt,ThrownAt,Reflect,Touch'] = function(s, w, wh)
 		return false
 	end;
-	before_Default = function(s, w, wh)
+	before_Default = function(s, ev, w, wh)
 		if not pl:where() ^ 'mantelpiece' then
 			return false
 		end
@@ -288,7 +288,7 @@ obj {
 		p [[Отсюда в зеркале можно разглядеть только потолок гостиной.
              Впрочем, он ничем не отличается от потолка по эту сторону зеркала.]];
         end;
-	before_Any = function(s)
+	before_Any = function(s, ev)
 		if mp.event ~= 'Exam' and mp.event ~= 'Reflect'
 		and mp.event ~= 'ThrownAt' and not pl:where() ^ 'mantelpiece' then
 			p "Отсюда невозможно даже дотянуться до зеркала!";

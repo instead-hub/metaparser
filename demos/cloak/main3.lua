@@ -65,8 +65,8 @@ room {
 		end
 		return false
 	end;
-	before_Default = function(s, w)
-		if mp.event == 'Exit' then
+	before_Default = function(s, ev, w)
+		if ev == 'Exit' then
 			return false
 		end
 		if not s:has 'light' then

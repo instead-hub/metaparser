@@ -22,7 +22,7 @@ global 'score' (0)
 
 Prop = Class {
 	before_Exam = function() return false end;
-	before_Default = function(s, w)
+	before_Default = function(s, ev, w)
 		p ("Вам нет нужды беспокоиться о ", s:noun 'пр', ".");
 	end;
 }: attr 'scenery'
