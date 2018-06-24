@@ -1725,10 +1725,13 @@ function mp:lookup_noun(w, lev)
 		return res
 	end
 	local uniq = {}
+	local same
 	for _, v in ipairs(res) do
 		local t = v.ob:noun(v.alias)
 		if not uniq[t] then
 			uniq[t] = v
+		else
+			same = true
 		end
 	end
 	res = {}
@@ -1738,6 +1741,9 @@ function mp:lookup_noun(w, lev)
 	table.sort(res, function(a, b)
 		return a.word:len() > b.word:len()
 	end)
+	if same then
+		res = { res[1] }
+	end
 	self.aliases = {}
 	for _, o in ipairs(res) do
 		self.aliases[o.ob] = o.alias
