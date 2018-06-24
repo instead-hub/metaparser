@@ -184,11 +184,11 @@ room {
 	s_to = 'south_square';
 	warnings_count = 0; -- количество предупреждений солдата
 	before_Walk = function(s, w)
-		if mp.compass_dir(w) == 's_to' then
+		if mp:compass_dir(w) == 's_to' then
 			s.warnings_count = 0;
 			_'pole'.has_been_saluted = false;
 		end
-		if mp.compass_dir(w) == 'n_to' then
+		if mp:compass_dir(w) == 'n_to' then
 			if _'pole'.has_been_saluted then
 				p [[^"Хорошего дня".^]];
 				return false;

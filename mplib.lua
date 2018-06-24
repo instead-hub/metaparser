@@ -426,7 +426,7 @@ obj {
 	end
 }:persist():attr'multi,enterable,light'
 
-mp.compass_dir = function(w, dir)
+mp.compass_dir = function(self, w, dir)
 	if not dir then
 		return w == _'@compass' and w:dir()
 	end
@@ -1146,7 +1146,7 @@ function mp:Insert(w, wh)
 		p (mp.msg.Insert.ALREADY)
 		return
 	end
-	if wh == std.me():where() or mp.compass_dir(wh, 'd_to') then
+	if wh == std.me():where() or mp:compass_dir(wh, 'd_to') then
 		mp:xaction('Drop', w)
 		return
 	end
@@ -1209,7 +1209,7 @@ function mp:PutOn(w, wh)
 		mp:xaction('Enter', wh)
 		return
 	end
-	if wh == std.me():where() or mp.compass_dir(wh, 'd_to') then
+	if wh == std.me():where() or mp:compass_dir(wh, 'd_to') then
 		mp:xaction('Drop', w)
 		return
 	end
@@ -1410,7 +1410,7 @@ function mp:Transfer(w, ww)
 	if mp:check_touch() then
 		return
 	end
-	if mp.compass_dir(ww) then
+	if mp:compass_dir(ww) then
 		mp:xaction('PushDir', w, ww)
 		return
 	end

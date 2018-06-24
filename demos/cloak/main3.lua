@@ -58,7 +58,7 @@ room {
 	    Но похоже, что в пыли на полу написано что-то важное.]];
 	n_to = 'foyer';
 	before_Walk = function(s, w)
-		if mp.compass_dir(w) ~= 'n_to' and not w:has'light' then
+		if mp:compass_dir(w) ~= 'n_to' and not w:has'light' then
 			_'message'.number = _'message'.number + 2;
 			p "Слоняться в кромешной тьме -- не самая лучшая идея.";
 			return
