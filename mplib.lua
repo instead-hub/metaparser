@@ -103,10 +103,6 @@ std.room.dsc = function(s)
 	p (mp.msg.SCENE);
 end
 
-std.obj.inside_dsc = function(s)
-	p (mp.msg.INSIDE_SCENE);
-end
-
 function mp:thedark()
 	return not mp:offerslight()
 end
@@ -502,6 +498,7 @@ function mp:content(w)
 			dsc = dsc or mp.msg.WHEN_DARK
 		else
 			dsc = std.call(w, w:type'room' and 'dsc' or 'inside_dsc')
+			dsc = dsc or (mp.msg.INSIDE_SCENE);
 		end
 		p(dsc)
 		p(std.scene_delim)
@@ -511,7 +508,11 @@ function mp:content(w)
 	for _, v in ipairs(oo) do
 		local r, rc
 		if not v:has'scenery' and not v:has'concealed' then
-			if not v:has 'moved' then
+			if std.me():where() == v then
+				r, rc = std.call(v, 'inside_dsc')
+				if r then p(r); something = true; end
+			end
+			if not rc and not v:has 'moved' then
 				r, rc = std.call(v, 'init_dsc')
 				if r then p(r); something = true; end
 			end
