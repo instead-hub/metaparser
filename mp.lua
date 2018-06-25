@@ -1251,6 +1251,19 @@ function mp:match(verb, w, compl)
 			end
 		end
 	end
+
+	table.sort(matches, function(a, b) return #a > #b end)
+
+	if #unknown > 0 and #matches > 0 then
+		local lev = #matches[1]
+		for k, v in ipairs(unknown) do
+			if v.lev >= lev then
+				matches = {}
+				break
+			end
+		end
+	end
+--[[
 	if #unknown > 0 then
 		local nmatches = {}
 		for _, v in ipairs(matches) do
@@ -1260,7 +1273,8 @@ function mp:match(verb, w, compl)
 		end
 		matches = nmatches
 	end
-	table.sort(matches, function(a, b) return #a > #b end)
+end
+]]--
 if false then
 	print "MATCHES: "
 	for _, v in ipairs(matches) do
