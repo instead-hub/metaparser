@@ -815,7 +815,9 @@ function mrd:noun(w, n, nn)
 	local tab = false
 	ob, w, hint = self:obj(w, n, nn)
 	if type(w) ~= 'table' then
-		w = {{ word = w, hint = hint, alias = n }}
+		local alias = nn
+		if type(alias) ~= 'number' then alias = n end
+		w = {{ word = w, hint = hint, alias = alias }}
 	else
 		tab = {}
 	end
