@@ -32,19 +32,26 @@ workflag. This object has been temporarily selected by the Inform library for so
 worn. The player character is currently wearing this object.
 ]]--
 mp.door = std.class({
+	before_Walk = function(s)
+		return s:before_Enter();
+	end;
 	before_Enter = function(s)
 		if not s:has 'open' then
-			local r = std.call(s, 'when_closed')
-			p (r or mp.msg.Enter.DOOR_CLOSED)
+			p (mp.msg.Enter.DOOR_CLOSED)
 			return
 		end
-		local r = std.call(s, 'door_to')
-		if not r then
+		local r, v = mp:runorval(s, 'door_to')
+		if not v then
 			p (mp.msg.Enter.DOOR_NOWHERE)
 			return
 		end
---		walk(r)
-		if not mp:move(std.me(), r) then return true end
+		if r then
+			if not mp:move(std.me(), r) then
+				return true
+			end
+			return false
+		end
+		return v
 	end;
 }, std.obj):attr 'enterable,openable,door'
 local function pnoun(noun, ...)
@@ -68,10 +75,10 @@ std.class({
 	Next = function(s)
 		s.__num = s.__num + 1
 		if s.__num > #s.text then
-			local r = std.call(s, 'next_to')
+			local r, v = mp:runorval(s, 'next_to')
 			if r then
 				walk(r)
-			else
+			elseif v == false then
 				walkback()
 			end
 			return
@@ -379,16 +386,15 @@ obj {
 --	visible = function() return true end;
 	before_Exam = function(s)
 		local d = s.dirs[s:multi_alias()]
-		local r, v = std.call(std.here(), d)
-		if type(std.here()[d]) ~= 'function' then
-			if not r or std.object(r):type 'room' then
+		local r, v = mp:runorval(std.here(), d)
+		if r then -- somewhat?
+			if std.object(r):type 'room' then
 				p (mp.msg.COMPASS_EXAM_NO)
 				return
 			end
 			p (mp.msg.COMPASS_EXAM(d, std.object(r)))
 			return
 		end
-		pr(r)
 		return v
 	end;
 	before_Walk = function(s)
@@ -401,15 +407,13 @@ obj {
 			mp:xaction("Exit")
 			return
 		end
-		local isfun = type(std.here()[d]) == 'function'
-		local r, v = std.call(std.here(), d)
+		local r, v = mp:runorval(std.here(), d)
 		if not v then
-			local r, v = std.call(std.here(), 'cant_go', s)
+			local r, v = mp:runorval(std.here(), 'cant_go', s)
 			p ((v and r) or mp.msg.COMPASS_NOWAY)
 			return
 		end
-		if isfun then
-			if r then p (r) end
+		if not r then
 			return v
 		end
 		if std.object(r):type 'room' then
@@ -861,13 +865,11 @@ function mp:Open(w)
 		return
 	end
 	if w:has'open' then
-		local r = std.call(w, 'when_open')
-		p(r or mp.msg.Open.WHENOPEN)
+		p(mp.msg.Open.WHENOPEN)
 		return
 	end
 	if w:has'locked' then
-		local r = std.call(w, 'when_locked')
-		p(r or mp.msg.Open.WHENLOCKED)
+		p(mp.msg.Open.WHENLOCKED)
 		return
 	end
 	w:attr'open'
@@ -892,8 +894,7 @@ function mp:Close(w)
 		return
 	end
 	if not w:has'open' then
-		local r = std.call(w, 'when_closed')
-		p(r or mp.msg.Close.WHENCLOSED)
+		p(mp.msg.Close.WHENCLOSED)
 		return
 	end
 	w:attr'~open'
@@ -1020,10 +1021,6 @@ end
 function move(w, wh)
 	return mp:move(w, wh, true)
 end
-function mp:runorval(wh, fn, ...)
-	if type(wh[fn]) == 'function' then return wh[fn](...) end
-	return wh[fn]
-end
 function mp:move(w, wh, force)
 	wh = wh or std.here()
 	wh = std.object(wh)
@@ -1032,7 +1029,8 @@ function mp:move(w, wh, force)
 	local ww = {}
 
 	if not force then
-		local capacity = tonumber(self:runorval(wh, 'capacity'))
+		local n = self:runorval(wh, 'capacity')
+		local capacity = n and tonumber(n)
 		if capacity and #wh.obj >= capacity then
 			mp.msg.NOROOM(wh)
 			return false

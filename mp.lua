@@ -1433,6 +1433,19 @@ local function get_events(self, ev)
 	return events
 end
 
+function mp:runorval(wh, fn, ...)
+	if wh[fn] == nil then
+		return nil, false
+	end
+	if type(wh[fn]) == 'function' then
+		local v
+		local r = wh[fn](...)
+		if r == false then v = false else v = true end
+		return r, v
+	end
+	return wh[fn], true
+end
+
 function mp:call(ob, ev, ...)
 --	self.event = ev
 	for _, v in ipairs({ob, ...}) do
