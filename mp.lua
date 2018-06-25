@@ -937,6 +937,7 @@ function mp:compl_ctx_current()
 	local new = {}
 	local top = 0
 	for k, v in ipairs(ctx) do
+		if v.inp == '' and self.inp == '' then break end
 		if self:startswith(self.inp, v.inp) then
 			table.insert(new, v)
 		else
@@ -1621,6 +1622,7 @@ function mp:parse(inp)
 	end
 	inp = inp:gsub("[ ]+", " "):gsub("["..inp_split.."]+", " ")
 	local r, v = self:input(self:norm(inp))
+	self.cache = { tokens = {} }; -- to completion
 	if not r then
 		if v then
 			pn()
