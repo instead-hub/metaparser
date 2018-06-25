@@ -1777,7 +1777,7 @@ function mp:lookup_noun(w, lev)
 end
 
 function mp:input(str)
-	self.cache = { tokens = {} };
+--	self.cache = { tokens = {} };
 	local hints = {}
 	local unknown = {}
 	local multi = {}
