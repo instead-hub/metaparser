@@ -54,6 +54,8 @@ mp.door = std.class({
 		return v
 	end;
 }, std.obj):attr 'enterable,openable,door'
+door = mp.door
+
 local function pnoun(noun, ...)
 	local ctx = mp:save_ctx()
 	mp.first = noun
