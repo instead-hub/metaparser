@@ -609,6 +609,9 @@ std.room:attr 'enterable,light'
 
 function mp:post_Any()
 	if std.here().noparser or game.noparser then return end
+	if self.event and self.event:find("Meta", 1, true) then
+		return
+	end
 	if game.player:need_scene() then
 --		pn(iface:nb'')
 		local l = game.player:look() -- objects [and scene]
