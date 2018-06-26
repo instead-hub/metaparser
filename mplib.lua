@@ -509,7 +509,7 @@ function mp:content(w)
 	local oo = {}
 	local ooo = {}
 	if (w == std.me():where() or std.here() == w) and
-		(player_moved() or mp.event == 'Look' or mp.event == 'Exam') then
+		(mp.event == 'Look' or mp.event == 'Exam' or std.me():need_scene()) then
 		pn()
 		local dsc
 		if not mp:offerslight(w) then
