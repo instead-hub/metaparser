@@ -51,6 +51,10 @@ mp.msg.DISROBE_BEFORE = function(w)
 	pn (iface:em("(сначала сняв "..w:noun'вн'..")"))
 end
 
+mp.msg.CLOSE_BEFORE = function(w)
+	pn (iface:em("(сначала закрыв "..w:noun'вн'..")"))
+end
+
 --"находиться"
 mp.msg.SCENE = "{#Me} {#word/находиться,#me,нст} {#if_has/#here,supporter,на,в} {#here/пр,2}.";
 mp.msg.INSIDE_SCENE = "{#Me} {#word/находиться,#me,нст} {#if_has/#where,supporter,на,в} {#where/пр,2}.";

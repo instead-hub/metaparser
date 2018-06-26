@@ -1425,7 +1425,7 @@ room {
 obj {
 	-"выключатель|свет";
 	nam = 'выключатель';
-	after\_SwitchOn = function(s)
+	after_SwitchOn = function(s)
 		here():attr'light' -- дали свет комнате
 		pl:need_scene(true) -- свет! показать сцену!
 		return false -- дать библиотеке завершить дело

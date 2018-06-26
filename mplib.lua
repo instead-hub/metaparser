@@ -977,8 +977,12 @@ function mp:Lock(w, t)
 		return
 	end
 	if w:has 'open' then
-		p(mp.msg.Lock.OPEN)
-		return
+		mp.msg.CLOSE_BEFORE(w)
+		mp:subaction('Close', w)
+		if w:has 'open' then
+			p(mp.msg.Lock.OPEN)
+			return
+		end
 	end
 	if std.object(r) ~= t then
 		p(mp.msg.Lock.WRONGKEY)
@@ -1014,7 +1018,7 @@ function mp:Unlock(w, t)
 		return
 	end
 	w:attr'~locked'
-	w:attr'open'
+--	w:attr'open'
 	return false
 end
 
