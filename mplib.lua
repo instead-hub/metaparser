@@ -69,14 +69,33 @@ std.class({
 	enter = function(s)
 		s.__num = 1
 	end;
+	ini = function(s, load)
+		std.rawset(s, 'text', s.text)
+		std.rawset(s.__var, 'text', nil)
+	end;
 	title = false;
 	nouns = function() return {} end;
 	dsc = function(s)
-		p (s.text[s.__num])
+		if type(s.text) == 'function' then
+			local t = std.call(s, 'text', s.__num)
+			if not t then
+				s:Next(true)
+			end
+			p (t)
+			return
+		end
+		if type(s.text) == 'string' then
+			p (s.text)
+		else
+			p (s.text[s.__num])
+		end
 	end;
-	Next = function(s)
+	OnError = function(s, err)
+		p(mp.msg.CUTSCENE_HELP)
+	end;
+	Next = function(s, force)
 		s.__num = s.__num + 1
-		if s.__num > #s.text then
+		if force or type(s.text) == 'string' or (type(s.text) == 'table' and s.__num > #s.text) then
 			local r, v = mp:runorval(s, 'next_to')
 			if r then
 				walk(r)
@@ -85,9 +104,9 @@ std.class({
 			end
 			return
 		end
-		p (s.text[s.__num])
+		s:dsc()
 	end;
-}, std.room)
+}, std.room):attr'cutscene'
 
 -- player
 mp.msg.Look = {}

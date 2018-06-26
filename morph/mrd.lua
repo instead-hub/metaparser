@@ -715,7 +715,7 @@ function mrd.dispof(w)
 		local d = std.call(w, 'word')
 		return d
 	end
-	return std.titleof(w)
+	return std.titleof(w) or std.nameof(w)
 end
 
 local obj_cache = { hash = {}, list = {}}

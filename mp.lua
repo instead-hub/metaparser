@@ -1304,6 +1304,10 @@ end
 end
 
 function mp:err(err)
+	if std.here().OnError then
+		std.here():OnError(err)
+		return
+	end
 	if err == "UNKNOWN_VERB" then
 		local verbs = self:lookup_verb(self.words, true)
 		local hint = false

@@ -43,6 +43,7 @@ mp.msg.UNKNOWN_THEDARK = "Возможно, это потому что в тем
 mp.msg.COMPASS_NOWAY = "Этот путь недоступен."
 mp.msg.COMPASS_EXAM_NO = "В этом направлении не видно ничего примечательного."
 mp.msg.ENUM = "шт."
+mp.msg.CUTSCENE_HELP = "Для продолжения нажмите <ввод> или введите {$fmt em|дальше}."
 mp.msg.TAKE_BEFORE = function(w)
 	pn (iface:em("(сначала взяв "..w:noun'вн'..")"))
 end
