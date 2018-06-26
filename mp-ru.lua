@@ -541,6 +541,7 @@ Verb { "#Exam",
        "~ под {noun}/вн : LookUnder",
        "~ в|во|на {noun}/пр,2 : Search",
        "~ внутри {noun}/рд : Search",
+       "~ в|во {noun}/вн : Search",
        "~ в|во {noun}/пр,2 о|об|обо|про * : Consult",
        "~ о|об|обо|про * в|во {noun}/пр,2 : Consult reverse",
 }
