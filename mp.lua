@@ -1149,6 +1149,7 @@ function mp:match(verb, w, compl)
 				table.insert(a, v)
 			end
 		end
+		local skip = {}
 		local all_optional = true
 		local rlev = 1
 		local need_required = false
@@ -1216,6 +1217,9 @@ function mp:match(verb, w, compl)
 				if false then
 					a = tab_exclude(a, best, best + best_len - 1)
 				else
+					for i = 1, best - 1 do
+						table.insert(skip, a[i])
+					end
 					a = tab_sub(a, best + best_len)
 --					table.remove(a, 1)
 				end
@@ -1251,6 +1255,11 @@ function mp:match(verb, w, compl)
 			elseif required then
 				for i = 1, best - 1 do
 					table.insert(unknown, { word = a[i], lev = rlev })
+				end
+				if best <= 1 and #skip > 0 then
+					for i = 1, #skip do
+						table.insert(unknown, { word = skip[i], lev = rlev })
+					end
 				end
 				if not compl then
 					for _, pp in ipairs(pat) do -- single argument
