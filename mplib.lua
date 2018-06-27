@@ -537,7 +537,7 @@ function mp:content(w)
 		p(dsc)
 		p(std.scene_delim)
 	end
-	self:objects(w, oo) --, false)
+	self:objects(w, oo, false)
 	local something
 	for _, v in ipairs(oo) do
 		local r, rc
@@ -614,7 +614,7 @@ function mp:content(w)
 	end
 -- expand?
 	for _, o in ipairs(oo) do
-		if (o:has'supporter' or o:has'transparent') and not o:closed() then
+		if (o:has'supporter' or o:has'transparent' or (o:has'container' and o:has'open')) and not o:closed() then
 			self:content(o)
 		end
 	end
