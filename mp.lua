@@ -1347,6 +1347,9 @@ end
 end
 
 function mp:err(err)
+	if self.inp:find("^[ \t]*%*") then
+		return
+	end
 	if std.here().OnError then
 		std.here():OnError(err)
 		return
