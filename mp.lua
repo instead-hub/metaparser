@@ -1052,18 +1052,21 @@ function mp:compl(str)
 end
 
 local function lev_sort(t)
-	local fuzzy = {}
-	for _, v in ipairs(t) do if v.fuzzy then table.insert(fuzzy, v) end end
-	if #fuzzy > 0 then
-		t = fuzzy
-		t.fuzzy = true
-	end
+--	local fuzzy = {}
+--	for _, v in ipairs(t) do if v.fuzzy then table.insert(fuzzy, v) end end
+--	if #fuzzy > 0 then
+--		t = fuzzy
+--		t.fuzzy = true
+--	end
 	for _, v in ipairs(t) do v.i = _ end
 	table.sort(t, function(a, b)
-			   if a.lev == b.lev then return a.i < b.i end
-			   return a.lev > b.lev
+			if a.lev == b.lev then
+				return a.i < b.i
+			end
+			return a.lev > b.lev
 	end)
 	local lev = t[1] and t[1].lev
+	local fuzzy = t[1] and t[1].fuzzy
 	local res = {}
 	local dup = {}
 	for _, v in ipairs(t) do
@@ -1071,6 +1074,7 @@ local function lev_sort(t)
 			break
 		end
 		res.lev = lev
+		res.fuzzy = fuzzy
 		if v.word then
 			if not dup[v.word] then
 				table.insert(res, v.word)
@@ -1250,8 +1254,10 @@ function mp:match(verb, w, compl)
 				end
 				if not compl then
 					for _, pp in ipairs(pat) do -- single argument
-						local k, len = word_search(a, pp.word, self.lev_thresh)
-						if k then table.insert(hints, { word = pp.word, lev = rlev, fuzzy2 = true }) end
+						if utf_len(pp.word) >= 3 then
+							local k, len = word_search(a, pp.word, self.lev_thresh)
+							if k then table.insert(hints, { word = pp.word, lev = rlev, fuzzy = true }) end
+						end
 					end
 				end
 				table.insert(hints, { word = v, lev = rlev })
@@ -1375,7 +1381,9 @@ function mp:err(err)
 				return
 			end
 			if need_noun then
---				return
+				if #self.hints == 0 or not self.hints.fuzzy then
+					return
+				end
 			end
 		elseif err == "UNKNOWN_WORD" then
 			p (self.msg.UNKNOWN_WORD, ".")
