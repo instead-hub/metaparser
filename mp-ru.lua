@@ -16,25 +16,23 @@ game.dsc = function()
 end
 local utf = mp.utf
 
-_'@compass'.out_to_dir = 11
-
-_'@compass'.word = function()
-	local dir = -"север,с|северо-восток,св|восток,в|юго-восток,юв|юг,ю|юго-запад,юз|запад,з|северо-запад,сз"
-	local up = -"наверх,вверх,верх|вниз,низ|наружу,выход,назад|внутрь,вход"
-	local inp, pre = mp:compl_ctx()
-	if pre == '' then
-		return dir .. '|'.. up
-	end
-	if pre == 'на ' or inp:find("на[ ]*$") then
-		return dir
-	end
-	return up
-end
 _'@darkness'.word = -"тьма,темнота,темень"
 _'@darkness'.before_Any = "Полная, кромешная тьма."
 _'@darkness':attr 'persist'
 
-_'@compass'.dirs = { 'n_to', 'ne_to', 'e_to', 'se_to', 's_to', 'sw_to', 'w_to', 'nw_to', 'u_to', 'd_to','out_to','in_to' };
+_'@n_to'.word = -"север,с";
+_'@ne_to'.word = -"северо-восток,св";
+_'@e_to'.word = -"восток,в";
+_'@se_to'.word = -"юго-восток,юв";
+_'@s_to'.word = -"юг,ю";
+_'@sw_to'.word = -"юго-запад,юз";
+_'@w_to'.word = -"запад,з/compass";
+_'@nw_to'.word = -"северо-запад,сз";
+_'@u_to'.word = -"наверх,вверх,верх";
+_'@d_to'.word = -"вниз,низ";
+_'@out_to'.word = -"наружу,выход,назад";
+_'@in_to'.word = -"внутрь,вход"
+
 _'@compass'.before_Default = 'Попробуйте глагол "идти".'
 
 mp.door.word = -"дверь";
@@ -177,7 +175,7 @@ mp.msg.Inv.INV = "У {#me/рд} с собой"
 mp.msg.Open.OPEN = "{#Me} {#word/открывать,нст,#me} {#first/вн}."
 mp.msg.Open.NOTOPENABLE = "{#First/вн} невозможно открыть."
 --"открыт"
-mp.msg.Open.WHENOPEN = "{#First/вн} уже {#word/открыт,#first}."
+mp.msg.Open.WHENOPEN = "{#First/} уже {#word/открыт,#first}."
 --"заперт"
 mp.msg.Open.WHENLOCKED = "Похоже, что {#first/} {#word/заперт,#first}."
 
@@ -185,7 +183,7 @@ mp.msg.Open.WHENLOCKED = "Похоже, что {#first/} {#word/заперт,#fi
 mp.msg.Close.CLOSE = "{#Me} {#word/закрывать,нст,#me} {#first/вн}."
 mp.msg.Close.NOTOPENABLE = "{#First/вн} невозможно закрыть."
 --"закрыт"
-mp.msg.Close.WHENCLOSED = "{#First/вн} уже {#word/закрыт,#first}."
+mp.msg.Close.WHENCLOSED = "{#First/} уже {#word/закрыт,#first}."
 
 mp.msg.Lock.IMPOSSIBLE = "{#First/вн} невозможно запереть."
 --"заперт"
@@ -447,8 +445,9 @@ local function hints(w)
 end
 
 function mp:err_noun(noun)
+	if noun == '*' then return "{$fmt em|<любое слово>}" end
 	local hint = std.split(noun, "/")
-	p "{$fmt em|существительное в"
+	local rc = "{$fmt em|существительное в"
 	if #hint == 2 then
 		local h = hints(hint[2])
 		local acc = 'именительном'
@@ -465,11 +464,12 @@ function mp:err_noun(noun)
 		elseif h["пр"] or h["пр2"] then
 			acc = 'предложном'
 		end
-		pr (acc, " падеже")
+		rc = rc ..  " "..acc .. " падеже"
 	else
-		pr "именительном падеже"
+		rc = rc .. " именительном падеже"
 	end
-	pr "}"
+	rc = rc .. "}"
+	return rc
 end
 
 function mp.shortcut.vo(hint)
@@ -528,9 +528,10 @@ end
 
 Verb { "#Walk",
 	"идти,иду,пойти,пойд/и,подой/ти,иди,войти,войд/и,зайти,зайд/и,бежать,бег/и,влез/ть,ехать,поехать,едь,поеду,сесть,сядь,сяду,лечь,ляг,вста/ть",
+	"на {noun_obj}/@n_to|{noun_obj}/@ne_to|{noun_obj}/@e_to|{noun_obj}/@se_to|{noun_obj}/@s_to|{noun_obj}/@sw_to|{noun_obj}/@w_to|{noun_obj}/@nw_to : Walk",
 	"на|в|во {noun}/вн,scene,enterable : Enter",
 	"к {noun}/дт,scene : Walk",
-	"{noun_obj}/@compass : Walk" }
+	"{noun_obj}/@u_to|{noun_obj}/@d_to|{noun_obj}/@in_to|{noun_obj}/@out_to: Walk" }
 
 Verb { "#Exit",
 	"выйти,выйд/и,уйти,уйд/и,вылез/ти,выхо/ди,обратно,назад,выбраться,выберись,выберусь,выбираться",

@@ -386,72 +386,87 @@ std.phrase_prefix = function(n)
 	return (string.format("%d) ", n))
 end
 
-obj {
-	"north,n|south,s|east,e|west,w|up,u|down,d";
-	nam = '@compass';
-	{
-		dirs = { 'n_to', 's_to', 'e_to', 'w_to', 'u_to', 'd_to' };
-	};
-	default_Event = 'Enter';
-	found_in = function(s)
-		for _, v in ipairs(s.dirs) do
-			if std.here()[v] then return true end
+local function compass_dir(dir)
+	return obj {
+		nam = '@'..dir;
+		default_Event = 'Walk';
+		before_Any = function(s, ev, ...)
+			return _'@compass':action(dir, ev, ...)
 		end
-		return false or true
-	end;
---	before_Default = [[Can't do it with direction.]];
---	visible = function() return true end;
-	before_Exam = function(s)
-		local d = s.dirs[s:multi_alias()]
-		local r, v = mp:runorval(std.here(), d)
-		if r then -- somewhat?
-			if std.object(r):type 'room' then
+	}:attr'light,enterable,concealed':persist()
+end
+
+obj {
+	nam = '@compass';
+	visible = function() return false end;
+	action = function(s, dir, ev, ...)
+		if ev == 'Exam' then
+			local d = dir
+			local r, v = mp:runorval(std.here(), d)
+			if r then -- somewhat?
+				if std.object(r):type 'room' then
+					p (mp.msg.COMPASS_EXAM_NO)
+					return
+				end
+				p (mp.msg.COMPASS_EXAM(d, std.object(r)))
+				return
+			end
+			if not v then
 				p (mp.msg.COMPASS_EXAM_NO)
 				return
 			end
-			p (mp.msg.COMPASS_EXAM(d, std.object(r)))
-			return
-		end
-		return v
-	end;
-	before_Walk = function(s)
-		local d = s.dirs[s:multi_alias()]
-		if not std.me():where():type'room' then
-			p (mp.msg.Enter.EXITBEFORE)
-			return
-		end
-		if std.here()[d] == nil and d == 'out_to' then
-			mp:xaction("Exit")
-			return
-		end
-		local r, v = mp:runorval(std.here(), d)
-		if not v then
-			local r, v = mp:runorval(std.here(), 'cant_go', s)
-			p ((v and r) or mp.msg.COMPASS_NOWAY)
-			return
-		end
-		if not r then
 			return v
 		end
-		if std.object(r):type 'room' then
-			if not mp:move(std.me(), r) then return true end
-		else
-			mp:xaction("Enter", std.object(r))
+		if ev == 'Walk' or ev == 'Enter' then
+			local d = dir
+			if not std.me():where():type'room' then
+				p (mp.msg.Enter.EXITBEFORE)
+				return
+			end
+			if std.here()[d] == nil and d == 'out_to' then
+				mp:xaction("Exit")
+				return
+			end
+			local r, v = mp:runorval(std.here(), d)
+			if not v then
+				local r, v = mp:runorval(std.here(), 'cant_go', s)
+				p ((v and r) or mp.msg.COMPASS_NOWAY)
+				return
+			end
+			if not r then
+				return v
+			end
+			if std.object(r):type 'room' then
+				if not mp:move(std.me(), r) then return true end
+			else
+				mp:xaction("Enter", std.object(r))
+			end
+			return
 		end
+		return std.call(s, 'before_Default', ...)
 	end;
-	before_Enter = function(s, ...)
-		return s:before_Walk(...)
-	end;
-	dir = function(self)
-		return self.dirs[self:multi_alias()]
-	end
-}:persist():attr'multi,enterable,light'
+}:persist():attr'~light,transparent':with {
+	compass_dir 'n_to',
+	compass_dir 'ne_to',
+	compass_dir 'e_to',
+	compass_dir 'se_to',
+	compass_dir 's_to',
+	compass_dir 'sw_to',
+	compass_dir 'w_to',
+	compass_dir 'nw_to',
+	compass_dir 'd_to',
+	compass_dir 'u_to',
+	compass_dir 'in_to',
+	compass_dir 'out_to',
+}
+
 
 mp.compass_dir = function(self, w, dir)
 	if not dir then
-		return w == _'@compass' and w:dir()
+		local nam = tostring(w.nam):gsub("^@", "")
+		return w:where() ^ '@compass' and nam
 	end
-	return w == _'@compass' and w:dir() == dir
+	return w ^ '@dir'
 end
 
 -- VERBS
@@ -522,7 +537,7 @@ function mp:content(w)
 		p(dsc)
 		p(std.scene_delim)
 	end
-	self:objects(w, oo, false)
+	self:objects(w, oo) --, false)
 	local something
 	for _, v in ipairs(oo) do
 		local r, rc
@@ -832,8 +847,7 @@ function mp:Exit(w)
 	end
 
 	if wh:type'room' and wh.out_to ~= nil then
-		_'@compass':multi_alias(_'@compass'.out_to_dir)
-		mp:xaction("Walk", _'@compass')
+		mp:xaction("Walk", _'@out_to')
 		return
 	end
 
@@ -2033,6 +2047,7 @@ function mp:MetaLoad()
 end
 
 function mp:MetaWord(w)
+	w = w:gsub("_", "/")
 	local w, g = self.mrd:word(w)
 	pn(w)
 	for _, v in ipairs(g) do

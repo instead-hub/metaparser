@@ -474,6 +474,7 @@ function mp.token.noun(w)
 		oo = {}
 		if o:visible() and not o:disabled() then
 			table.insert(oo, o)
+			mp:objects(o, oo)
 		end
 	else
 		oo = mp:nouns()
@@ -576,7 +577,7 @@ function mp:pattern(t, delim)
 			if type(self.token[v]) ~= 'function' then
 				std.err("Wrong subst function: ".. v, 2);
 			end
-			local key = ov .. '/' .. (w.morph or '')
+			local key = ov --  .. '/' .. (w.morph or '')
 			local tok = self.cache.tokens[key]
 			if not tok then
 				tok = self.token[v](w)
@@ -763,6 +764,20 @@ function mp:lookup_verb(words, lev)
 				   return a.lev < b.lev
 		end)
 		ret = { ret[1] }
+	elseif #ret > 0 then
+		table.sort(ret, function(a, b)
+			return a.verb_nr < b.verb_nr
+		end)
+		local lev = ret[1].verb_nr
+		local ret2 = {}
+		for _, v in ipairs(ret) do
+			if v.verb_nr == lev then
+				table.insert(ret2, v)
+			else
+				break
+			end
+		end
+		ret = ret2
 	end
 	return ret
 end
@@ -1021,6 +1036,7 @@ function mp:compl(str)
 	end
 	local _, pre = self:compl_ctx()
 	for _, v in ipairs(poss) do
+		if v.word == '*' then vargs = true end
 		if self:startswith(v.word, pre) and not v.word:find("%*$") then
 			if not dups[v.word] then
 				dups[v.word] = true
@@ -1204,17 +1220,29 @@ function mp:match(verb, w, compl)
 				rlev = rlev + 1
 			elseif vargs then
 				if lev == #d.pat then -- last?
+					if #a == 0 then
+						need_required = true
+					end
 					while #a > 0 do
 						table.insert(match.vargs, a[1])
 						table.insert(match, a[1])
 						table.remove(a, 1)
 					end
-					if not need_required then
-						found = true
-					end
-					break
 				else
 					need_required = need_required or required
+				end
+				if not need_required then
+					found = true
+				else
+					found = false
+					if #a > 0 or #match.vargs > 0 then
+						table.insert(hints, { word = v, lev = rlev })
+					else
+						table.insert(hints, { word = '*', lev = rlev })
+					end
+				end
+				if not found then
+					break
 				end
 			elseif required then
 				for i = 1, best - 1 do
@@ -1223,7 +1251,7 @@ function mp:match(verb, w, compl)
 				if not compl then
 					for _, pp in ipairs(pat) do -- single argument
 						local k, len = word_search(a, pp.word, self.lev_thresh)
-						if k then table.insert(hints, { word = pp.word, lev = rlev, fuzzy = true }) end
+						if k then table.insert(hints, { word = pp.word, lev = rlev, fuzzy2 = true }) end
 					end
 				end
 				table.insert(hints, { word = v, lev = rlev })
@@ -1290,16 +1318,16 @@ if false then
 		end
 	end
 end
-	if #hints > 0 and #unknown > 0 then
-		if hints[1].lev > unknown[1].lev then
-			unknown = {}
-		elseif hints[1].lev < unknown[1].lev then
-			hints = {}
-		end
-	end
 	hints = lev_sort(hints)
 	unknown = lev_sort(unknown)
 	multi = lev_sort(multi)
+	if #hints > 0 and #unknown > 0 then
+		if hints.lev > unknown.lev then
+			unknown = {}
+		elseif hints.lev < unknown.lev then
+			hints = {}
+		end
+	end
 	return matches, hints, unknown, multi
 end
 
@@ -1327,7 +1355,10 @@ function mp:err(err)
 	elseif err == "EMPTY_INPUT" then
 		p (self.msg.EMPTY or "Empty input.")
 	elseif err == "INCOMPLETE" or err == "UNKNOWN_WORD" then
-		local need_noun = #self.hints > 0 and self.hints[1]:find("^{noun}")
+		local need_noun
+		for _, v in ipairs(self.hints) do
+			if v:find("^~?{noun}") then need_noun = true break end
+		end
 		if #self.unknown > 0 then
 			local unk = ''
 			for _, v in ipairs(self.unknown) do
@@ -1343,48 +1374,52 @@ function mp:err(err)
 				p (self.msg.UNKNOWN_THEDARK)
 				return
 			end
+			if need_noun then
+--				return
+			end
 		elseif err == "UNKNOWN_WORD" then
 			p (self.msg.UNKNOWN_WORD, ".")
 		else
 			p (self.msg.INCOMPLETE)
 		end
 
-		if #self.hints > 0 then
-			p (self.msg.HINT_WORDS, " ")
-		end
-		local first = true
-		local noun = false
+		local words = {}
+		local dups = {}
 		for kk, v in ipairs(self.hints) do
-			if v:find("^{noun}") or v:find("/[^/]*$") then
-				if not noun then
-					noun = true
-					if not first then
-						pr (" ", mp.msg.HINT_OR or "or", " ")
-					end
-					if mp.err_noun then
-						mp:err_noun(v)
-					else
-						pr ("noun")
-					end
+			if v:find("^~?{noun}") or v == '*' then
+				v = mp:err_noun(v)
+				if not dups[v] then
+					table.insert(words, v)
+					dups[v] = true
 				end
-			else -- if not need_noun then
+			else
 				local pat = self:pattern(v)
-				for k, vv in ipairs(pat) do
-					if not first then
-						if k == #pat and kk == #self.hints then
-							pr (" ", mp.msg.HINT_OR or "or", " ", iface:em(vv.word))
-						else
-							pr (", ", iface:em(vv.word))
-						end
-					else
-						pr (" ", iface:em(vv.word))
+				for _, v in ipairs(pat) do
+					if not v.hidden and not dups[v.word] then
+						table.insert(words, v.word)
+						dups[v.word] = true
 					end
-					first = false
 				end
 			end
-			first = false
+			if need_noun then
+				break
+			end
 		end
-		if #self.hints > 0 then
+		if #words > 0 then
+			p (self.msg.HINT_WORDS, " ")
+		end
+
+		for k, v in ipairs(words) do
+			if k ~= 1 then
+				if k == #words then
+					pr (" ", mp.msg.HINT_OR, " ")
+				else
+					pr (", ")
+				end
+			end
+			pr(iface:em(v))
+		end
+		if #words > 0 then
 			p "?"
 		end
 	elseif err == "MULTIPLE" then
@@ -1839,17 +1874,19 @@ function mp:input(str)
 		local m, h, u, mu = self:match(v, w)
 		if #m > 0 then
 			table.insert(matches, { verb = v, match = m[1] })
-		else
-			table.insert(hints, h)
-			table.insert(unknown, u)
-			table.insert(multi, mu)
 		end
+		table.insert(hints, h)
+		table.insert(unknown, u)
+		table.insert(multi, mu)
 	end
 	table.sort(matches, function(a, b) return #a.match > #b.match end)
-
 	hints = lev_sort(hints)
 	unknown = lev_sort(unknown)
 	multi = lev_sort(multi)
+	local mlev = #matches > 0 and #matches[1].match or 0
+	if (hints.lev or 0)> mlev or (unknown.lev or 0) > mlev then
+		matches = {}
+	end
 
 	if #matches == 0 then
 		self.hints = hints
