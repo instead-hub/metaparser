@@ -981,6 +981,7 @@ end
 
 function mp:check_held(t)
 	if have(t) or std.me() == t then
+--	if (std:me():lookup(t) and t:visible()) or std.me() == t then
 		return false
 	end
 	mp.msg.TAKE_BEFORE(t)
