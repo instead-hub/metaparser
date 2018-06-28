@@ -783,6 +783,7 @@ function mrd:obj(w, n, nn)
 end
 
 local function noun_append(rc, tab, w)
+--	w = mrd.lang.norm(w)
 	if tab then
 		table.insert(tab, w)
 	else

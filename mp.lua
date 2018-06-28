@@ -1071,7 +1071,7 @@ local function lev_sort(t)
 		t.fuzzy = true
 	end
 
-	local res = {}
+	local res = { lev = 0 }
 	local dup = {}
 	for _, v in ipairs(t) do
 		if v.lev ~= lev then
@@ -1696,7 +1696,7 @@ function mp:parse(inp)
 	if std.cmd[1] ~= 'look' then
 		pn(fmt.b(self.prompt .. inp))
 	end
-	inp = inp:gsub("[ ]+", " "):gsub("["..inp_split.."]+", " ")
+	inp = inp:gsub("[ ]+", " "):gsub("["..inp_split.."]+", " "):gsub("[ \t]+$", "")
 	local r, v = self:input(self:norm(inp))
 	self.cache = { tokens = {} }; -- to completion
 	if not r then

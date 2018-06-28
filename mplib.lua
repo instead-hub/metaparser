@@ -1489,6 +1489,23 @@ function mp:after_Eat(w)
 	p (mp.msg.Eat.EAT)
 end
 
+mp.msg.Taste = {}
+
+function mp:Taste(w)
+	if mp:check_touch() then
+		return
+	end
+	if w:has'edible' then
+		mp:xaction("Eat", w)
+		return
+	end
+	return false
+end
+
+function mp:after_Taste(w)
+	p (mp.msg.Taste.TASTE)
+end
+
 mp.msg.Drink = {}
 
 function mp:after_Drink(w)

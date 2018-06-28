@@ -262,6 +262,8 @@ mp.msg.SwitchOff.SWITCHOFF = "{#Me} {#word/выключать,#me,нст} {#firs
 
 --"годится"
 mp.msg.Eat.NOTEDIBLE = "{#First} не {#word/годится,#first} в пищу."
+mp.msg.Taste.TASTE = "Никакого необычного вкуса нет."
+
 --"съедать"
 mp.msg.Eat.EAT = "{#Me} {#word/съедать,нст,#me} {#first/вн}."
 mp.msg.Drink.IMPOSSIBLE = "Выпить {#first/вн} невозможно."
@@ -641,6 +643,12 @@ Verb {
 }
 
 Verb {
+	"#Taste",
+	"лизать,лизн/уть,попроб/овать,полиз/ать,сосать,пососа/ть",
+	"{noun}/вн : Taste"
+}
+
+Verb {
 	"#Drink",
 	"пить,выпить,выпей,выпью,пью",
 	"{noun}/вн,held : Drink",
@@ -848,7 +856,7 @@ Verb {
 
 Verb {
 	"#GetOff",
-	"слез/ть,спусти/ться",
+	"слез/ть,спусти/ться,встать,встан/ь",
 	"Exit",
 	"с|со {noun}/рд,scene : GetOff",
 }
