@@ -381,6 +381,8 @@ end
 function mrd:score(an, g)
 	local score = 0
 	g = self:gram_norm(g)
+	if an["фам"] then score = score - 0.1 end
+	if an["арх"] then score = score - 0.1 end
 	for kk, vv in ipairs(g or {}) do
 		if vv:sub(1, 1) == '~' then
 			vv = vv:sub(2)
