@@ -1052,12 +1052,6 @@ function mp:compl(str)
 end
 
 local function lev_sort(t)
---	local fuzzy = {}
---	for _, v in ipairs(t) do if v.fuzzy then table.insert(fuzzy, v) end end
---	if #fuzzy > 0 then
---		t = fuzzy
---		t.fuzzy = true
---	end
 	for _, v in ipairs(t) do v.i = _ end
 	table.sort(t, function(a, b)
 			if a.lev == b.lev then
@@ -1067,6 +1061,14 @@ local function lev_sort(t)
 	end)
 	local lev = t[1] and t[1].lev
 	local fuzzy = t[1] and t[1].fuzzy
+
+	local fuzzy = {}
+	for _, v in ipairs(t) do if v.lev ~= lev then break end if v.fuzzy then table.insert(fuzzy, v) end end
+	if #fuzzy > 0 then
+		t = fuzzy
+		t.fuzzy = true
+	end
+
 	local res = {}
 	local dup = {}
 	for _, v in ipairs(t) do
@@ -1074,7 +1076,6 @@ local function lev_sort(t)
 			break
 		end
 		res.lev = lev
-		res.fuzzy = fuzzy
 		if v.word then
 			if not dup[v.word] then
 				table.insert(res, v.word)
@@ -1421,9 +1422,9 @@ function mp:err(err)
 					end
 				end
 			end
-			if need_noun then
-				break
-			end
+--			if need_noun then
+--				break
+--			end
 		end
 		if #words > 0 then
 			p (self.msg.HINT_WORDS, " ")
