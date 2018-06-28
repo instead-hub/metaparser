@@ -138,7 +138,9 @@ obj {
 	nam = 'hearth';
 	found_in = 'Drawing_Room';
 	description = "За бронзовой каминной решеткой весело потрескивает огонь.";
-} :attr'scenery'
+} :attr'scenery' :dict {
+	["огонь/вн"] = "огонь" -- огнь :)
+}
 
 obj {
 	-"каминный коврик|коврик,ковер";
