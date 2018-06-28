@@ -1201,7 +1201,7 @@ obj {
 ```
 obj {
 	-"стол";
-	inseide_dsc = [[Ты стоишь на столе.]];
+	inside_dsc = [[Ты стоишь на столе.]];
 }:attr 'enterable,supporter';
 ```
 
