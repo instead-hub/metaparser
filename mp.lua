@@ -175,6 +175,7 @@ mp = std.obj {
 	autohelp = false;
 	autocompl = true;
 	compl_thresh = 0;
+	detailed_inv = false;
 	daemons = std.list {};
 	{
 		version = "0.1";
