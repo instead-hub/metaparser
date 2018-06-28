@@ -2,6 +2,8 @@
 require "mp-ru"
 require "fmt"
 
+mp.detailed_inv = true
+
 game.dsc = [[^Пример простой игры на Inform
 ^Авторы: Роджер Фирт (Roger Firth) и Соня Кессерих (Sonja Kesserich).
 ^Перевод Александра Мосьпана a.k.a. Ugo^

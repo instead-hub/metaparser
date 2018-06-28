@@ -871,6 +871,28 @@ function mp:after_Exit(w)
 end
 
 mp.msg.Inv = {}
+
+function mp:detailed_Inv(wh, indent)
+	local oo = {}
+	self:objects(wh, oo, false)
+	for _, o in ipairs(oo) do
+		if not o:has'concealed' then
+			for i = 1, indent do pr(iface:nb' ') end
+			local inv = std.call(o, 'inv') or o:noun(1)
+			pr(iface:em(inv))
+			if o:has'worn' then
+				mp.msg.WORN(o)
+			elseif o:has'openable' and o:has'open' then
+				mp.msg.OPEN(o)
+			end
+			pn()
+			if o:has'supporter' or o:has'container' then
+				mp:detailed_Inv(o, indent + 1)
+			end
+		end
+	end
+end
+
 function mp:after_Inv()
 	local oo = {}
 	self:objects(std.me(), oo, false)
@@ -886,8 +908,14 @@ function mp:after_Inv()
 		p(mp.msg.Inv.NOTHING)
 		return
 	end
-	p(mp.msg.Inv.INV)
-	mp:multidsc(oo, true)
+	pr(mp.msg.Inv.INV)
+	if mp.detailed_inv then
+		pn(":")
+		mp:detailed_Inv(std.me(), 1)
+	else
+		p()
+		mp:multidsc(oo, true)
+	end
 end
 
 mp.msg.Open = {}
