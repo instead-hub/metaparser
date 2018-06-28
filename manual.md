@@ -1681,6 +1681,34 @@ ThrowAt, Give, Show, WakeOther, Kiss, Attack, Talk, Tell, Ask, Answer
 
 Insert, PutOn
 
+В качестве примера рассмотрим объект, который может вести себя и как
+supporter и как container.
+
+```
+obj {
+	-"аквариум",
+	nam = 'аквариум',
+	before_Receive = function(s, w)
+		if mp.xevent == 'PutOn' then
+			move(w, '#поверх')
+			p ("Ты кладешь ", w:noun'вн', " на крышку аквариума.")
+		else
+			return false
+		end
+	end;
+	obj = {
+		'рыбка',
+		obj {
+			-"аквариум";
+			nam = '#поверх';
+			dsc = function(s)
+				mp:content(s)
+			end;
+		}:attr 'supporter';
+	}
+} : attr 'container,transparent,open'
+```
+
 ## Псевдо-событие ThrownAt
 
 Когда мы бросаем предмет в персонажа или объект, кроме события ThrowAt
