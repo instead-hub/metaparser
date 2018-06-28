@@ -219,6 +219,7 @@ mp = std.obj {
 		debug = { trace_action = false };
 		completions = {};
 		event = false;
+		xevent = false;
 		aliases = {};
 		first = false;
 		second = false;
@@ -1630,6 +1631,7 @@ function mp:save_ctx()
 		first_hint = self.first_hint,
 		second_hint = self.second_hint,
 		event = self.event;
+		xevent = self.xevent
 	}
 end
 
@@ -1637,11 +1639,13 @@ function mp:restore_ctx(ctx)
 	self.first, self.second = ctx.first, ctx.second
 	self.first_hint, self.second_hint = ctx.first_hint, ctx.second_hint
 	self.event = ctx.event
+	self.xevent = ctx.xevent
 end
 
 function mp:runmethods(t, verb, ...)
 	local events = { {ev = verb, args = { ... }}}
 	local ctx = self:save_ctx()
+	self.xevent = self.event
 	local r, v = self:events_call(events, { 'obj' }, t)
 	self:restore_ctx(ctx)
 	self.reaction = false
