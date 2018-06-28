@@ -173,6 +173,7 @@ end
 mp = std.obj {
 	nam = '@metaparser';
 	autohelp = false;
+	errhints = true;
 	autocompl = true;
 	compl_thresh = 0;
 	detailed_inv = false;
@@ -1263,7 +1264,7 @@ function mp:match(verb, w, compl)
 						table.insert(unknown, { word = skip[i], lev = rlev })
 					end
 				end
-				if not compl then
+				if not compl and mp.errhints then
 					for _, pp in ipairs(pat) do -- single argument
 						if utf_len(pp.word) >= 3 then
 							local k, len = word_search(a, pp.word, self.lev_thresh)
@@ -1386,9 +1387,17 @@ function mp:err(err)
 				unk = unk .. v
 			end
 			if need_noun then
-				p (self.msg.UNKNOWN_OBJ, iface:em(" (" .. unk .. ")."))
+				if mp.errhints then
+					p (self.msg.UNKNOWN_OBJ, iface:em(" (" .. unk .. ")."))
+				else
+					p (self.msg.UNKNOWN_OBJ, ".")
+				end
 			else
-				p (self.msg.UNKNOWN_WORD, iface:em(" ("..unk..")."))
+				if mp.errhints then
+					p (self.msg.UNKNOWN_WORD, iface:em(" ("..unk..")."))
+				else
+					p (self.msg.UNKNOWN_WORD, ".")
+				end
 			end
 			if mp:thedark() and need_noun then
 				p (self.msg.UNKNOWN_THEDARK)
@@ -1402,15 +1411,21 @@ function mp:err(err)
 		elseif err == "UNKNOWN_WORD" then
 			p (self.msg.UNKNOWN_WORD, ".")
 		else
-			p (self.msg.INCOMPLETE)
+			if need_noun then
+				p (self.msg.INCOMPLETE_NOUN)
+			else
+				p (self.msg.INCOMPLETE)
+			end
 		end
-
+		if not mp.errhints then
+			return
+		end
 		local words = {}
 		local dups = {}
 		for kk, v in ipairs(self.hints) do
 			if v:find("^~?{noun}") or v == '*' then
 				v = mp:err_noun(v)
-				if not dups[v] then
+				if not dups[v] and not need_noun then
 					table.insert(words, v)
 					dups[v] = true
 				end
@@ -1867,6 +1882,9 @@ function mp:input(str)
 		end
 
 		if #ob == 0 then -- try fuzzy
+			if not mp.errhints then
+				return false, "UNKNOWN_VERB"
+			end
 			ob = self:lookup_noun(w, self.lev_thresh)
 			if #ob >= 1 then
 				for _, v in ipairs(ob) do

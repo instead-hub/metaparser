@@ -1,7 +1,7 @@
 --$Name:Хейди$
 require "mp-ru"
 require "fmt"
-
+-- mp.errhints = false
 game.dsc = [[^Пример простой игры на Inform.
 ^Авторы: Роджер Фирт (Roger Firth) и Соня Кессерих (Sonja Kesserich).
 ^Перевод Юрия Салтыкова a.k.a. G.A. Garinson^

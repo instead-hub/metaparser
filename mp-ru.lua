@@ -79,6 +79,7 @@ mp.msg.EMPTY = 'Простите?'
 mp.msg.UNKNOWN_VERB = "Непонятный глагол"
 mp.msg.UNKNOWN_VERB_HINT = "Возможно, вы имели в виду"
 mp.msg.INCOMPLETE = "Нужно дополнить предложение."
+mp.msg.INCOMPLETE_NOUN = "К чему вы хотите применить команду?"
 mp.msg.UNKNOWN_OBJ = "Такого предмета тут нет"
 mp.msg.UNKNOWN_WORD = "Слово не распознано"
 mp.msg.HINT_WORDS = "Возможно, вы имели в виду"
