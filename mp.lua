@@ -173,6 +173,7 @@ end
 mp = std.obj {
 	nam = '@metaparser';
 	autohelp = false;
+	togglehelp = true;
 	errhints = true;
 	autocompl = true;
 	compl_thresh = 0;
@@ -250,7 +251,7 @@ function mp:trim()
 end
 
 function mp:key(key)
-	if key == 'f1' then
+	if key == 'f1' and (self.togglehelp or DEBUG) then
 		self.autohelp = not self.autohelp
 		return true
 	end
