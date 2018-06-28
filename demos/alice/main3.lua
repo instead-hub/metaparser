@@ -421,7 +421,7 @@ Kitten = Class {
 		end
 		move (w, 'Drawing_Room')
 		move (s, 'Drawing_Room')
-		p (" бросился за ", w:noun'вн')
+		pr (" бросился за ", w:noun'тв')
 		if w ^ 'worsted' then
 			_'worsted'.sputan = true
 			s.state = WOOL_STATE
