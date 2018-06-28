@@ -879,7 +879,7 @@ function mp:detailed_Inv(wh, indent)
 		if not o:has'concealed' then
 			for i = 1, indent do pr(iface:nb' ') end
 			local inv = std.call(o, 'inv') or o:noun(1)
-			pr(iface:em(inv))
+			pr(inv)
 			if o:has'worn' then
 				mp.msg.WORN(o)
 			elseif o:has'openable' and o:has'open' then
