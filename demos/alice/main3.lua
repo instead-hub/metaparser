@@ -74,7 +74,7 @@ room {
 		end
 		return false
 	end;
-	['before_Examine,Enter,ThrowAt,ThrownAt,Reflect,Touch'] = function(s, w, wh)
+	['before_Examine,Search,Enter,ThrowAt,ThrownAt,Reflect,Touch'] = function(s, w, wh)
 		return false
 	end;
 	before_Default = function(s, ev, w, wh)
@@ -291,7 +291,7 @@ obj {
              Впрочем, он ничем не отличается от потолка по эту сторону зеркала.]];
         end;
 	before_Any = function(s, ev)
-		if mp.event ~= 'Exam' and mp.event ~= 'Reflect'
+		if mp.event ~= 'Exam' and mp.event ~= 'Reflect' and mp.event ~= 'Search'
 		and mp.event ~= 'ThrownAt' and not pl:where() ^ 'mantelpiece' then
 			p "Отсюда невозможно даже дотянуться до зеркала!";
 			return
