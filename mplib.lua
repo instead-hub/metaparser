@@ -435,7 +435,7 @@ obj {
 mp.compass_dir = function(self, w, dir)
 	if not dir then
 		local nam = tostring(w.nam):gsub("^@", "")
-		return w:where() ^ '@compass' and nam
+		return w:where() and w:where() ^ '@compass' and nam
 	end
 	return w ^ '@dir'
 end

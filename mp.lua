@@ -918,12 +918,16 @@ function mp:compl_filter(v)
 		enterable = false;
 		supporter = false;
 		live = false,
+		compass = false,
 	}
 	for _, h in ipairs(str_split(v.morph, ",")) do
 		if attrs[h] ~= nil then attrs[h] = h end
 	end
 	for _, a in ipairs { 'container', 'enterable', 'supporter' } do
 		if attrs[a] and not v.ob:has(a) then return false end
+	end
+	if v.ob and mp:compass_dir(v.ob) and not attrs.compass then
+		return false
 	end
 	if attrs.live and not self:animate(v.ob) then return false end
 	if attrs.inside and not v.ob:has'container' and not v.ob:has'supporter' then return false end

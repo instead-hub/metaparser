@@ -530,11 +530,11 @@ function mp:MetaHelp()
 end
 
 function mp.token.compass1(w)
-	return "{noun_obj}/@n_to|{noun_obj}/@ne_to|{noun_obj}/@e_to|{noun_obj}/@se_to|{noun_obj}/@s_to|{noun_obj}/@sw_to|{noun_obj}/@w_to|{noun_obj}/@nw_to"
+	return "{noun_obj}/@n_to,compass|{noun_obj}/@ne_to,compass|{noun_obj}/@e_to,compass|{noun_obj}/@se_to,compass|{noun_obj}/@s_to,compass|{noun_obj}/@sw_to,compass|{noun_obj}/@w_to,compass|{noun_obj}/@nw_to,compass"
 end
 
 function mp.token.compass2(w)
-	return "{noun_obj}/@u_to|{noun_obj}/@d_to|{noun_obj}/@in_to|{noun_obj}/@out_to"
+	return "{noun_obj}/@u_to,compass|{noun_obj}/@d_to,compass|{noun_obj}/@in_to,compass|{noun_obj}/@out_to,compass"
 end
 
 Verb { "#Walk",
