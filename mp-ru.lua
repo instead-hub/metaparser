@@ -26,7 +26,7 @@ _'@e_to'.word = -"восток,в";
 _'@se_to'.word = -"юго-восток,юв";
 _'@s_to'.word = -"юг,ю";
 _'@sw_to'.word = -"юго-запад,юз";
-_'@w_to'.word = -"запад,з/compass";
+_'@w_to'.word = -"запад,з";
 _'@nw_to'.word = -"северо-запад,сз";
 _'@u_to'.word = -"наверх,вверх,верх";
 _'@d_to'.word = -"вниз,низ";
@@ -500,7 +500,7 @@ function mp.shortcut.so(hint)
 end
 
 function mp:before_Enter(w)
-	if w ^ '@compass' then
+	if mp:compass_dir(w) then
 		mp:xaction("Walk", w)
 		return
 	end
@@ -529,12 +529,20 @@ function mp:MetaHelp()
 ]])
 end
 
+function mp.token.compass1(w)
+	return "{noun_obj}/@n_to|{noun_obj}/@ne_to|{noun_obj}/@e_to|{noun_obj}/@se_to|{noun_obj}/@s_to|{noun_obj}/@sw_to|{noun_obj}/@w_to|{noun_obj}/@nw_to"
+end
+
+function mp.token.compass2(w)
+	return "{noun_obj}/@u_to|{noun_obj}/@d_to|{noun_obj}/@in_to|{noun_obj}/@out_to"
+end
+
 Verb { "#Walk",
 	"идти,иду,пойти,пойд/и,подой/ти,иди,войти,войд/и,зайти,зайд/и,бежать,бег/и,влез/ть,ехать,поехать,едь,поеду,сесть,сядь,сяду,лечь,ляг,вста/ть",
-	"на {noun_obj}/@n_to|{noun_obj}/@ne_to|{noun_obj}/@e_to|{noun_obj}/@se_to|{noun_obj}/@s_to|{noun_obj}/@sw_to|{noun_obj}/@w_to|{noun_obj}/@nw_to : Walk",
+	"на {compass1} : Walk",
 	"на|в|во {noun}/вн,scene,enterable : Enter",
 	"к {noun}/дт,scene : Walk",
-	"{noun_obj}/@u_to|{noun_obj}/@d_to|{noun_obj}/@in_to|{noun_obj}/@out_to: Walk" }
+	"{compass2}: Walk" }
 
 Verb { "#Exit",
 	"выйти,выйд/и,уйти,уйд/и,вылез/ти,выхо/ди,обратно,назад,выбраться,выберись,выберусь,выбираться",
@@ -659,9 +667,9 @@ Verb {
 	"толк/ать,пих/ать,нажим/ать,нажм/и,нажать,сдвин/уть,подвин/уть,двига/ть,задви/нуть,запих/нуть,затолк/ать",
 	"?на {noun}/вн : Push",
 	"{noun}/вн на|в|во {noun}/вн : Transfer",
-	"{noun}/вн {noun_obj}/@compass : Transfer",
+	"{noun}/вн {compass2} : Transfer",
 	"~ на|в|во {noun}/вн {noun}/вн : Transfer reverse",
-	"~ {noun_obj}/@compass {noun}/вн : Transfer reverse"
+	"~ {compass2} {noun}/вн : Transfer reverse"
 }
 
 Verb {
@@ -669,9 +677,9 @@ Verb {
 	"тян/уть,тащ/ить,тягать,волоч/ь,волок/ти,дёрн/уть,дёрг/ать,потян/уть,потащ/ить,поволо/чь",
 	"?за {noun}/вн : Pull",
 	"{noun}/вн на|в|во {noun}/вн : Transfer",
-	"{noun}/вн {noun_obj}/@compass : Transfer",
+	"{noun}/вн {compass2} : Transfer",
 	"~ на|в|во {noun}/вн {noun}/вн : Transfer reverse",
-	"~ {noun_obj}/@compass {noun}/вн : Transfer reverse"
+	"~ {compass2} {noun}/вн : Transfer reverse"
 }
 
 Verb {
