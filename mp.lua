@@ -380,6 +380,9 @@ instead.get_inv = std.cacheable('inv', function(horiz)
 	end
 	local pre, post = mp:inp_split()
 	local ret = iface:bold(mp.prompt) .. mp:esc(pre)..mp.cursor..mp:esc(post) .. '\n'
+	if mp.autohelp then
+		ret = iface:xref(ret, mp, "<clear>")
+	end
 	if not mp.autohelp and not std.here().forcehelp then
 		return ret
 	end
@@ -1973,7 +1976,12 @@ std.rawset(_G, 'mp', mp)
 std.mod_cmd(
 function(cmd)
 	if cmd[2] == '@metaparser' then
-		if cmd[3] == '<enter>' then
+		if cmd[3] == '<clear>' then
+			mp.inp = '';
+			mp.cur = 1;
+			mp:compl_fill(mp:compl(mp.inp))
+			return true, false
+		elseif cmd[3] == '<enter>' then
 			return mp:key_enter()
 		end
 		if cmd[3] == '<space>' then
