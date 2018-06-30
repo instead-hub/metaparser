@@ -497,15 +497,20 @@ function mp:content(w)
 	if (w == std.me():where() or std.here() == w) and
 		(mp.event == 'Look' or mp.event == 'Exam' or std.me():need_scene()) then
 		pn()
-		local dsc
+		local dsc, v
 		if not mp:offerslight(w) then
-			dsc = std.call(w, 'dark_dsc')
-			dsc = dsc or mp.msg.WHEN_DARK
+			dsc, v = std.call(w, 'dark_dsc')
+			if dsc then p(dsc) end
+			if not v then
+				p(mp.msg.WHEN_DARK)
+			end
 		else
-			dsc = std.call(w, w:type'room' and 'dsc' or 'inside_dsc')
-			dsc = dsc or (mp.msg.INSIDE_SCENE);
+			dsc, v = std.call(w, w:type'room' and 'dsc' or 'inside_dsc')
+			if dsc then p(dsc) end
+			if not v then
+				p(mp.msg.INSIDE_SCENE)
+			end
 		end
-		p(dsc)
 		p(std.scene_delim)
 	end
 	self:objects(w, oo, false)
@@ -768,9 +773,6 @@ end
 mp.msg.Walk = {}
 
 function mp:Walk(w)
-	if not w then
-		return
-	end
 	if mp:check_touch() then
 		return
 	end

@@ -1174,12 +1174,12 @@ function mp:match(verb, w, compl)
 			local best = #a + 1
 			local best_len = 1
 			local word
-			local required
+			local required = true
 			found = false
 			for _, pp in ipairs(pat) do -- single argument
 				if v == '*' then break end
+				required = not pp.optional
 				if not pp.optional then
-					required = true
 					need_required = true
 					all_optional = false
 				end
