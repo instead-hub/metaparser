@@ -768,6 +768,9 @@ end
 mp.msg.Walk = {}
 
 function mp:Walk(w)
+	if not w then
+		return
+	end
 	if mp:check_touch() then
 		return
 	end
