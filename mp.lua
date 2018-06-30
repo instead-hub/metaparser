@@ -180,7 +180,7 @@ mp = std.obj {
 	detailed_inv = false;
 	daemons = std.list {};
 	{
-		version = "0.1";
+		version = "0.2";
 		cache = { tokens = {} };
 		scope = std.list {};
 		logfile = false;
