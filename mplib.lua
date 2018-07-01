@@ -574,7 +574,7 @@ function mp:content(w)
 			end
 			p (mp.msg.Exam.IS)
 		end
-		p(oo[1]:noun(), ".")
+		p(oo[1]:noun(1), ".")
 	else
 		if std.me():where() == w or std.here() == w then
 			p (mp.msg.Look.HEREARE)
