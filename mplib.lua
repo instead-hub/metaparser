@@ -400,7 +400,7 @@ obj {
 			end
 			local r, v = mp:runorval(std.here(), d)
 			if not v then
-				local r, v = mp:runorval(std.here(), 'cant_go', s)
+				local r, v = mp:runorval(std.here(), 'cant_go', dir)
 				p ((v and r) or mp.msg.COMPASS_NOWAY)
 				return
 			end
