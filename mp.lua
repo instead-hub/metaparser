@@ -1270,7 +1270,7 @@ function mp:match(verb, w, compl)
 				end
 				if best <= 1 and #skip > 0 then
 					for i = 1, #skip do
-						table.insert(unknown, { word = skip[i], lev = rlev })
+						table.insert(unknown, { word = skip[i], lev = rlev, skip = true })
 					end
 				end
 				if not compl and mp.errhints then
@@ -1313,7 +1313,7 @@ function mp:match(verb, w, compl)
 	if #unknown > 0 and #matches > 0 then
 		local lev = #matches[1]
 		for k, v in ipairs(unknown) do
-			if v.lev >= lev then
+			if v.lev >= lev and not v.skip then
 				matches = {}
 				break
 			end
