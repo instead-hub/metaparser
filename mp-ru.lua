@@ -975,7 +975,7 @@ std.phr.default_Event = "Exam"
 
 Verb ({"~ сказать", "{select} : Exam" }, std.dlg)
 Verb ({'#Next', "дальше", "Next" }, mp.cutscene)
-Verb ({'#Exam', "осмотреть", "Look" }, std.dlg)
+Verb ({'#Exam', "~ осмотреть", "Look" }, std.dlg)
 
 mp.cutscene.default_Verb = "дальше"
 std.dlg.default_Verb = "осмотреть"
