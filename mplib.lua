@@ -323,11 +323,6 @@ end
 
 std.dlg.scene = std.obj.scene
 std.dlg.title = false
-std.dlg.dsc = false
-std.dlg.display = function(s)
-	local deco = std.call(s, 'dsc'); -- static decorations
-	return std.par(std.scene_delim, deco or false, s:ph_display())
-end;
 std.dlg.OnError = function(s, err)
 	p(mp.msg.DLG_HELP)
 end;
