@@ -46,6 +46,7 @@ mp.msg.COMPASS_NOWAY = "Этот путь недоступен."
 mp.msg.COMPASS_EXAM_NO = "В этом направлении не видно ничего примечательного."
 mp.msg.ENUM = "шт."
 mp.msg.CUTSCENE_HELP = "Для продолжения нажмите <ввод> или введите {$fmt em|дальше}."
+mp.msg.DLG_HELP = "Для выбора фразы введите цифру."
 mp.msg.TAKE_BEFORE = function(w)
 	pn (iface:em("(сначала взяв "..w:noun'вн'..")"))
 end
@@ -974,7 +975,11 @@ std.phr.default_Event = "Exam"
 
 Verb ({"~ сказать", "{select} : Exam" }, std.dlg)
 Verb ({'#Next', "дальше", "Next" }, mp.cutscene)
+Verb ({'#Exam', "осмотреть", "Look" }, std.dlg)
+
 mp.cutscene.default_Verb = "дальше"
+std.dlg.default_Verb = "осмотреть"
+
 parser = mp
 
 cutscene = mp.cutscene
