@@ -1352,7 +1352,7 @@ function mp:Wear(w)
 	if mp:check_held(w) then
 		return
 	end
-	if not w:has'clothes' then
+	if not w:has'clothing' then
 		p (mp.msg.Wear.NOTCLOTHES)
 		return
 	end
