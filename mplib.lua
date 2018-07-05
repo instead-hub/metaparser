@@ -321,7 +321,11 @@ std.phr.__xref = function(s, str)
 	return str
 end
 
-std.dlg.scene = std.room.scene
+std.dlg.scene = std.obj.scene
+std.dlg.title = false
+std.dlg.OnError = function(s, err)
+	p(mp.msg.DLG_HELP)
+end;
 
 std.dlg.nouns = function(s)
 	local r, nr
@@ -400,7 +404,7 @@ obj {
 			end
 			local r, v = mp:runorval(std.here(), d)
 			if not v then
-				local r, v = mp:runorval(std.here(), 'cant_go', s)
+				local r, v = mp:runorval(std.here(), 'cant_go', dir)
 				p ((v and r) or mp.msg.COMPASS_NOWAY)
 				return
 			end
