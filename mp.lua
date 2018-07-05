@@ -2084,6 +2084,27 @@ function mp.shortcut.verb(hint)
 	return mp.shortcut.word(verb)
 end
 
+function mp:shortcut_obj(ob)
+	if ob == '#first' then
+		ob = mp.first
+	elseif ob == '#second' then
+		ob = mp.second
+	elseif ob == '#firstwhere' then
+		ob = mp.first:where()
+	elseif ob == '#secondwhere' then
+		ob = mp.second:where()
+	elseif ob == '#me' then
+		ob = std.me()
+	elseif ob == '#where' then
+		ob = std.me():where()
+	elseif ob == '#here' then
+		ob = std.here()
+	else
+		ob = false
+	end
+	return ob
+end
+
 function mp.shortcut.word(hint)
 	local w = str_split(hint, ",")
 	if #w == 0 then
@@ -2093,12 +2114,16 @@ function mp.shortcut.word(hint)
 	table.remove(w, 1)
 	local hint = ''
 	for _, k in ipairs(w) do
-		if k == '#me' then
-			hint = hint .. std.me():gram().hint .. ','
-		elseif k == '#first' then
+		if k == '#first' then
 			hint = hint .. mp.first_hint .. ','
 		elseif k == '#second' then
 			hint = hint .. mp.second_hint .. ','
+		elseif k:find("#", 1, true) == 1 then
+			local ob = mp:shortcut_obj(k)
+			if not ob then
+				std.err("Wrong shortcut word: "..k, 2)
+			end
+			hint = hint .. 	ob:gram().hint .. ','
 		else
 			hint = hint .. k .. ','
 		end
@@ -2114,18 +2139,8 @@ function mp.shortcut.if_hint(hint)
 	end
 	local attr = w[2]
 	local ob = w[1]
-
-	if ob == '#first' then
-		ob = mp.first
-	elseif ob == '#second' then
-		ob = mp.second
-	elseif ob == '#me' then
-		ob = std.me()
-	elseif ob == '#where' then
-		ob = std.me():where()
-	elseif ob == '#here' then
-		ob = std.here()
-	else
+	ob = mp:shortcut_obj(ob)
+	if not ob then
 		std.err("Wrong object in if_has shortcut: "..hint, 2)
 	end
 	if not ob:hint(attr) then
@@ -2141,18 +2156,8 @@ function mp.shortcut.if_has(hint)
 	end
 	local attr = w[2]
 	local ob = w[1]
-
-	if ob == '#first' then
-		ob = mp.first
-	elseif ob == '#second' then
-		ob = mp.second
-	elseif ob == '#me' then
-		ob = std.me()
-	elseif ob == '#where' then
-		ob = std.me():where()
-	elseif ob == '#here' then
-		ob = std.here()
-	else
+	ob = mp:shortcut_obj(ob)
+	if not ob then
 		std.err("Wrong object in if_has shortcut: "..hint, 2)
 	end
 	if not ob:has(attr) then
