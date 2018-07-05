@@ -1150,7 +1150,11 @@ function mp:Take(w, ww)
 	if not w:where():type'room' and
 		not w:where():has'container' and
 		not w:where():has'supporter' then
-		p (mp.msg.Take.PARTOF)
+		if w:has'worn' then
+			p (mp.msg.Take.WORN)
+		else
+			p (mp.msg.Take.PARTOF)
+		end
 		return
 	end
 	if not mp:move(w, std.me()) then return true end
@@ -1378,7 +1382,7 @@ function mp:Disrobe(w)
 	if mp:check_touch() then
 		return
 	end
-	if not w:has'worn' then
+	if not have(w) or not w:has'worn' then
 		p (mp.msg.Disrobe.NOTWORN)
 		return
 	end

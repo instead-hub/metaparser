@@ -219,6 +219,9 @@ mp.msg.Take.LIFE = "{#First/дт} это вряд ли понравится."
 --"закреплён"
 mp.msg.Take.STATIC = "{#First} жестко {#word/закреплён,#first}."
 mp.msg.Take.SCENERY = "{#First/вн} невозможно взять."
+
+--"надет"
+mp.msg.Take.WORN = "{#First} {#word/надет,#first} на {#firstwhere/рд}."
 mp.msg.Take.PARTOF = "{#First} является частью {#firstwhere/рд}."
 
 mp.msg.Remove.WHERE = "{#First} не находится {#if_has/#second,supporter,на,в} {#second/пр,2}."
