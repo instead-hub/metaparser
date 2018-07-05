@@ -686,7 +686,6 @@ function mp:verb(t, w, extend)
 end
 
 function mp:verbs()
-	local ret = {}
 	local w = std.here().__Verbs or std.me().__Verbs or game.__Verbs or {}
 	return w
 end
