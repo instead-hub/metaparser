@@ -752,18 +752,19 @@ function mp:Enter(w)
 		return
 	end
 
-	if mp:check_inside(w) then
-		return
-	end
-
 	if not w:has 'enterable' then
 		p (mp.msg.Enter.IMPOSSIBLE)
 		return
 	end
+
 	if w:has 'container' and not w:has 'open' then
 		p (mp.msg.Enter.CLOSED)
 		return
 	end
+	if mp:check_inside(w) then
+		return
+	end
+
 	if not mp:move(std.me(), w) then return true end
 	return false
 end
