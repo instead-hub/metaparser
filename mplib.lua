@@ -7,6 +7,9 @@ mp.door = std.class({
 		return s:before_Enter();
 	end;
 	before_Enter = function(s)
+		if mp:check_inside(s) then
+			return
+		end
 		if not s:has 'open' then
 			p (mp.msg.Enter.DOOR_CLOSED)
 			return
@@ -761,6 +764,7 @@ function mp:Enter(w)
 		p (mp.msg.Enter.CLOSED)
 		return
 	end
+
 	if mp:check_inside(w) then
 		return
 	end
