@@ -2,7 +2,9 @@
 require "mp-ru"
 require "fmt"
 
+mp.score = 0 -- enable scoring
 mp.detailed_inv = true
+instead.notitle = false -- enable status
 
 game.dsc = [[^Пример простой игры на Inform
 ^Авторы: Роджер Фирт (Roger Firth) и Соня Кессерих (Sonja Kesserich).
@@ -19,8 +21,6 @@ game.dsc = [[^Пример простой игры на Inform
 Сегодня базарный день -- город забит людьми с окрестных деревень и селений.^]];
 
 const 'MAX_SCORE' (3)
-
-global 'score' (0)
 
 Prop = Class {
 	before_Exam = function() return false end;
@@ -140,7 +140,7 @@ NPC {
         life_Talk = function(s)
 		s.times_spoken_to = s.times_spoken_to + 1;
 		if s.times_spoken_to == 1 then
-			score = score + 1;
+			mp.score = mp.score + 1;
 			p "Ты тепло благодаришь Хельгу за яблоко.";
 		elseif s.times_spoken_to == 2 then
 			p [["Ещё увидимся!"]];
@@ -340,7 +340,7 @@ NPC {
 		p "Тихий светлый мальчик восьми лет, он быстро учится сельской работе.";
 	end;
 	life_Give = function(s, w)
-		score = score + 1;
+		mp.score = mp.score + 1;
 		move(w, s)
 		p [["Спасибо, пап".]];
 	end;
@@ -402,7 +402,7 @@ obj {
         before_FireAt = function(s, w)
 		if std.here() ^ 'marketplace' then
 			if BowOrArrow(w) then
-				score = score + 1;
+				mp.score = mp.score + 1;
 				p [[Мягко и спокойно ты кладёшь стрелу на тетиву, оттягивая её, и, предельно
 сконцентрировавшись, берёшь прицел. Задержав дыхание, не мигая, ты в ужасе
 отправляешь стрелу в цель. Она летит через площадь к твоему сыну, и, пронзая яблоко, впивается
@@ -429,7 +429,7 @@ room {
 	noparser = true;
 	dsc = function(s)
 		pn "Вы испортили любимую народную легенду.";
-		p ("Ваш счет: ", score, " из ", MAX_SCORE)
+		p ("Ваш счет: ", mp.score, " из ", MAX_SCORE)
 	end;
 }
 room {
@@ -438,7 +438,7 @@ room {
 	noparser = true;
 	dsc = function(s)
 		pn [[Поздравляю, вы прошли игру!]]
-		p ("Ваш счет: ", score, " из ", MAX_SCORE)
+		p ("Ваш счет: ", mp.score, " из ", MAX_SCORE)
 	end;
 }
 

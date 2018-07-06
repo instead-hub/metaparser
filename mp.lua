@@ -172,6 +172,7 @@ end
 
 mp = std.obj {
 	nam = '@metaparser';
+	score = false;
 	autohelp = false;
 	togglehelp = true;
 	errhints = true;

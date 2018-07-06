@@ -609,6 +609,12 @@ function mp:post_Any()
 	if self.event and self.event:find("Meta", 1, true) then
 		return
 	end
+
+	if self.score and (self.score ~= (self.__old_score or 0)) then
+		mp.msg.SCORE(self.score - (self.__old_score or 0))
+		self.__old_score = self.score
+	end
+
 	if game.player:need_scene() then
 --		pn(iface:nb'')
 		local l = game.player:look() -- objects [and scene]

@@ -13,8 +13,12 @@ instead.get_title = function(s)
 	local w, h = instead.theme_var('win.w'), instead.theme_var('win.h')
 	local title = std.titleof(std.here())
 	local col = instead.theme_var('win.col.fg')
+	local score = ''
+	if mp.score then
+		score = fmt.tab('70%', 'center')..fmt.nb("Счёт: " .. tostring(mp.score))
+	end
 	local moves = fmt.tab('100%', 'right')..fmt.nb("Ходы: " .. tostring(game:time() - 1))
-	return iface:left((title.. moves).."\n".. iface:img(string.format("box:%dx1,%s", w, col)))
+	return iface:left((title.. score .. moves).."\n".. iface:img(string.format("box:%dx1,%s", w, col)))
 end
 
 if type(std.SOURCES_DIRS) == 'table' then
@@ -52,6 +56,13 @@ _'@in_to'.word = -"внутрь,вход"
 
 _'@compass'.before_Default = 'Попробуйте глагол "идти".'
 
+function mp.msg.SCORE(d)
+	if d > 0 then
+		pn ("{$fmt em|(Счёт увеличился на ", d, ")}")
+	else
+		pn ("{$fmt em|(Счёт уменьшился на ", d, ")}")
+	end
+end
 mp.door.word = -"дверь";
 mp.msg.WHEN_DARK = "Кромешная тьма."
 mp.msg.UNKNOWN_THEDARK = "Возможно, это потому что в темноте ничего не видно?"
