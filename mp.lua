@@ -1715,7 +1715,7 @@ function mp:parse(inp)
 			pn()
 			self:err(v)
 		end
-		return
+		return self.text .. std.pget(), false
 	end
 	if std.cmd[1] ~= 'look' then
 		self:correct(inp)
@@ -2034,6 +2034,7 @@ function instead.fading()
 end
 
 instead.notitle = true
+
 instead.noways = true
 
 local opr = std.pr
