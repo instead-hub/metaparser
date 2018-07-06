@@ -20,7 +20,6 @@ mp.door = std.class({
 			if not mp:move(std.me(), r) then
 				return true
 			end
-			return false
 		end
 		return v
 	end;
