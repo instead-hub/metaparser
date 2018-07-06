@@ -752,10 +752,9 @@ function mp:Enter(w)
 		return
 	end
 
---	if std.me():where() ~= std.here() then
---		p (mp.msg.Enter.EXITBEFORE)
---		return
---	end
+	if mp:check_inside(w) then
+		return
+	end
 
 	if not w:has 'enterable' then
 		p (mp.msg.Enter.IMPOSSIBLE)
@@ -967,6 +966,14 @@ function mp:check_held(t)
 	mp:subaction('Take', t)
 	if not have(t) then
 --		mp.msg.NOTINV(t)
+		return true
+	end
+	return false
+end
+
+function mp:check_inside(w)
+	if std.me():where() ~= std.here() and not w:inside(std.me():where()) then
+		p (mp.msg.Enter.EXITBEFORE)
 		return true
 	end
 	return false
