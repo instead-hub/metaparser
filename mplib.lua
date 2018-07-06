@@ -2202,9 +2202,14 @@ function Class(t, w)
 	return std.class(t, w)
 end
 
-std.obj.once = function(s)
-	if not s.__once then
-		s.__once = true
+std.obj.once = function(s, n)
+	if type(n) == 'string' then
+		n = '__once_'..n
+	else
+		n = '__once'
+	end
+	if not s[n] then
+		s[n] = true
 		return true
 	end
 	return false
