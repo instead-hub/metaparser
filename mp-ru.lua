@@ -11,7 +11,7 @@ instead.get_title = function(s)
 		return
 	end
 	local w, h = instead.theme_var('win.w'), instead.theme_var('win.h')
-	local title = std.titleof(std.here())
+	local title = std.titleof(std.here()) or ''
 	local col = instead.theme_var('win.col.fg')
 	local score = ''
 	if mp.score then
