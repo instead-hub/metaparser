@@ -1715,8 +1715,9 @@ function mp:parse(inp)
 		if v then
 			pn()
 			self:err(v)
+			return self.text .. std.pget(), false
 		end
-		return self.text .. std.pget(), false
+		return
 	end
 	if std.cmd[1] ~= 'look' then
 		self:correct(inp)
