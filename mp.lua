@@ -1743,7 +1743,11 @@ function mp:parse(inp)
 		if v then
 			pn()
 			self:err(v)
-			return self.text .. std.pget(), false
+			local s = std.game
+			s:reaction(std.pget())
+			local r = s:display()
+			s:lastdisp(r)
+			return r, false
 		end
 		return
 	end
