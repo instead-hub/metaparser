@@ -600,8 +600,17 @@ function mp:pattern(t, delim)
 				end
 			end
 		else
-			w.word = v
-			table.insert(words, w)
+			local vv = mp:pref_pattern(v)
+			if #vv == 1 then
+				w.word = v
+				table.insert(words, w)
+			else
+				for _, v in ipairs(vv) do
+					local ww = std.clone(w)
+					ww.word = v
+					table.insert(words, ww)
+				end
+			end
 		end
 	end
 	return words
@@ -622,6 +631,21 @@ function mp:verb_remove(tag, w)
 		table.remove(w or game, k)
 	end
 	return v
+end
+
+function mp:pref_pattern(v)
+	if not v:find("^%[[^%]]+%]") then
+		return { v }
+	end
+	local s, e = v:find("]", 1, true)
+	local pre = v:sub(2, e - 1)
+	local post = v:sub(e + 1)
+	pre = str_split(pre, "|")
+	local ret = {}
+	for _, v in ipairs(pre) do
+		table.insert(ret, v .. post)
+	end
+	return ret
 end
 
 function mp:verb(t, w, extend)
@@ -748,15 +772,17 @@ function mp:lookup_verb(words, lev)
 				if lev then
 					table.insert(lev_v, { lev = rlev, verb = v, verb_nr = i, verb_len = len, word_nr = _ } )
 				else
-					v.verb_nr = i
-					v.verb_len = len
-					v.word_nr = _
-					table.insert(ret, v)
+					local vv = std.clone(v)
+					vv.verb_nr = i
+					vv.verb_len = len
+					vv.word_nr = _
+					table.insert(ret, vv)
 				end
 			end
 		end
 		if lev and #lev_v > 0 then
 			table.sort(lev_v, function(a, b)
+					   if a.lev == b.lev then return a.word_nr < b.word_nr end
 					   return a.lev < b.lev
 			end)
 			lev_v[1].verb.verb_nr = lev_v[1].verb_nr
@@ -768,11 +794,13 @@ function mp:lookup_verb(words, lev)
 	end
 	if lev then
 		table.sort(ret, function(a, b)
+				   if a.lev == b.lev then return a.word_nr < b.word_nr end
 				   return a.lev < b.lev
 		end)
 		ret = { ret[1] }
 	elseif #ret > 0 then
 		table.sort(ret, function(a, b)
+			if a.verb_nr == b.verb_nr then return a.word_nr < b.word_nr end
 			return a.verb_nr < b.verb_nr
 		end)
 		local lev = ret[1].verb_nr
