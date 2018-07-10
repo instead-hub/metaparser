@@ -2036,6 +2036,9 @@ function(cmd)
 		return true, false
 	end
 	if (cmd[1] == '@mp_key' and cmd[2] == 'enter') or cmd[1] == 'look' then
+		if not std.game.__started and cmd[1] == 'look' then
+			std.game:__start()
+		end
 		if std.here().noparser or game.noparser then
 			return true, false
 		end
