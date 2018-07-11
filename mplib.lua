@@ -327,6 +327,11 @@ std.phr.__xref = function(s, str)
 	return str
 end
 
+std.dlg.ini = function(s, load)
+	if std.here() == s and not visited(s) and not load then
+		s:enter()
+	end
+end
 std.dlg.scene = std.obj.scene
 std.dlg.title = false
 std.dlg.OnError = function(s, err)
