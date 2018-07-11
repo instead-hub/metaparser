@@ -45,6 +45,9 @@ std.class({
 	ini = function(s, load)
 		std.rawset(s, 'text', s.text)
 		std.rawset(s.__var, 'text', nil)
+		if not load then
+			s.__num = 1
+		end
 	end;
 	title = false;
 	nouns = function() return {} end;
@@ -67,6 +70,9 @@ std.class({
 		p(mp.msg.CUTSCENE_HELP)
 	end;
 	Next = function(s, force)
+		if game:time() == 0 then
+			return
+		end
 		s.__num = s.__num + 1
 		if force or type(s.text) == 'string' or (type(s.text) == 'table' and s.__num > #s.text) then
 			local r, v = mp:runorval(s, 'next_to')
@@ -183,8 +189,6 @@ std.player.look = function(s)
 	if s:need_scene() then
 		scene = r:scene()
 	end
---	local c = std.call(mp, 'room_content', s:where())
---	return (std.par(std.scene_delim, scene or false, c))
 	return (std.par(std.scene_delim, scene or false, r:display() or false))
 end;
 
@@ -604,6 +608,27 @@ end
 
 std.room:attr 'enterable,light'
 
+function mp:step()
+	game.__daemons:for_each(function(o)
+		if o:disabled() then
+			return nil, false
+		end
+		local r, v = std.call(o, 'daemon')
+		if r then p(r) end
+		if o:closed() then
+			return nil, false
+		end
+	end)
+	local oo = mp:nouns()
+	std.here():attr 'visited'
+	for _, v in ipairs(oo) do
+		if v.each_turn ~= nil then
+			local r, v = std.call(v, 'each_turn')
+			if r then pr(r) end
+		end
+	end
+end
+
 function mp:post_Any()
 	if std.here().noparser or game.noparser then return end
 	if self.event and self.event:find("Meta", 1, true) then
@@ -625,24 +650,8 @@ function mp:post_Any()
 		p(l, std.scene_delim)
 		game.player:need_scene(false)
 	end
-	game.__daemons:for_each(function(o)
-		if o:disabled() then
-			return nil, false
-		end
-		local r, v = std.call(o, 'daemon')
-		if r then p(r) end
-		if o:closed() then
-			return nil, false
-		end
-	end)
-	local oo = mp:nouns()
-	std.here():attr 'visited'
-	for _, v in ipairs(oo) do
-		if v.each_turn ~= nil then
-			local r, v = std.call(v, 'each_turn')
-			if r then pr(r) end
-		end
-	end
+
+	mp:step()
 end
 function mp:check_touch()
 	if self.first and not self.first:access() and not self.first:type'room' then
