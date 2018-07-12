@@ -439,17 +439,25 @@ function mrd:gram_info(a)
 	return t
 end
 
-function mrd:gram_compat(base, aa, bb)
-	local a, b = aa.t, bb.t
-	if bb.noun and not base['им'] then
-		return false
-	end
-	local g1, g2 = self:gram_info(aa), self:gram_info(bb)
+local function __gram_compat(g1, g2)
 	if g1.gen ~= g2.gen and g1.gen ~= 'any' and g2.gen ~= 'any' then return false end
 	if g1.num ~= g2.num and g1.num ~= 'any' and g2.num ~= 'any' then return false end
 	if g1.time ~= g2.time and g1.time ~= 'any' and g2.time ~= 'any' then return false end
 	if g1.face ~= g2.face and g1.face ~= 'any' and g2.face ~= 'any' then return false end
 	return true
+end
+
+function mrd:gram_compat(base, aa, bb)
+	local a, b = aa.t, bb.t
+	local g1, g2 = self:gram_info(aa), self:gram_info(bb)
+	if bb.noun then
+		if not base['им'] then
+			return false
+		end
+		local g0 = self:gram_info(base)
+		if not __gram_compat(g0, g2) then return false end
+	end
+	return __gram_compat(g1, g2)
 end
 
 function mrd:gram_eq(a, b)
@@ -529,7 +537,7 @@ function mrd:__lookup(w, g)
 				if t ~= f.an.t then sc = sc - 1 end -- todo
 if false then
 				local tt = v.pref .. f.pre .. v.t .. f.post
-				if tt == 'ДЛИННАЯ' or tt == 'ДЛИННЫЙ' or tt == 'ПОДХОДИШЬ' then
+				if tt == 'СТАРОСТЫ' or tt == 'СТАРОСТУ' then
 				print(tt, v.t, score + sc)
 				print ("looking for:")
 				for _, v in pairs(g) do
