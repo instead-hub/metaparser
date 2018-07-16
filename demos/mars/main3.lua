@@ -58,7 +58,7 @@ pl.description = function(s)
 end
 
 room {
-	-"шлюз,модул*";
+	-"шлюз,модул*,отсек*";
 	nam = 'шлюз';
 	examined = false;
 	before_Exam = function(s, w)
