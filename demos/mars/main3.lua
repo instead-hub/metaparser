@@ -63,6 +63,13 @@ room {
 	end;
 }
 
+obj {
+	-"красный рычаг,рычаг";
+	nam = 'рычаг';
+	found_in = 'шлюз';
+	description = [[Красный массивный рычаг находится рядом с выходным люком.]];
+}:attr 'scenery'
+
 function init()
 	dark_theme()
 end

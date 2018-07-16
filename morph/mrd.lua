@@ -531,25 +531,24 @@ function mrd:__lookup(w, g)
 		for _, f in ipairs(flex) do
 			if self:gram_eq(v.an.t, f.an.t) and self:gram_compat(v.an, f.an, gram2an(g)) then
 				local sc = self:score(f.an, g)
-				if sc < 0 then
-					break
-				end
-				if t ~= f.an.t then sc = sc - 1 end -- todo
+				if sc >= 0 then
+					if t ~= f.an.t then sc = sc - 1 end -- todo
 if false then
 				local tt = v.pref .. f.pre .. v.t .. f.post
-				if tt == 'СТАРОСТЫ' or tt == 'СТАРОСТУ' then
-				print(tt, v.t, score + sc)
-				print ("looking for:")
-				for _, v in pairs(g) do
-					print(_, v)
-				end
-				print ("looking got:", score, sc)
-				for _, v in pairs(f.an) do
-					print(_, v)
-				end
+				if tt == 'КРАСНОГО' or tt == 'КРАСНЫЙ' then
+					print(tt, v.t, score + sc)
+					print ("looking for:")
+					for _, v in pairs(g) do
+						print(_, v)
+					end
+					print ("looking got:", score, sc)
+					for _, v in pairs(f.an) do
+						print(_, v)
+					end
 				end
 end
-				table.insert(res, { score = score + sc, pos = #res, word = v, flex = f })
+					table.insert(res, { score = score + sc, pos = #res, word = v, flex = f })
+				end
 			end
 		end
 	end
@@ -566,8 +565,8 @@ if false then
 	for i = 1, #res do
 		local w = res[i]
 		local tt = self.lang.lower(w.word.pref .. w.flex.pre .. w.word.t .. w.flex.post)
-		print("res: ", tt)
-		if tt == 'закрыт' then
+		print(i, "res: ", tt, w.score)
+		if tt == 'красный' then
 			for _, v in pairs(w.flex.an) do
 				print(_, v)
 			end
@@ -580,9 +579,10 @@ end
 	for k, v in pairs(w.flex.an) do
 		gram[k] = v
 	end
-	for k, v in pairs(w.word.an) do
-		gram[k] = v
-	end
+
+--	for k, v in pairs(w.word.an) do
+--		gram[k] = v
+--	end
 
 	w = self.lang.lower(w.word.pref .. w.flex.pre .. w.word.t .. w.flex.post)
 	if upper then
@@ -590,6 +590,7 @@ end
 	elseif cap then
 		w = self.lang.cap(w)
 	end
+
 	return w, gram
 end
 local word_match = "[^ \t,%-!/:%+&]+"
@@ -907,7 +908,6 @@ std.obj.gram = function(self, n)
 	ob, w, hint = mrd:obj(self, n)
 	local _, gram = mrd:word(w .. '/'..hint)
 	local thint = ''
-
 	hint = str_split(hint, ",")
 	local g = gram and gram[1] or {}
 	for _, v in ipairs(gram or {}) do
