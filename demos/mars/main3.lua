@@ -42,10 +42,13 @@ cutscene {
 }
 
 function init()
-	fading.set {"crossfade", max = FADE_LONG, now = true}
-end
-
-function start()
 	dark_theme()
 end
+
+function start(load)
+	if not load then
+		fading.set {"crossfade", max = FADE_LONG, now = true}
+	end
+end
+
 game.hint_verbs = { "#Exam", "#Walk", "#Take", "#Drop", "#FireAt", "#Salute", "#Talk" }
