@@ -1762,7 +1762,7 @@ function mp:parse(inp)
 	mp:action()
 	local t = std.game:reaction(false)
 
-	if std.here():has 'cutscene' then
+	if std.here():has 'cutscene' or std.here():from():has 'cutscene' then
 		t = false
 	end
 	local tt = std.pget()
