@@ -385,7 +385,8 @@ instead.get_inv = std.cacheable('inv', function(horiz)
 		ret = iface:xref(ret, mp, "<clear>")
 	end
 	if not mp.autohelp and not std.here().forcehelp then
-		return ret
+		local r, v = std.call(std.here(), 'help')
+		return ret .. (r or '')
 	end
 	delim = delim or ' | '
 
@@ -1755,10 +1756,15 @@ function mp:parse(inp)
 		self:correct(inp)
 		pn()
 	end
-	local t = std.pget()
+	std.game:reaction(std.pget())
 	std.pclr()
 	-- here we do action
 	mp:action()
+	local t = std.game:reaction(false)
+
+	if std.here():has 'cutscene' then
+		t = false
+	end
 	local tt = std.pget()
 	std.pclr()
 	pr(t or '', tt or '')

@@ -45,7 +45,7 @@ std.class({
 	ini = function(s, load)
 		std.rawset(s, 'text', s.text)
 		std.rawset(s.__var, 'text', nil)
-		if not load then
+		if not s.__num then
 			s.__num = 1
 		end
 	end;
@@ -58,12 +58,12 @@ std.class({
 				s:Next(true)
 			end
 			p (t)
-			return
-		end
-		if type(s.text) == 'string' then
-			p (s.text)
 		else
-			p (s.text[s.__num])
+			if type(s.text) == 'string' then
+				p (s.text)
+			else
+				p (s.text[s.__num])
+			end
 		end
 	end;
 	OnError = function(s, err)
