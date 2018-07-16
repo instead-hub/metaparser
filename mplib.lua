@@ -520,7 +520,11 @@ function mp:content(w)
 				p(mp.msg.WHEN_DARK)
 			end
 		else
-			dsc, v = std.call(w, w:type'room' and 'dsc' or 'inside_dsc')
+			if w:type'room' and not w:has'visited' and w.init_dsc ~= nil then
+				dsc, v = std.call(w, 'init_dsc')
+			else
+				dsc, v = std.call(w, w:type'room' and 'dsc' or 'inside_dsc')
+			end
 			if dsc then p(dsc) end
 			if not v then
 				p(mp.msg.INSIDE_SCENE)

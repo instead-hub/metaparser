@@ -52,7 +52,7 @@ cutscene {
 room {
 	-"шлюз";
 	nam = 'шлюз';
-	dsc = function(s)
+	init_dsc = function(s)
 		p [[Ты стоишь в шлюзовом отсеке жилого модуля.]]
 	end;
 }
