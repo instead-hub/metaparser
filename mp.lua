@@ -1915,6 +1915,9 @@ function mp:input(str)
 	if (self.default_Verb or std.here().default_Verb) and str == "" then
 		str = std.here().default_Verb or self.default_Verb
 	end
+	if type(mp.pre_input) == 'function' then
+		str = mp:pre_input(str)
+	end
 	local w = str_split(str, inp_split)
 	self.words = w
 	if #w == 0 then
