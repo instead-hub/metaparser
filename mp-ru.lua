@@ -306,7 +306,7 @@ mp.msg.Push.PUSH = "Ничего не произошло."
 
 mp.msg.Pull.STATIC = "{#First/вн} трудно сдвинуть с места."
 mp.msg.Pull.SCENERY = "{#First/вн} двигать невозможно."
-mp.msg.Pull.PUSH = "Ничего не произошло."
+mp.msg.Pull.PULL = "Ничего не произошло."
 
 mp.msg.Turn.STATIC = "{#First/вн} трудно сдвинуть с места."
 mp.msg.Turn.SCENERY = "{#First/вн} двигать невозможно."

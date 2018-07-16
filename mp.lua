@@ -2300,6 +2300,10 @@ function std.obj:attr(str)
 	return self
 end
 
+function std.obj:hasnt(attr)
+	return not self:has(attr)
+end
+
 function std.obj:has(attr)
 	attr = std.strip(attr)
 	local val =  (attr:find("~", 1, true) ~= 1)
