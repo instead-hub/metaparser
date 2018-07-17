@@ -12,6 +12,13 @@ function dark_theme()
 	T('win.col.fg', '#dddddd')
 	T('inv.col.fg', '#dddddd')
 end
+
+function light_theme()
+	T('scr.col.bg', '#c8c8a6')
+	T('win.col.fg', '#000000')
+	T('inv.col.fg', '#151515')
+end
+
 local FADE_LONG = 64
 
 room {
@@ -118,6 +125,7 @@ door {
 	before_Close = [[Люк закрывается с помощью красного рычага.]];
 	when_closed = [[Для открытия люка достаточно потянуть за красный рычаг.]];
 	when_open = [[Входной люк -- открыт.]];
+	door_to = 'марс1';
 }:attr 'static'
 
 obj {
@@ -167,7 +175,13 @@ obj {
 		end
 	end;
 }:attr 'scenery'
-
+room {
+	nam = 'марс1';
+	title = 'У шлюза';
+	onenter = function(s)
+		light_theme()
+	end;
+}
 function init()
 	dark_theme()
 	take 'скафандр'
