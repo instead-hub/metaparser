@@ -11,12 +11,14 @@ function dark_theme()
 	T('scr.col.bg', '#151515')
 	T('win.col.fg', '#dddddd')
 	T('inv.col.fg', '#dddddd')
+	sprite.scr():fill '#151515'
 end
 
 function light_theme()
 	T('scr.col.bg', '#c8c8a6')
 	T('win.col.fg', '#000000')
 	T('inv.col.fg', '#151515')
+	sprite.scr():fill '#c8c8a6'
 end
 
 local FADE_LONG = 64
@@ -183,6 +185,7 @@ room {
 		light_theme()
 	end;
 }
+
 function init()
 	dark_theme()
 	take 'скафандр'
