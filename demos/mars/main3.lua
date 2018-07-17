@@ -61,13 +61,14 @@ cutscene {
 	nam = 'intro';
 	onenter = function()
 		timer:set(50)
-		D {'mars', 'img', 'gfx/mars.jpg',
+		D {'mars', 'img', 'gfx/mars3.jpg',
 			x = theme.scr.w(),
-			y = theme.scr.h() - theme.scr.h() / 6,
+			y = theme.scr.h(),
 			z = 5,
 			process = mars_proc
 		}
 		D'mars'.x = D'mars'.x - D'mars'.w / 3
+		D'mars'.y = D'mars'.y - D'mars'.h / 4
 		make_stars(stars_left)
 	end;
 	text = {
