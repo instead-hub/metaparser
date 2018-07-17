@@ -3,11 +3,12 @@ require "mp-ru"
 require "fmt"
 require "decor"
 require "fading"
+include "gfx"
 
 game.dsc = [[]]
 
 function dark_theme()
-	T('scr.col.bg', 'black')
+	T('scr.col.bg', '#151515')
 	T('win.col.fg', '#dddddd')
 	T('inv.col.fg', '#dddddd')
 end
@@ -37,24 +38,33 @@ room {
 --cutscene.help = fmt.em "Для продолжения нажмите <ввод>";
 
 declare 'mars_proc' (function(v)
-	if v.y < 400 then
+	if v.x + v.w < 0 then
 		return
 	end
-	local vy = ((v.y - 400) / 176) * 1.5
-	if vy >= 0.3 then
-		v.y = v.y - vy
-		v.x = v.x - vy/2
+	v.x = v.x - 1
+end)
+declare 'stars_left' (function(v)
+	v.x = v.x - 1
+	if v.x < 0 then
+		v.x = theme.scr.w() + rnd(64)
+		v.y = rnd(theme.scr.h())
 	end
 end)
-
 cutscene {
 	nam = 'intro';
 	onenter = function()
 		timer:set(50)
-		D {'mars', 'img', 'gfx/mars.jpg', x = 1094, y = 576, xc = true, yc = false, background = true, z = 10, process = mars_proc }
+		D {'mars', 'img', 'gfx/mars.jpg',
+			x = theme.scr.w(),
+			y = theme.scr.h() - theme.scr.h() / 6,
+			z = 5,
+			process = mars_proc
+		}
+		D'mars'.x = D'mars'.x - D'mars'.w / 3
+		make_stars(stars_left)
 	end;
 	text = {
-		[[{$fmt y, 30%}Год 2027 от Рождества Христова.^^
+		[[{$fmt y, 20%}Год 2027 от Рождества Христова.^^
 Экипаж миссии "Mars One" высаживается на Марс.^
 Задача миссии -- собрать первую марсианскую базу и подготовиться к встрече второго экипажа.^^
 		Ты -- инженер Александр Морозов, один из четырех поселенцев.^^
@@ -64,8 +74,10 @@ cutscene {
 	};
 	next_to = 'шлюз';
 	onexit = function()
+		_'@decor'.bgcol = '#151515'
 		timer:stop()
 		D ()
+		fading.set {"fadeblack", max = FADE_LONG}
 	end;
 }
 
