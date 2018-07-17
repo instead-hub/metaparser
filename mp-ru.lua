@@ -108,6 +108,8 @@ mp.msg.COMPASS_EXAM = function(dir, ob)
 		p "Вверху"
 	elseif dir == 'd_to' then
 		p "Внизу"
+	elseif dir == 'out_to' or dir == 'in_to' then
+		p "В этом направлении"
 	else
 		p "На {#first/пр,2}"
 	end
