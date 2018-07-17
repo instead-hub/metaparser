@@ -191,11 +191,11 @@ room {
 
 function init()
 	take 'скафандр'
+	dark_theme()
 end
 
 function start(load)
 	if load then return end
-	dark_theme()
 	fading.set {"crossfade", max = FADE_LONG, now = true}
 end
 
