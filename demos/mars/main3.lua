@@ -12,13 +12,15 @@ function dark_theme()
 	T('win.col.fg', '#dddddd')
 	T('inv.col.fg', '#dddddd')
 	sprite.scr():fill '#151515'
+	_'@decor'.bgcol = '#151515'
 end
 
 function light_theme()
-	T('scr.col.bg', '#c8c8a6')
+	T('scr.col.bg', '#eadaca')
 	T('win.col.fg', '#000000')
 	T('inv.col.fg', '#151515')
-	sprite.scr():fill '#c8c8a6'
+	_'@decor'.bgcol = '#eadaca'
+	sprite.scr():fill '#eadaca'
 end
 
 local FADE_LONG = 64
@@ -62,6 +64,7 @@ end)
 cutscene {
 	nam = 'intro';
 	onenter = function()
+		_'@decor'.bgcol = 'black'
 		timer:set(50)
 		D {'mars', 'img', 'gfx/mars3.jpg',
 			x = theme.scr.w(),
@@ -84,10 +87,10 @@ cutscene {
 	};
 	next_to = 'шлюз';
 	onexit = function()
-		_'@decor'.bgcol = '#151515'
 		timer:stop()
 		D ()
 		fading.set {"fadeblack", max = FADE_LONG}
+		dark_theme()
 	end;
 }
 
@@ -187,14 +190,13 @@ room {
 }
 
 function init()
-	dark_theme()
 	take 'скафандр'
 end
 
 function start(load)
-	if not load then
-		fading.set {"crossfade", max = FADE_LONG, now = true}
-	end
+	if load then return end
+	dark_theme()
+	fading.set {"crossfade", max = FADE_LONG, now = true}
 end
 
 Verb {
