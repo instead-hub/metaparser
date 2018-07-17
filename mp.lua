@@ -539,6 +539,7 @@ end
 function mp:eq(t1, t2, lev)
 	if t1:find("%*$") then
 		local t = t1:gsub("%*$", "")
+		t = mrd.lang.norm(t)
 		return self:__startswith(t2, t)
 	end
 	if lev then
@@ -1532,7 +1533,7 @@ local function get_events(self, ev)
 					attrs[h] = true
 				end
 				local ob = vv.ob
-				for _, h in ipairs(vv.multi) do
+				for _, h in ipairs(vv.multi or {}) do
 					if attrs.held and not have(vv.ob) and have(h) then
 						ob = h
 						break
