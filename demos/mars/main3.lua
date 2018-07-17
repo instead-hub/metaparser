@@ -90,7 +90,6 @@ cutscene {
 		timer:stop()
 		D ()
 		fading.set {"fadeblack", max = FADE_LONG}
-		dark_theme()
 	end;
 }
 
@@ -106,6 +105,9 @@ room {
 	-"шлюз,модул*,отсек*";
 	nam = 'шлюз';
 	examined = false;
+	onenter = function(s)
+		dark_theme()
+	end;
 	before_Exam = function(s, w)
 		if w ~= pl or here().examined then
 			return false
@@ -126,7 +128,7 @@ room {
 door {
 	-"люк,дверь*,проём*";
 	nam = 'люк';
-	found_in = 'шлюз';
+	found_in = { 'шлюз', 'марс1' };
 	before_Open = [[Люк открывается с помощью красного рычага.]];
 	before_Close = [[Люк закрывается с помощью красного рычага.]];
 	when_closed = [[Для открытия люка достаточно потянуть за красный рычаг.]];
@@ -135,9 +137,19 @@ door {
 		if not s:has'open' then
 			return false
 		end
-		p [[Сквозь проём люка ты видишь безжизненный марсианский пейзаж.]];
+		if here() ^ 'шлюз' then
+			p [[Сквозь проём люка ты видишь безжизненный марсианский пейзаж.]];
+		else
+			p [[Сквозь проём люка ты видишь шлюзовой отсек.]]
+		end
 	end;
-	door_to = 'марс1';
+	door_to = function()
+		if here() ^ 'шлюз' then
+			return 'марс1';
+		else
+			return 'шлюз'
+		end
+	end
 }:attr 'static'
 
 obj {
@@ -167,16 +179,18 @@ obj {
 obj {
 	-"красный рычаг,рычаг";
 	nam = 'рычаг';
-	found_in = 'шлюз';
+	found_in = { 'шлюз',  'марс1' };
 	description = [[Красный массивный рычаг находится рядом с выходным люком.]];
 	['before_Pull,Push,SwitchOn,SwitchOff'] = function(s)
-		if not here().examined then
-			p [[Прежде чем выйти наружу, необходимо еще раз проверить скафандр.]];
-			return
-		end
-		if not _'скафандр':has'worn' then
-			p [[Выходить без скафандра наружу -- самоубийство!]]
-			return
+		if here() ^ 'шлюз' then
+			if not here().examined then
+				p [[Прежде чем выйти наружу, необходимо еще раз проверить скафандр.]];
+				return
+			end
+			if not _'скафандр':has'worn' then
+				p [[Выходить без скафандра наружу -- самоубийство!]]
+				return
+			end
 		end
 		if _'люк':hasnt'open' then
 			p [[Ты дергаешь за рычаг и люк с шипением открывается.]]
@@ -190,14 +204,16 @@ obj {
 room {
 	nam = 'марс1';
 	title = 'У шлюза';
-	dsc = function(s)
-		if s:once() then
+	in_to = 'люк';
+	onenter = function(s, f)
+		if f ^ 'шлюз' then
+			_'люк':attr'~open'
 			p [[Ты выходишь из модуля и закрываешь за собой люк.]]
+			light_theme()
 		end
-		p [[]]
 	end;
-	onenter = function(s)
-		light_theme()
+	dsc = function(s)
+		p [[]]
 	end;
 }
 

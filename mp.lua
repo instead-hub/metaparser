@@ -1733,17 +1733,26 @@ function mp:log(t)
 		f:close()
 	end
 end
+
+function mp:show_prompt(inp)
+	if std.cmd[1] == 'look' then
+		return
+	end
+	pn(fmt.b(self.prompt .. inp))
+end
+
 function mp:parse(inp)
 	inp = std.strip(inp)
-	if std.cmd[1] ~= 'look' then
-		pn(fmt.b(self.prompt .. inp))
-	end
+	mp:show_prompt(inp)
+	local prompt = std.pget(); std.pclr()
+
 	inp = inp:gsub("[ ]+", " "):gsub("["..inp_split.."]+", " "):gsub("[ \t]+$", "")
 	local r, v = self:input(self:norm(inp))
+
 	self.cache = { tokens = {} }; -- to completion
 	if not r then
 		if v then
-			pn()
+			pr(prompt)
 			self:err(v)
 			local s = std.game
 			s:reaction(std.pget())
@@ -1751,24 +1760,20 @@ function mp:parse(inp)
 			s:lastdisp(r)
 			return r, false
 		end
-		return
+	else
+		if std.cmd[1] ~= 'look' then
+			mp:show_prompt(inp);
+			self:correct(inp)
+			prompt = std.pget(); std.pclr()
+		end
+		-- here we do action
+		mp:action()
 	end
-	if std.cmd[1] ~= 'look' then
-		self:correct(inp)
-		pn()
+	local tt = std.pget(); std.pclr()
+	if std.here():has 'cutscene' or player_moved() then
+		prompt = false
 	end
-	std.game:reaction(std.pget())
-	std.pclr()
-	-- here we do action
-	mp:action()
-	local t = std.game:reaction(false)
-
-	if std.here():has 'cutscene' or player_moved() then -- (std.here():from():has 'cutscene' and player_moved()) then
-		t = false
-	end
-	local tt = std.pget()
-	std.pclr()
-	pr(t or '', tt or '')
+	pr(prompt and (prompt .. '^') or '', tt or '')
 end
 
 std.world.display = function(s, state)
