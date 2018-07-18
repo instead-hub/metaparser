@@ -455,6 +455,7 @@ function mrd:gram_compat(base, aa, bb)
 			return false
 		end
 		local g0 = self:gram_info(base)
+--		if not __gram_compat(g0, g1) then return false end
 		if not __gram_compat(g0, g2) then return false end
 	end
 	return __gram_compat(g1, g2)
@@ -535,13 +536,13 @@ function mrd:__lookup(w, g)
 					if t ~= f.an.t then sc = sc - 1 end -- todo
 if false then
 				local tt = v.pref .. f.pre .. v.t .. f.post
-				if tt == 'КРАСНОГО' or tt == 'КРАСНЫЙ' then
+				if tt == 'МОДУЛИ' or tt == 'МОДУЛЬ' then
 					print(tt, v.t, score + sc)
-					print ("looking for:")
+					print ("======looking for:")
 					for _, v in pairs(g) do
 						print(_, v)
 					end
-					print ("looking got:", score, sc)
+					print ("======looking got:", score, sc)
 					for _, v in pairs(f.an) do
 						print(_, v)
 					end
@@ -566,12 +567,12 @@ if false then
 		local w = res[i]
 		local tt = self.lang.lower(w.word.pref .. w.flex.pre .. w.word.t .. w.flex.post)
 		print(i, "res: ", tt, w.score)
-		if tt == 'красный' then
+		if tt == 'красный' or tt == 'красного' then
 			for _, v in pairs(w.flex.an) do
 				print(_, v)
 			end
 		end
---		print(tt, w.score)
+		print(tt, w.score)
 	end
 end
 	w = res[1]
@@ -580,9 +581,9 @@ end
 		gram[k] = v
 	end
 
---	for k, v in pairs(w.word.an) do
---		gram[k] = v
---	end
+	for k, v in pairs(w.word.an) do
+		gram[k] = v
+	end
 
 	w = self.lang.lower(w.word.pref .. w.flex.pre .. w.word.t .. w.flex.post)
 	if upper then

@@ -1753,6 +1753,7 @@ function mp:parse(inp)
 	if not r then
 		if v then
 			pr(prompt)
+			pn()
 			self:err(v)
 			local s = std.game
 			s:reaction(std.pget())
