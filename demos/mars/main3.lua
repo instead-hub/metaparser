@@ -227,7 +227,7 @@ obj {
 	['before_Pull,Push,SwitchOn,SwitchOff'] = function(s)
 		if here() ^ 'шлюз' then
 			if not here().examined then
-				p [[Прежде чем выйти наружу, необходимо еще раз проверить скафандр.]];
+				p [[Прежде чем выйти наружу, необходимо еще раз осмотреть скафандр.]];
 				return
 			end
 			if not _'скафандр':has'worn' then
