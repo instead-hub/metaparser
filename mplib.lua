@@ -1462,7 +1462,7 @@ function mp:SwitchOff(w)
 		return
 	end
 	if not w:has'on' then
-		p (mp.msg.SwitchOn.ALREADY)
+		p (mp.msg.SwitchOff.ALREADY)
 		return
 	end
 	w:attr'~on'
