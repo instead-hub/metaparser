@@ -158,7 +158,12 @@ door {
 	found_in = { 'шлюз', 'марс1' };
 	before_Open = [[Люк открывается с помощью красного рычага.]];
 	before_Close = [[Люк закрывается с помощью красного рычага.]];
-	when_closed = [[Для открытия люка достаточно потянуть за красный рычаг.]];
+	when_closed = function(s)
+		if here() ^ 'шлюз' then
+			p [[Для открытия люка достаточно потянуть за красный рычаг.]];
+		else
+		end
+	end;
 	when_open = [[Входной люк -- открыт.]];
 	description = function(s)
 		if not s:has'open' then
