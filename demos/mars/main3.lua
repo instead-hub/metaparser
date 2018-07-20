@@ -258,6 +258,31 @@ obj {
 
 global 'base_talked1' (false)
 
+obj {
+	-"небо,облак*,небес*",
+	found_in = { 'марс1' };
+	before_Default = function(s, ev)
+		if ev == 'Exam' then
+			return false
+		end
+		p [[Небо слишком далеко.]];
+	end;
+	description = [[Небо покрыто дымкой облаков, сквозь которую пробивается Солнце.]];
+}:attr'scenery';
+
+obj {
+	-"Солнце",
+	found_in = { 'марс1' };
+	before_Default = function(s, ev)
+		if ev == 'Exam' then
+			return false
+		end
+		p [[Солнце слишком далеко.]];
+	end;
+	description = [[Ты взглянул на Солнце. На Марсе оно выглядит совсем маленьким. Ты помнишь, что Марс расположен в 227,9 миллиона километрах от Солнца. Но это лишь цифры. Солнце
+на этой планете выглядит слабым, далёким и умирающим.]];
+}:attr'scenery';
+
 room {
 	nam = 'марс1';
 	title = 'Марсианская база';
