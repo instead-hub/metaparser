@@ -29,7 +29,8 @@ end
 function light_theme2()
 	T('scr.col.bg', mars_col2)
 	T('win.col.fg', '#000000')
-	T('inv.col.fg', '#151515')
+	T('inv.col.fg', '#000000')
+	T('inv.col.link', '#000000')
 	_'@decor'.bgcol = mars_col2
 	sprite.scr():fill(mars_col2)
 end
@@ -317,7 +318,7 @@ global 'base_talked1' (false)
 
 obj {
 	-"небо,облак*,небес*",
-	found_in = { 'марс1', 'марс2' };
+	found_in = { 'марс1', 'марс2', 'марс3' };
 	before_Default = function(s, ev)
 		if ev == 'Exam' then
 			return false
@@ -329,7 +330,7 @@ obj {
 
 obj {
 	-"Солнце",
-	found_in = { 'марс1', 'марс2' };
+	found_in = { 'марс1', 'марс2', 'марс3' };
 	before_Default = function(s, ev)
 		if ev == 'Exam' then
 			return false
@@ -406,9 +407,24 @@ obj {
 room {
 	nam = 'марс2';
 	title = 'Марс';
-	ne_to = 'intro2';
-	s_to = 'марс1';
+	ne_to = 'марс3';
+	s_to = function()
+		p [[Возвращаться на базу пока не входит в твои планы.]]
+	end;
 	cant_go = [[Твоё внимание привлекают обломки скал на северо-востоке. Ты решаешь изменить свой маршрут.]];
+	onenter = function(s)
+		light_theme2()
+		fading.set {"crossfade", max = FADE_LONG, now = true}
+		timer:set(70)
+		D {'mars', 'img', 'gfx/pan.jpg',
+		   fx = 4096 - theme.scr.w(),
+		   y = theme.scr.h() - 388,
+		   fy = 0,
+		   z = 5,
+		   background = true,
+		   process = pan_right,
+		}
+	end;
 	compass_look = function(s, dir)
 		if dir == 'n_to' then
 			p "На севере ты видишь широкие горы."
@@ -426,7 +442,7 @@ room {
 	end;
 	dsc = function(s)
 		if s:once() then
-			pn [[Ты шёл по изломанной поверхности в течении часа. Ничего не менялось в окружающем
+			pn [[Ты шёл по изломанной поверхности в течении получаса. Ничего не менялось в окружающем
 тебя пространстве. Всё те же горы на севере, небо, затянутое дымкой облаков и одинокое безжизненное Солнце.]]
 			pn ()
 		end
@@ -452,29 +468,22 @@ obj {
 	end;
 }:attr'scenery';
 
-cutscene {
-	nam = 'intro2';
+room {
+	nam = 'марс3';
+	title = 'Скалы';
 	onexit = function(s)
 		timer:stop()
 		D();
 	end;
-	onenter = function(s)
-		light_theme2()
-		fading.set {"crossfade", max = FADE_LONG, now = true}
-		timer:set(50)
-		D {'mars', 'img', 'gfx/pan.jpg',
-		   fx = 4096 - theme.scr.w(),
-		   y = theme.scr.h() - 388,
-		   fy = 0,
-		   z = 5,
-		   background = true,
-		   process = pan_right,
-		}
+	cant_go = [[Ты обнаружил нечто странное и тебе хочется осмотреть это, прежде чем идти дальше.]];
+	dsc = function(s)
+		if s:once() then
+			pn [[Ещё через полчаса ты добрался до каменных глыб.]];
+			pn ()
+		end
+		p [[Огромные обломки камней разбросаны по скалистой поверхности. Твоё внимание привлекают
+две странные скалы, которые причудливым образом соприкасаются друг с другом верхушками, образуя подобие арки.]];
 	end;
-	text = {
-		[[Ты шел еще пол часа.]];
---{$fmt em|Для продолжения нажмите <ввод>}]];
-	};
 }
 
 function init()

@@ -4,7 +4,7 @@ if std.ref'@theme' then
 end
 
 local mrd = require "morph/mrd"
-local inp_split = " :.,!?"
+local inp_split = " :.,!?-"
 
 local input = std.ref '@input'
 
