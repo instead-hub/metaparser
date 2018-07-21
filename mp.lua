@@ -1569,7 +1569,7 @@ function mp:runorval(wh, fn, ...)
 	end
 	if type(wh[fn]) == 'function' then
 		local v
-		local r = wh[fn](...)
+		local r = wh[fn](wh, ...)
 		if r == false then v = false else v = true end
 		return r, v
 	end

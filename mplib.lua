@@ -388,7 +388,11 @@ obj {
 	action = function(s, dir, ev, ...)
 		if ev == 'Exam' then
 			local d = dir
-			local r, v = mp:runorval(std.here(), d)
+			local r, v = mp:runorval(std.here(), 'compass_look', d)
+			if v then
+				return
+			end
+			r, v = mp:runorval(std.here(), d)
 			if r then -- somewhat?
 				if std.object(r):type 'room' then
 					p (mp.msg.COMPASS_EXAM_NO)
@@ -1462,7 +1466,7 @@ function mp:SwitchOff(w)
 		return
 	end
 	if not w:has'on' then
-		p (mp.msg.SwitchOn.ALREADY)
+		p (mp.msg.SwitchOff.ALREADY)
 		return
 	end
 	w:attr'~on'
