@@ -70,8 +70,8 @@ declare 'star_spr' (function(v)
 	for i = 1, rnd(2) do
 		local w = rnd(3)
 		p:fill(x, y, w, w, r, g, b, 255)
-		x = x + rnd(2) - 1
-		y = x + rnd(2) - 1
+		x = x + rnd(3) - 2
+		y = x + rnd(3) - 2
 	end
 	blur(p, r, g, b)
 	return p:sprite()
@@ -81,6 +81,6 @@ const 'STARS' (50)
 
 function make_stars(proc)
 	for i = 1, STARS do
-		D {"star"..tostring(i), 'img', star_spr, dist = rnd(8) + 8, process = proc, x = rnd(theme.scr.w()), y = rnd(theme.scr.h()), z = 10 }
+		D {"star"..tostring(i), 'img', star_spr, speed = rnd(2), process = proc, x = rnd(theme.scr.w()), y = rnd(theme.scr.h()), z = 10 }
 	end
 end
