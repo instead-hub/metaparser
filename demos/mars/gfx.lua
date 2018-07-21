@@ -64,9 +64,8 @@ end
 declare 'star_spr' (function(v)
 	local p = pixels.new(5, 5)
 	local x, y = 2, 2
-	p:val(x, y, 255,255,255,255)
-	local c = rnd(128) + 127
 	local r, g, b = star_col()
+	p:val(x, y, r, g, b, 255)
 	for i = 1, rnd(2) do
 		local w = rnd(3)
 		p:fill(x, y, w, w, r, g, b, 255)
@@ -77,10 +76,24 @@ declare 'star_spr' (function(v)
 	return p:sprite()
 end)
 
-const 'STARS' (50)
+declare 'small_star_spr' (function(v)
+	local p = pixels.new(3, 3)
+	local x, y = 1, 1
+	local r, g, b = star_col()
+	p:val(x, y, r, g, b,255)
+	p:val(x + 1, y + 1, r, g, b,255)
+	blur(p, r, g, b)
+	return p:sprite()
+end)
+
+const 'STARS' (100)
 
 function make_stars(proc)
 	for i = 1, STARS do
-		D {"star"..tostring(i), 'img', star_spr, speed = rnd(2), process = proc, x = rnd(theme.scr.w()), y = rnd(theme.scr.h()), z = 10 }
+		if i > STARS / 2 then
+			D {"star"..tostring(i), 'img', small_star_spr, speed = rnd(2), process = proc, x = rnd(theme.scr.w()), y = rnd(theme.scr.h()), z = 10 }
+		else
+			D {"star"..tostring(i), 'img', star_spr, speed = rnd(2), process = proc, x = rnd(theme.scr.w()), y = rnd(theme.scr.h()), z = 10 }
+		end
 	end
 end
