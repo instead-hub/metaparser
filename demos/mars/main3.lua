@@ -15,12 +15,23 @@ function dark_theme()
 	_'@decor'.bgcol = '#151515'
 end
 
+local mars_col = '#eadaca'
+local mars_col2 = '#f4efc9'
+
 function light_theme()
-	T('scr.col.bg', '#eadaca')
+	T('scr.col.bg', mars_col) -- '#eadaca')
 	T('win.col.fg', '#000000')
 	T('inv.col.fg', '#151515')
-	_'@decor'.bgcol = '#eadaca'
-	sprite.scr():fill '#eadaca'
+	_'@decor'.bgcol = mars_col -- '#eadaca'
+	sprite.scr():fill(mars_col) -- '#eadaca'
+end
+
+function light_theme2()
+	T('scr.col.bg', mars_col2)
+	T('win.col.fg', '#000000')
+	T('inv.col.fg', '#151515')
+	_'@decor'.bgcol = mars_col2
+	sprite.scr():fill(mars_col2)
 end
 
 local FADE_LONG = 64
@@ -49,11 +60,26 @@ room {
 --cutscene.help = fmt.em "Для продолжения нажмите <ввод>";
 
 declare 'mars_proc' (function(v)
-	if v.x + v.w < 0 then
+	if v.x < -v.w then
 		return
 	end
 	v.x = v.x - 1
 end)
+
+declare 'mars_proc2' (function(v)
+	if v.x <= -v.w + theme.scr.w() then
+		return
+	end
+	v.x = v.x - 1
+end)
+
+declare 'mars_proc3' (function(v)
+	if v.x <= -v.w + theme.scr.w() then
+		return
+	end
+	v.x = v.x - 2
+end)
+
 declare 'stars_left' (function(v)
 	v.x = v.x - 1
 	if v.x < 0 then
@@ -421,6 +447,22 @@ obj {
 
 cutscene {
 	nam = 'intro2';
+	onexit = function(s)
+		timer:stop()
+		D();
+	end;
+	onenter = function(s)
+		light_theme2()
+		fading.set {"crossfade", max = FADE_LONG, now = true}
+		timer:set(50)
+		D {'mars', 'img', 'gfx/pan.jpg',
+		   x = 0,
+		   y = theme.scr.h() - 388,
+		   z = 5,
+		   background = true,
+		   process = mars_proc2
+		}
+	end;
 	text = {
 		[[Ты шел еще пол часа.]];
 --{$fmt em|Для продолжения нажмите <ввод>}]];
