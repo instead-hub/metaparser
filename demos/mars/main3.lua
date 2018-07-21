@@ -66,11 +66,18 @@ declare 'mars_proc' (function(v)
 	v.x = v.x - 1
 end)
 
-declare 'mars_proc2' (function(v)
-	if v.x <= -v.w + theme.scr.w() then
+declare 'pan_left' (function(v)
+	if v.fx >= v.w - theme.scr.w() then
 		return
 	end
-	v.x = v.x - 1
+	v.fx = v.fx + 1
+end)
+
+declare 'pan_right' (function(v)
+	if v.fx <= 0 then
+		return
+	end
+	v.fx = v.fx - 1
 end)
 
 declare 'mars_proc3' (function(v)
@@ -456,11 +463,12 @@ cutscene {
 		fading.set {"crossfade", max = FADE_LONG, now = true}
 		timer:set(50)
 		D {'mars', 'img', 'gfx/pan.jpg',
-		   x = 0,
+		   fx = 4096 - theme.scr.w(),
 		   y = theme.scr.h() - 388,
+		   fy = 0,
 		   z = 5,
 		   background = true,
-		   process = mars_proc2
+		   process = pan_right,
 		}
 	end;
 	text = {
