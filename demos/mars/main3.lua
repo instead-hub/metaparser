@@ -373,6 +373,7 @@ obj {
 room {
 	nam = 'марс2';
 	title = 'Марс';
+	ne_to = 'intro2';
 	s_to = 'марс1';
 	cant_go = [[Твоё внимание привлекают обломки скал на северо-востоке. Ты решаешь изменить свой марштрут.]];
 	compass_look = function(s, dir)
@@ -414,9 +415,17 @@ obj {
 	before_Default = "Добраться туда можно, если идти на северо-восток.";
 	before_Exam = [[Тебе всё-равно куда идти, но эти скалы привлекли твоё внимание. Ты решаешь идти на северо-восток.]];
 	['before_Enter,Walk,Climb'] = function(s)
-		p [[todo]];
+		walkin 'intro2'
 	end;
 }:attr'scenery';
+
+cutscene {
+	nam = 'intro2';
+	text = {
+		[[Ты шел еще пол часа.]];
+--{$fmt em|Для продолжения нажмите <ввод>}]];
+	};
+}
 
 function init()
 	take 'скафандр'
