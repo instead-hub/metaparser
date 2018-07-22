@@ -294,7 +294,7 @@ pl.before_LetGo = function(s, w, ww)
 	return false
 end
 obj {
-	-"шлем/С", --шлем/шлём, С -- существительное
+	-"шлем/~Г", --шлем/шлём
 	nam = "шлем";
 	before_Disrobe = function(s)
 		if _'скафандр':before_Disrobe() == false then

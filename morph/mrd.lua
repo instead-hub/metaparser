@@ -388,6 +388,8 @@ function mrd:score(an, g)
 			vv = vv:sub(2)
 			if an[vv] then
 				score = score - 1 * (self.lang.weights[vv] or 1)
+			elseif an.t == vv then
+				score = score - 10
 			end
 		else
 			if an[vv] then
