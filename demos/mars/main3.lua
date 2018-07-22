@@ -322,9 +322,10 @@ obj {
 		return false;
 	end;
 	each_turn = function(s)
-		if pl:where():has'light' and s:has'on' then
+		if pl:where():has'light' and s:has'on' and player_moved() then
 			p [[С целью экономии батарей, ты выключаешь фонарь.]]
 			s:after_SwitchOff()
+			s:attr'~on'
 		end
 	end;
 }:attr'switchable'
@@ -553,6 +554,8 @@ obj {
 	title = "В пещере";
 	found_in = 'марс3';
 	inside_dsc = function(s)
+		p [[Яркий свет фонаря отражается от клубов белого пара, сквозь которые просвечиваются
+черные стены.]]
 	end;
 	dark_dsc = function(s)
 		if s:once() then
@@ -562,7 +565,7 @@ obj {
 		end
 	end;
 	after_Enter = function(s)
-		mp:clear()
+--		mp:clear()
 		timer:stop()
 		D()
 		dark_theme()
@@ -573,6 +576,18 @@ obj {
 	description = [[Две массивные скалы, одна около 7 метров в высоту, другая -- 10 метров,
 подпирают друг друга, образуя между собой арку. Внутри арки -- темнота.]];
 }:attr 'scenery,enterable,~light'
+
+obj {
+	-"пар,дым,клубы*";
+	description = "Белые клубы пара обволакивают твой скафандр и это пугает. Ты не ожидал увидеть здесь ничего подобного!";
+	found_in = 'арка';
+}:attr 'scenery';
+
+obj {
+	-"стены,стен*";
+	description = [[Ты можешь попробовать идти вдоль стен, касаясь их рукой.]];
+	found_in = 'арка';
+}:attr 'scenery';
 
 function init()
 	take 'скафандр'
