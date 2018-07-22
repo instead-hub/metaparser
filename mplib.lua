@@ -513,8 +513,10 @@ function mp:content(w)
 	end
 	local oo = {}
 	local ooo = {}
+	local inside
 	if (w == std.me():where() or std.here() == w) and
 		(mp.event == 'Look' or mp.event == 'Exam' or std.me():need_scene()) then
+		inside = true
 		pn()
 		local dsc, v
 		if not mp:offerslight(w) then
@@ -578,7 +580,7 @@ function mp:content(w)
 --	end
 	oo = ooo
 	if #oo == 0 then
-		if mp.first == w and not something then
+		if not inside and mp.first == w and not something then
 			if w:has 'supporter' then
 				pnoun (w, mp.msg.Exam.ON)
 			else
@@ -876,7 +878,7 @@ function mp:Exit(w)
 end
 
 function mp:after_Exit(w)
-	if w then
+	if w and not w:type 'room' then
 		p (mp.msg.Exit.EXITED)
 	end
 end
