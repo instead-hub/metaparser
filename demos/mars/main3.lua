@@ -128,7 +128,7 @@ cutscene {
 }
 
 function game:Eat()
-	if _'скафандр':has'worn' then
+	if _'шлем':has'worn' then
 		p [[В скафандре это будет сложно сделать.]]
 		return
 	end
@@ -136,7 +136,7 @@ function game:Eat()
 end
 
 function game:Taste()
-	if _'скафандр':has'worn' then
+	if _'шлем':has'worn' then
 		p [[В скафандре это будет сложно сделать.]]
 		return
 	end
@@ -144,7 +144,7 @@ function game:Taste()
 end
 
 function game:Smell()
-	if _'скафандр':has'worn' then
+	if _'шлем':has'worn' then
 		p [[В скафандре ты чувствуешь только запах своего пота.]]
 		return
 	end
@@ -152,7 +152,7 @@ function game:Smell()
 end
 
 pl.description = function(s)
-	if _'скафандр':has'worn' then
+	if _'скафандр':has'worn' and _'шлем':has'worn' then
 		p [[На тебе надет скафандр.]]
 	else
 		p [[Ты выглядишь как обычно.]]
@@ -244,6 +244,20 @@ obj {
 			p [[Ты определенно хочешь убить себя! Нельзя снимать скафандр при открытом люке. Такое чувство, что ты забыл инструктаж по безопасности.]];
 			return
 		end
+		if not here()^'шлюз' then
+			p [[На Марсе невозможно выжить без скафандра!]]
+			return
+		end
+		return false
+	end;
+	after_Disrobe = function(s)
+		_'шлем':attr'~worn'
+		return false
+	end;
+	after_Wear = function(s)
+		if have'шлем' then
+			_'шлем':attr'worn'
+		end
 		return false
 	end;
 }:attr 'clothing,worn';
@@ -272,19 +286,55 @@ obj {
 		end
 	end;
 }
+pl.before_LetGo = function(s, w, ww)
+	if w ^ 'шлем' or w ^ 'скафандр' then
+		p (w:Noun(), " тебе жизненно необходим.")
+		return
+	end
+	return false
+end
+obj {
+	-"шлем/С", --шлем/шлём, С -- существительное
+	nam = "шлем";
+	before_Disrobe = function(s)
+		if _'скафандр':before_Disrobe() == false then
+			return false
+		end
+	end;
+	description = function(s)
+		p [[В шлем встроена рация. Ты можешь включить ее в любой момент.]]
+	end;
+}:attr'clothing,worn,concealed';
+
+obj {
+	-"фонарь,фонар*,свет";
+	nam = 'фонарь';
+	found_in = 'шлем';
+	after_SwitchOn = function(s)
+		if not pl:where():has'light' then
+			me():need_scene(true)
+		end
+		pl:attr'light'
+		return false;
+	end;
+	after_SwitchOff = function(s)
+		pl:attr'~light'
+		return false;
+	end;
+}:attr'switchable'
 
 obj {
 	-"рация,радио*";
 	nam = 'рация';
 	found_in = 'скафандр';
-	description = function() p [[Рация встроена в скафандр.]] return false end;
+	description = function() p [[Рация встроена в шлем. Ты можешь включить ее в любой момент.]] return false end;
 	before_SwitchOn = function(s)
 		if not base_talked1 then
 			walkin 'dialog1'
 			base_talked1 = true
 			return
 		end
-		p [[Сейчас нет необходимости тратить энергию на радио.]]
+		p [[Сейчас нет необходимости связываться с базой.]]
 	end;
 }:attr 'switchable';
 
@@ -299,7 +349,7 @@ obj {
 				p [[Прежде чем выйти наружу, необходимо еще раз осмотреть скафандр.]];
 				return
 			end
-			if not _'скафандр':has'worn' then
+			if not _'шлем':has'worn' then
 				p [[Выходить без скафандра наружу -- самоубийство!]]
 				return
 			end
@@ -496,12 +546,27 @@ obj {
 	nam = 'арка';
 	title = "В пещере";
 	found_in = 'марс3';
+	inside_dsc = function(s)
+	end;
+	dark_dsc = function(s)
+		p [[Едва ты зашёл внутрь арки тебя окутала полная темнота.]];
+	end;
+	after_Enter = function(s)
+		mp:clear()
+		timer:stop()
+		D()
+		dark_theme()
+	end;
+	after_Exit = function(s)
+		light_theme2()
+	end;
 	description = [[Две массивные скалы, одна около 7 метров в высоту, другая -- 10 метров,
 подпирают друг друга, образуя между собой арку. Внутри арки -- темнота.]];
 }:attr 'scenery,enterable,~light'
 
 function init()
 	take 'скафандр'
+	take 'шлем'
 	dark_theme()
 end
 

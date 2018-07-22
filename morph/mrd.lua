@@ -389,8 +389,12 @@ function mrd:score(an, g)
 			if an[vv] then
 				score = score - 1 * (self.lang.weights[vv] or 1)
 			end
-		elseif an[vv] then
-			score = score + 1 * (self.lang.weights[vv] or 1)
+		else
+			if an[vv] then
+				score = score + 1 * (self.lang.weights[vv] or 1)
+			elseif an.t == vv then
+				score = score + 10
+			end
 		end
 	end
 	return score
@@ -439,9 +443,11 @@ function mrd:gram_info(a)
 	return t
 end
 
-local function __gram_compat(g1, g2)
+local function __gram_compat(g1, g2, time)
 	if g1.gen ~= g2.gen and g1.gen ~= 'any' and g2.gen ~= 'any' then return false end
-	if g1.num ~= g2.num and g1.num ~= 'any' and g2.num ~= 'any' then return false end
+	if not time then
+		if g1.num ~= g2.num and g1.num ~= 'any' and g2.num ~= 'any' then return false end
+	end
 	if g1.time ~= g2.time and g1.time ~= 'any' and g2.time ~= 'any' then return false end
 	if g1.face ~= g2.face and g1.face ~= 'any' and g2.face ~= 'any' then return false end
 	return true
@@ -456,7 +462,7 @@ function mrd:gram_compat(base, aa, bb)
 		end
 		local g0 = self:gram_info(base)
 --		if not __gram_compat(g0, g1) then return false end
-		if not __gram_compat(g0, g2) then return false end
+		if not __gram_compat(g0, g2, true) then return false end
 	end
 	return __gram_compat(g1, g2)
 end
@@ -536,13 +542,13 @@ function mrd:__lookup(w, g)
 					if t ~= f.an.t then sc = sc - 1 end -- todo
 if false then
 				local tt = v.pref .. f.pre .. v.t .. f.post
-				if tt == 'МОДУЛИ' or tt == 'МОДУЛЬ' then
-					print(tt, v.t, score + sc)
-					print ("======looking for:")
+				if tt == 'ШЛЕМ' or tt == 'ШЛЁТ' or tt == 'ШЛЕМОМ' then
+					print ("======looking for:", g.noun)
 					for _, v in pairs(g) do
 						print(_, v)
 					end
-					print ("======looking got:", score, sc)
+					print ("======looking got:", score + sc, sc)
+					print(tt, v.t, score + sc)
 					for _, v in pairs(f.an) do
 						print(_, v)
 					end
@@ -572,7 +578,7 @@ if false then
 				print(_, v)
 			end
 		end
-		print(tt, w.score)
+--		print(tt, w.score)
 	end
 end
 	w = res[1]

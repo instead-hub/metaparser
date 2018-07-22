@@ -1132,7 +1132,7 @@ function mp:move(w, wh, force)
 	end
 
 	for _, o in ipairs(ww) do
-		if mp:runmethods('before', 'LetGo', w, wh) then
+		if mp:runmethods('before', 'LetGo', o, w, wh) then
 			return false
 		end
 	end
@@ -1149,7 +1149,7 @@ function mp:move(w, wh, force)
 	end
 	w:attr 'moved'
 	for _, o in ipairs(ww) do
-		if mp:runmethods('after', 'LetGo', w, wh) then
+		if mp:runmethods('after', 'LetGo', o, w, wh) then
 			return false
 		end
 	end
@@ -1191,7 +1191,7 @@ function mp:Take(w, ww)
 	if not w:where():type'room' and
 		not w:where():has'container' and
 		not w:where():has'supporter' then
-		if w:has'worn' then
+		if w:has'worn' and mp:animate(w:where()) then
 			p (mp.msg.Take.WORN)
 		else
 			p (mp.msg.Take.PARTOF)
