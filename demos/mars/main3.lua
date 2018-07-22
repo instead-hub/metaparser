@@ -321,6 +321,12 @@ obj {
 		pl:attr'~light'
 		return false;
 	end;
+	each_turn = function(s)
+		if pl:where():has'light' and s:has'on' then
+			p [[С целью экономии батарей, ты выключаешь фонарь.]]
+			s:after_SwitchOff()
+		end
+	end;
 }:attr'switchable'
 
 obj {
@@ -549,7 +555,11 @@ obj {
 	inside_dsc = function(s)
 	end;
 	dark_dsc = function(s)
-		p [[Едва ты зашёл внутрь арки тебя окутала полная темнота.]];
+		if s:once() then
+			p [[Едва ты зашёл внутрь арки тебя окутала полная темнота.]];
+		else
+			p [[Внутри арки абсолютная тьма. Только прозрачная поверхность твоего шлема отсвечивает тусклые огоньки приборов скафандра.]];
+		end
 	end;
 	after_Enter = function(s)
 		mp:clear()
