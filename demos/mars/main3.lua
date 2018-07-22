@@ -127,8 +127,14 @@ cutscene {
 	end;
 }
 
+local function insuit()
+	if _'шлем':has'worn' and not _'шлем':has'open' then
+		return true
+	end
+end
+
 function game:Eat()
-	if _'шлем':has'worn' then
+	if insuit() then
 		p [[В скафандре это будет сложно сделать.]]
 		return
 	end
@@ -136,7 +142,7 @@ function game:Eat()
 end
 
 function game:Taste()
-	if _'шлем':has'worn' then
+	if insuit() then
 		p [[В скафандре это будет сложно сделать.]]
 		return
 	end
@@ -144,7 +150,7 @@ function game:Taste()
 end
 
 function game:Smell()
-	if _'шлем':has'worn' then
+	if insuit() then
 		p [[В скафандре ты чувствуешь только запах своего пота.]]
 		return
 	end
@@ -152,7 +158,7 @@ function game:Smell()
 end
 
 pl.description = function(s)
-	if _'скафандр':has'worn' and _'шлем':has'worn' then
+	if insuit() then
 		p [[На тебе надет скафандр.]]
 	else
 		p [[Ты выглядишь как обычно.]]
@@ -356,7 +362,7 @@ obj {
 				p [[Прежде чем выйти наружу, необходимо еще раз осмотреть скафандр.]];
 				return
 			end
-			if not _'шлем':has'worn' then
+			if not insuit() then
 				p [[Выходить без скафандра наружу -- самоубийство!]]
 				return
 			end
