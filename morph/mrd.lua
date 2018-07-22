@@ -814,7 +814,7 @@ local function noun_append(rc, tab, w)
 end
 
 function mrd:noun_hint(ob, ...)
-	local g = ob and ob:gram(...) or {}
+	local g = ob and ob:gram('noun', ...) or {}
 	local hint = ''
 	for _, v in ipairs { mp.hint.male, mp.hint.female, mp.hint.neuter, mp.hint.plural, mp.hint.live } do
 		if g[v] then
@@ -912,9 +912,9 @@ std.obj.Noun = function(self, ...)
 	return mrd.lang.cap(mrd:noun(self, ...))
 end
 
-std.obj.gram = function(self, n)
+std.obj.gram = function(self, ...)
 	local hint, ob, w
-	ob, w, hint = mrd:obj(self, n)
+	ob, w, hint = mrd:obj(self, ...)
 	local _, gram = mrd:word(w .. '/'..hint)
 	local thint = ''
 	hint = str_split(hint, ",")
