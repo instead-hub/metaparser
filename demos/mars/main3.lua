@@ -302,7 +302,7 @@ obj {
 		end
 	end;
 	description = function(s)
-		p [[В шлем встроен фонарь. Ты можешь включить его в любой момент.]]
+		p [[В шлем встроена рация, а также светодиодный фонарь.]]
 	end;
 }:attr'clothing,worn,concealed';
 
