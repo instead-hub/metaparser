@@ -868,6 +868,9 @@ function mp:docompl(str, maxw)
 				maxw = maxw2
 			end
 		end
+		if full then
+			if #compl > 1 then full = false end
+		end
 	else
 		full = true
 	end
