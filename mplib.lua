@@ -870,9 +870,9 @@ function mp:Exit(w)
 	end
 	if wh:type'room' then
 --	local r = std.call(w, 'out_to')
-		walkback()
+		mp:move(std.me(), wh:from())
 	else
-		walkback(wh:where())
+		mp:move(std.me(), wh:where())
 	end
 	return false
 end

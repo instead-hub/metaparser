@@ -382,7 +382,7 @@ global 'base_talked1' (false)
 
 obj {
 	-"небо,облак*,небес*",
-	found_in = { 'марс1', 'марс2', 'марс3' };
+	found_in = { 'марс1', 'марс2', 'марс3', 'арка3' };
 	before_Default = function(s, ev)
 		if ev == 'Exam' then
 			return false
@@ -394,7 +394,7 @@ obj {
 
 obj {
 	-"Солнце",
-	found_in = { 'марс1', 'марс2', 'марс3' };
+	found_in = { 'марс1', 'марс2', 'марс3', 'арка3' };
 	before_Default = function(s, ev)
 		if ev == 'Exam' then
 			return false
@@ -569,8 +569,14 @@ room {
 	-"арка,пещера",
 	nam = 'арка2';
 	title = "В арке";
+	u_to = function(s)
+		if pl:has'light' or _'арка3':has'visited' then
+			return 'арка3';
+		end
+		return false
+	end;
 	dsc = function(s)
-		p [[Яркий свет фонаря отражается от чёрных стен.]]
+		p [[Яркий свет фонаря отражается от чёрных стен. Ты видишь, что каменистая поверхность под ногами уходит под заметным наклоном вверх.]]
 	end;
 	dark_dsc = function(s)
 		if s:once() then
@@ -588,6 +594,46 @@ room {
 		light_theme2()
 	end;
 }:attr'~light'
+
+room {
+	-"арка,пещера",
+	nam = 'арка3';
+	title = "Выход";
+	d_to = 'арка2';
+--	out_to = 'марс4';
+	dsc = function(s)
+		if s:once() then
+			pn [[Ты осторожно поднимаешься по покатой поверхности. Совсем скоро ты видишь впереди свет.]];
+			pn()
+		end
+		p [[Покатый каменистый пол, скрываясь в темноте, ведет вниз. Сквозь широкое отверстие в арку проникает солнечный свет.]]
+	end;
+}
+
+obj {
+	-"отверстие|дыра,дырка";
+	found_in = 'арка3';
+	description = [[Большое продолговатое отверстие диаметром около полутора метров. Достаточное для того, чтобы выбраться наружу.]];
+}:attr 'scenery'
+
+obj {
+	-"пол|поверхность";
+	found_in = {'арка2', 'арка3'};
+	before_Climb = function(s)
+		if here() ^ 'арка2' then
+			mp:xaction("Walk", _'@u_to')
+		else
+			mp:xaction("Walk", _'@d_to')
+		end
+	end;
+	description = function(s)
+		if here() ^ 'арка2' then
+			p [[Вероятно, ты мог бы попробовать лезть наверх.]];
+		else
+			p [[Ты можешь спуститься вниз.]]
+		end
+	end;
+}:attr 'scenery'
 
 obj {
 	-"стены,стен*,скал*";

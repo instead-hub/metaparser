@@ -911,12 +911,14 @@ Verb {
 	"на {noun}/вн,scene : Climb",
 	"по {noun}/дт,scene : Climb",
 	"~ в|во {noun}/вн,scene : Enter",
+	"{compass2}: Walk",
 }
 
 Verb {
 	"#GetOff",
 	"слез/ть,спусти/ться,встать,встан/ь",
 	"Exit",
+	"{compass2}: Walk",
 	"с|со {noun}/рд,scene : GetOff",
 }
 
