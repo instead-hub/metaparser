@@ -838,6 +838,7 @@ function mrd:noun(w, n, nn)
 	if type(w) ~= 'table' then
 		local alias = nn
 		if type(alias) ~= 'number' then alias = n end
+		if type(alias) ~= 'number' then alias = nil end
 		w = {{ word = w, hint = hint, alias = alias }}
 	else
 		tab = {}
