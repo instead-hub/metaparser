@@ -600,7 +600,7 @@ room {
 	nam = 'арка3';
 	title = "Выход";
 	d_to = 'арка2';
---	out_to = 'марс4';
+	out_to = 'марс4';
 	dsc = function(s)
 		if s:once() then
 			pn [[Ты осторожно поднимаешься по покатой поверхности. Совсем скоро ты видишь впереди свет.]];
@@ -614,7 +614,10 @@ obj {
 	-"отверстие|дыра,дырка";
 	found_in = 'арка3';
 	description = [[Большое продолговатое отверстие диаметром около полутора метров. Достаточное для того, чтобы выбраться наружу.]];
-}:attr 'scenery'
+	before_Enter = function(s)
+		walk 'марс4'
+	end;
+}:attr 'scenery,enterable'
 
 obj {
 	-"пол|поверхность";
@@ -647,6 +650,11 @@ obj {
 	end;
 	found_in = 'арка2';
 }:attr 'scenery';
+
+room {
+	nam = 'марс4';
+	title = 'Марс';
+}
 
 function init()
 	take 'скафандр'
