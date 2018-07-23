@@ -11,6 +11,7 @@ function dark_theme()
 	T('scr.col.bg', '#151515')
 	T('win.col.fg', '#dddddd')
 	T('inv.col.fg', '#dddddd')
+	T('inv.col.link', '#dddddd')
 	sprite.scr():fill '#151515'
 	_'@decor'.bgcol = '#151515'
 end
