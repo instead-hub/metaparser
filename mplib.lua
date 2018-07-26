@@ -27,7 +27,6 @@ mp.door = std.class({
 		return v
 	end;
 }, std.obj):attr 'enterable,openable,door'
-door = mp.door
 
 local function pnoun(noun, ...)
 	local ctx = mp:save_ctx()
@@ -653,7 +652,14 @@ function mp:post_Any()
 	if self.event and self.event:find("Meta", 1, true) then
 		return
 	end
-
+	if mp.undo > 0 then
+		local nr = #snapshots.data
+		if nr > mp.undo  then
+			table.remove(snapshots.data, 1)
+			nr = nr - 1
+		end
+		snapshots:make(nr + 1)
+	end
 	if self.score and (self.score ~= (self.__old_score or 0)) then
 		mp.msg.SCORE(self.score - (self.__old_score or 0))
 		self.__old_score = self.score
@@ -2130,6 +2136,16 @@ function mp:MetaWord(w)
 		for k, vv in pairs(v) do
 			pn(k, " = ", vv)
 		end
+	end
+end
+mp.msg.MetaUndo = {}
+function mp:MetaUndo()
+	local nr = #snapshots.data
+	if nr > 1 then
+		snapshots:restore(nr - 1)
+		table.remove(snapshots.data, nr)
+	else
+		p(mp.msg.MetaUndo.EMPTY)
 	end
 end
 

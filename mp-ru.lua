@@ -587,6 +587,7 @@ function mp.token.compass2(w)
 	return "{noun_obj}/@u_to,compass|{noun_obj}/@d_to,compass|{noun_obj}/@in_to,compass|{noun_obj}/@out_to,compass"
 end
 
+std.mod_start(function(s)
 Verb { "#Walk",
 	"идти,иду,[по|подо|за|во]йти,[по|подо|за|во]йди,иди,[ |по|под]бежать,бег/и,влез/ть,[ |по]ехать,едь,поеду,сесть,сядь,сяду,лечь,ляг,вста/ть",
 	"на {compass1} : Walk",
@@ -1018,6 +1019,16 @@ Verb {
 	"~помощь,помоги/те",
 	"MetaHelp",
 }
+if mp.undo > 0 then
+mp.msg.MetaUndo.EMPTY = "Отменять нечего."
+Verb {
+	"#MetaUndo",
+	"~отмен/ить",
+	"MetaUndo",
+}
+end
+end, 1)
+
 -- Dialog
 std.phr.default_Event = "Exam"
 
@@ -1028,9 +1039,6 @@ Verb ({'#Exam', "~ осмотреть", "Look" }, std.dlg)
 mp.cutscene.default_Verb = "дальше"
 std.dlg.default_Verb = "осмотреть"
 
-parser = mp
-
-cutscene = mp.cutscene
 function content(...)
 	return mp:content(...)
 end

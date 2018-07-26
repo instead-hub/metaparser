@@ -1,4 +1,6 @@
 require "fmt"
+require "snapshots"
+
 if std.ref'@theme' then
 	std.ref'@theme'.set ('win.scroll.mode', 3)
 end
@@ -177,6 +179,7 @@ mp = std.obj {
 	togglehelp = true;
 	errhints = true;
 	autocompl = true;
+	undo = 0;
 	compl_thresh = 0;
 	detailed_inv = false;
 	daemons = std.list {};
@@ -1653,15 +1656,15 @@ function mp:__action(events)
 	local r
 	self.reaction = false
 	self.redirect = false
-	r = self:events_call(events, { parser, game, std.here(), 'obj' }, 'before')
+	r = self:events_call(events, { mp, game, std.here(), 'obj' }, 'before')
 	if not r then
-		r = self:events_call(events, { 'obj', std.here(), game, parser })
+		r = self:events_call(events, { 'obj', std.here(), game, mp })
 		if not r then
-			r = self:events_call(events, { 'obj', std.here(), game, parser }, 'after')
+			r = self:events_call(events, { 'obj', std.here(), game, mp }, 'after')
 		end
 	end
 	if not self.redirect then
-		self:events_call(events, { 'obj', std.here(), game, parser }, 'post')
+		self:events_call(events, { 'obj', std.here(), game, mp }, 'post')
 	end
 end
 
@@ -1774,7 +1777,7 @@ function mp:parse(inp)
 		mp:action()
 	end
 	local tt = std.pget(); std.pclr()
-	if std.here():has 'cutscene' or player_moved() then
+	if std.here():has 'cutscene' or player_moved() or std.abort_cmd then
 		prompt = false
 	end
 	pr(prompt and (prompt .. '^') or '', tt or '')
@@ -2070,7 +2073,8 @@ function(cmd)
 	return true, false
 end)
 std.mod_init(
-function(load)
+function()
+	if DEBUG then mp.undo = 5 end
 	_'game'.__daemons = std.list {}
 end)
 
@@ -2078,11 +2082,13 @@ function mp:init()
 	mrd:gramtab("morph/rgramtab.tab")
 	local _, crc = mrd:load("dict.mrd")
 	mrd:create("dict.mrd", crc) -- create or update
+	cutscene = mp.cutscene
+	door = mp.door
 end
 std.mod_start(function()
 	mp:compl_reset()
 	mp:compl_fill(mp:compl(""))
-end)
+end, 2)
 instead.mouse_filter(0)
 
 function instead.fading()
