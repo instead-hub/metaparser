@@ -587,7 +587,7 @@ function mp.token.compass2(w)
 	return "{noun_obj}/@u_to,compass|{noun_obj}/@d_to,compass|{noun_obj}/@in_to,compass|{noun_obj}/@out_to,compass"
 end
 
-std.mod_start(function(s)
+std.mod_init(function(s)
 Verb { "#Walk",
 	"идти,иду,[по|подо|за|во]йти,[по|подо|за|во]йди,иди,[ |по|под]бежать,бег/и,влез/ть,[ |по]ехать,едь,поеду,сесть,сядь,сяду,лечь,ляг,вста/ть",
 	"на {compass1} : Walk",
