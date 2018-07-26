@@ -2074,7 +2074,7 @@ function(cmd)
 end)
 std.mod_init(
 function()
-	if DEBUG then mp.undo = 5 end
+	if DEBUG and mp.undo == 0 then mp.undo = 5 end
 	_'game'.__daemons = std.list {}
 end)
 
