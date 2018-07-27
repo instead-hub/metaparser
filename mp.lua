@@ -1726,7 +1726,8 @@ function mp:correct(inp)
 		if rinp ~= '' then rinp = rinp .. ' ' end
 		rinp = rinp .. v
 	end
-	if not self:eq(rinp, inp) then
+	local cmprinp = rinp:gsub("["..inp_split.."]+", " ")
+	if not self:eq(cmprinp, inp) then
 		pn(fmt.em("("..rinp..")"))
 	end
 end
@@ -1770,7 +1771,7 @@ function mp:parse(inp)
 	else
 		if std.cmd[1] ~= 'look' then
 			mp:show_prompt(inp1);
-			self:correct(inp1)
+			self:correct(inp)
 			prompt = std.pget(); std.pclr()
 		end
 		-- here we do action
