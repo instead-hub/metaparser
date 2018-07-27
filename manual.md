@@ -2247,9 +2247,9 @@ room {
 
 
 ```
-VerbHint { "#Burn", function(v)
+VerbHint ( "#Burn", function(v)
 	return have 'спички'
-end}
+end)
 ```
 
 Чтобы включить подсказки используйте:

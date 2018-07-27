@@ -23,6 +23,7 @@ function light_theme()
 	T('scr.col.bg', mars_col) -- '#eadaca')
 	T('win.col.fg', '#000000')
 	T('inv.col.fg', '#151515')
+	T('inv.col.link', '#151515')
 	_'@decor'.bgcol = mars_col -- '#eadaca'
 	sprite.scr():fill(mars_col) -- '#eadaca'
 end
@@ -835,7 +836,15 @@ function init()
 end
 
 function start(load)
-	if load then return end
+	if theme.name() == '.mobile' then
+		mp.autohelp = true
+	else
+		mp.autohelp = false
+	end
+
+	if load then
+		return
+	end
 	fading.set {"crossfade", max = FADE_LONG, now = true}
 end
 
@@ -843,5 +852,7 @@ Verb {
 	"провер/ить",
 	"{noun}/вн : Exam";
 }
+VerbHint ( '#Yes', function() return here() ^ 'main' end )
+VerbHint ( '#No', function() return here() ^ 'main' end )
 
 game.hint_verbs = { "#Exam", "#Walk", "#Take", "#Drop", "#FireAt", "#Salute", "#Talk" }
