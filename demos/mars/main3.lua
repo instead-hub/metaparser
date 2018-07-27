@@ -17,6 +17,7 @@ end
 
 local mars_col = '#eadaca'
 local mars_col2 = '#f4efc9'
+local mars_col3 = '#e9b664'
 
 function light_theme()
 	T('scr.col.bg', mars_col) -- '#eadaca')
@@ -33,6 +34,15 @@ function light_theme2()
 	T('inv.col.link', '#000000')
 	_'@decor'.bgcol = mars_col2
 	sprite.scr():fill(mars_col2)
+end
+
+function light_theme3()
+	T('scr.col.bg', mars_col3)
+	T('win.col.fg', '#000000')
+	T('inv.col.fg', '#000000')
+	T('inv.col.link', '#000000')
+	_'@decor'.bgcol = mars_col3
+	sprite.scr():fill(mars_col3)
 end
 
 local FADE_LONG = 64
@@ -776,6 +786,27 @@ cutscene {
 Связаться с базой! Эта мысль сразу приходит тебе в голову, но потом ты понимаешь, что тебя не поймут. Ты бы и сам не поверил.
 Ведь каждый квадратный метр Марса изучен вдоль и поперек. Каждый на Земле знает, что на Марсе нет и не было никакой жизни...^^
 Ты понимаешь, что у тебя нет иного выбора. Ты должен пойти и убедиться в реальности происходящего.]];
+	};
+}
+
+cutscene {
+	nam = 'марс5';
+	title = false;
+	onenter = function(s)
+		light_theme3();
+		fading.set {"crossfade", max = FADE_LONG, now = true}
+		timer:set(70)
+		D {'mars', 'img', 'gfx/coast.jpg',
+		   fx = 0,
+		   y = theme.scr.h() - 448,
+		   fy = 0,
+		   z = 5,
+		   background = true,
+		   process = pan_left,
+		}
+	end;
+	text = {
+		[[TODO]]
 	};
 }
 
