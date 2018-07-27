@@ -1019,16 +1019,18 @@ Verb {
 	"~помощь,помоги/те",
 	"MetaHelp",
 }
-if mp.undo > 0 then
-mp.msg.MetaUndo.EMPTY = "Отменять нечего."
-Verb {
-	"#MetaUndo",
-	"~отмен/ить",
-	"MetaUndo",
-}
-end
 end, 1)
 
+std.mod_start(function()
+	if mp.undo > 0 then
+		mp.msg.MetaUndo.EMPTY = "Отменять нечего."
+		Verb {
+			"#MetaUndo",
+			"~отмен/ить",
+			"MetaUndo",
+		}
+	end
+end)
 -- Dialog
 std.phr.default_Event = "Exam"
 

@@ -4,7 +4,6 @@ require "fmt"
 require "decor"
 require "fading"
 include "gfx"
-
 game.dsc = [[]]
 
 function dark_theme()
