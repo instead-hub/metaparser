@@ -711,12 +711,17 @@ room {
 			p [[Так как горизонт сейчас чист, ты можешь воспользоваться визором.]]
 			return
 		end
+		if dir == 'nw_to' then
+			walk 'смотреть визор';
+			return
+		end
 		if dir == 's_to' or dir == 'se_to' or dir == 'sw_to' then
 			p "В этом направлении обзор загораживает арка."
 			return
 		end
 		return false
 	end;
+--	n_to = 'марс5';
 	cant_go = function()
 		p [[Твоя прогулка уже затянулась. Солнце клонится к закату и пора подумать о возвращении на базу.
 Но твоё внимание привлекает странность ландшафта на северо-западе. Так как горизонт сейчас чист, ты решаешь
@@ -738,6 +743,24 @@ obj {
 		walk 'арка3';
 	end;
 }:attr'scenery,enterable';
+
+cutscene {
+	nam = 'смотреть визор';
+	title = 'Марс';
+	onenter = function(s)
+		fading.set {"crossfade", max = FADE_LONG, now = true}
+		timer:set(70)
+		D {'mars', 'img', 'gfx/lighthouse.jpg',
+		   fx = 1222 - theme.scr.w(),
+		   y = theme.scr.h() - 368,
+		   fy = 0,
+		   z = 5,
+		   background = true,
+		   process = pan_right,
+		}
+	end;
+	text = [[TODO]];
+}
 
 function init()
 	take 'скафандр'

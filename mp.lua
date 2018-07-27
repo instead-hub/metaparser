@@ -1751,7 +1751,7 @@ function mp:parse(inp)
 	inp = std.strip(inp)
 	mp:show_prompt(inp)
 	local prompt = std.pget(); std.pclr()
-
+	local inp1 = inp
 	inp = inp:gsub("[ ]+", " "):gsub("["..inp_split.."]+", " "):gsub("[ \t]+$", "")
 	local r, v = self:input(self:norm(inp))
 
@@ -1769,8 +1769,8 @@ function mp:parse(inp)
 		end
 	else
 		if std.cmd[1] ~= 'look' then
-			mp:show_prompt(inp);
-			self:correct(inp)
+			mp:show_prompt(inp1);
+			self:correct(inp1)
 			prompt = std.pget(); std.pclr()
 		end
 		-- here we do action
