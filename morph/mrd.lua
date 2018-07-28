@@ -544,7 +544,7 @@ function mrd:__lookup(w, g)
 					if t ~= f.an.t then sc = sc - 1 end -- todo
 if false then
 				local tt = v.pref .. f.pre .. v.t .. f.post
-				if tt == 'ШЛЕМ' or tt == 'ШЛЁТ' or tt == 'ШЛЕМОМ' then
+				if tt == 'ЛЕВЫЙ' or tt == 'ЛЕВОГО' or tt == 'ШЛЕМОМ' then
 					print ("======looking for:", g.noun)
 					for _, v in pairs(g) do
 						print(_, v)
