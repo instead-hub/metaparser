@@ -835,7 +835,21 @@ function init()
 	dark_theme()
 end
 
+function autodetect_theme()
+	local f = io.open(instead.savepath().."/config.ini")
+	if f then
+		f:close()
+		return
+	end
+	if PLATFORM == "ANDROID" or PLATFORM == "IOS" or PLATFORM == "S60" then
+		local f = io.open(instead.savepath().."/config.ini", "w")
+		f:write("theme = mobile")
+		f:close()
+		instead.restart()
+	end
+end
 function start(load)
+	autodetect_theme()
 	if theme.name() == '.mobile' then
 		mp.autohelp = true
 	else
