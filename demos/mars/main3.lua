@@ -332,6 +332,7 @@ obj {
 	description = function(s)
 		p [[Функция подогрева поддерживает температуру тела в комфортном диапазоне.^]]
 		local o = 100
+		if _'марс2':has'visited' then o = o - 7 end
 		if _'марс3':has'visited' then o = o - 10 end
 		if _'арка2':has'visited' then o = o - 9 end
 		if _'марс5':has'visited' then o = o - 13 end
@@ -394,7 +395,7 @@ obj {
 	-"рация,радио*";
 	nam = 'рация';
 	found_in = 'скафандр';
-	description = function() p [[Рация встроена в шлем. Ты можешь включить ее в любой момент.]] return false end;
+	description = function() p [[Рация встроена в твой скафандр. Ты можешь включить её в любой момент.]] return false end;
 	before_SwitchOn = function(s)
 		if not base_talked1 then
 			walkin 'dialog1'
