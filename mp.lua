@@ -900,6 +900,18 @@ function mp:hint_verbs(v)
 		return v:hint()
 	end
 	local r = true
+
+	if std.here().hint_verbs_only then
+		r = false
+		for _, vv in ipairs(std.here().hint_verbs_only) do
+			if v.tag == vv then
+				r = true
+				break
+			end
+		end
+		return r
+	end
+
 	if game.hint_verbs then
 		r = false
 		for _, vv in ipairs(game.hint_verbs) do

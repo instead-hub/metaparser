@@ -67,6 +67,7 @@ room {
 		game:reaction(false)
 		walk 'intro'
 	end;
+	hint_verbs_only = { "#Yes", "#No" };
 }
 
 --cutscene.help = fmt.em "Для продолжения нажмите <ввод>";
