@@ -1874,7 +1874,15 @@ function mp:key_enter()
 	self:compl_reset();
 	local r, v = std.call(mp, 'parse', self.inp)
 	self.inp = '';
-	self.cur = 1;
+--[[
+	if std.here():has'cutscene' then
+		self.inp = mp.cutscene.default_Verb or ''
+		if self.inp ~= '' then
+			self.inp = self.inp .. ' '
+		end
+	end
+]]--
+	self.cur = self.inp:len() + 1;
 	if self.autohelp then
 		self:compl_fill(self:compl(self.inp))
 	elseif self.autocompl then
