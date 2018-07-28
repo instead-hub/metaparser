@@ -1086,8 +1086,10 @@ function mp:compl(str)
 		if v.word == '*' then vargs = true end
 		if self:startswith(v.word, pre) and not v.word:find("%*$") then
 			if not dups[v.word] then
-				dups[v.word] = true
+				dups[v.word] = v
 				table.insert(ret, v)
+			elseif dups[v.word].hidden then
+				dups[v.word].hidden = v.hidden
 			end
 		end
 	end

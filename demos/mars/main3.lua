@@ -849,10 +849,20 @@ function start(load)
 end
 
 Verb {
+	"#Check",
 	"провер/ить",
 	"{noun}/вн : Exam";
 }
 VerbHint ( '#Yes', function() return here() ^ 'main' end )
 VerbHint ( '#No', function() return here() ^ 'main' end )
 
-game.hint_verbs = { "#Exam", "#Walk", "#Take", "#Drop", "#FireAt", "#Salute", "#Talk" }
+Verb {
+	"#ExamCompass",
+	"смотр/еть",
+	"на {compass1}/вн : Exam"
+}
+VerbHint ('#ExamCompass', function()
+	return _'визор':has'on'
+end)
+
+game.hint_verbs = { "#Exam", "#Walk", "#Take", "#SwitchOn", "#SwitchOff", "#Pull" }

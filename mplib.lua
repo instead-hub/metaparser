@@ -874,16 +874,16 @@ function mp:Exit(w)
 		return
 	end
 
-	if wh:from() == wh then
+	if wh:from() == wh or wh:type 'room' then
 		p (mp.msg.Exit.NOWHERE)
 		return
 	end
-	if wh:type'room' then
+--	if wh:type'room' then
 --	local r = std.call(w, 'out_to')
-		mp:move(std.me(), wh:from())
-	else
+--		mp:move(std.me(), wh:from())
+--	else
 		mp:move(std.me(), wh:where())
-	end
+--	end
 	return false
 end
 
