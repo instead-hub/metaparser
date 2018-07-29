@@ -1425,7 +1425,7 @@ function mp:err(err)
 				if verb.lev < self.lev_thresh and verb.verb_nr == 1 then
 					hint = true
 					p (self.msg.UNKNOWN_VERB, " ", iface:em(self.words[verb.verb_nr]), ".")
-					pn(self.msg.UNKNOWN_VERB_HINT, " ", iface:em(fixed.word .. (fixed.morph or "")), "?")
+					p (self.msg.UNKNOWN_VERB_HINT, " ", iface:em(fixed.word .. (fixed.morph or "")), "?")
 				end
 			end
 		end

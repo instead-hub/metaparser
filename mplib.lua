@@ -2200,7 +2200,14 @@ local function fn_aliases(wh)
 			local ss, ee = k:find("^[a-z]+_")
 			local pref = ''
 			local str = k
-			if ss then pref = k:sub(1, ee); str = k:sub(ee + 1) end
+			if ss then
+				pref = k:sub(1, ee);
+				if pref == 'before_' or pref == 'after_' or pref == 'post_' then
+					str = k:sub(ee + 1)
+				else
+					pref = ''
+				end
+			end
 			local m = std.split(str, ",")
 			for _, v in ipairs(m) do
 				new[pref .. v] = f
