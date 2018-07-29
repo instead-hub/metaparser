@@ -136,12 +136,14 @@ function std.player:walk(w, doexit, doenter, dofrom)
 		if dofrom ~= false and std.me():where() ~= w then
 			w.__from = std.me():where()
 		end
-		self.__room_where = w
 		if w:inroom() == std.ref(self.room) then
+			self.__room_where = w
 			self:need_scene(true)
 			return nil, true
 		end
-		return owalk(self, w:inroom(), doexit, doenter, dofrom)
+		local r, v = owalk(self, w:inroom(), doexit, doenter, dofrom)
+		self.__room_where = w
+		return r, v
 	end
 	std.err("Can not enter into: "..std.tostr(w), 2)
 end
