@@ -66,7 +66,6 @@ end)
 
 declare 'anim_pan' (function()
 	light_theme2()
-	fading.set {"crossfade", max = FADE_LONG, now = true}
 	timer:set(70)
 	D {'mars', 'img', 'gfx/pan.jpg',
 	   fx = 4096 - theme.scr.w(),
@@ -79,7 +78,6 @@ declare 'anim_pan' (function()
 end)
 
 declare 'anim_lighthouse' (function()
-	fading.set {"crossfade", max = FADE_LONG, now = true}
 	timer:set(70)
 	D {'mars', 'img', 'gfx/lighthouse.jpg',
 	   fx = 1222 - theme.scr.w(),
@@ -93,7 +91,6 @@ end)
 
 declare 'anim_coast' (function()
 	light_theme3();
-	fading.set {"crossfade", max = FADE_LONG, now = true}
 	timer:set(70)
 	D {'mars', 'img', 'gfx/coast.jpg',
 	   fx = 0,
@@ -606,6 +603,7 @@ room {
 	end;
 	cant_go = [[Твоё внимание привлекают обломки скал на северо-востоке. Ты решаешь изменить свой маршрут.]];
 	onenter = function(s)
+		fading.set {"crossfade", max = FADE_LONG, now = true}
 		anim 'pan'
 	end;
 	compass_look = function(s, dir)
@@ -844,6 +842,7 @@ cutscene {
 	nam = 'смотреть визор';
 	title = false;
 	onenter = function(s)
+		fading.set {"crossfade", max = FADE_LONG, now = true}
 		anim 'lighthouse'
 	end;
 	text = {
@@ -1101,6 +1100,7 @@ room {
 	before_Swim = [[Остатки благоразумия удерживают тебя от этой сумасшедшей мысли.]];
 	onenter = function(s)
 		if s:once'theme' then
+			fading.set {"crossfade", max = FADE_LONG, now = true}
 			anim 'coast'
 		end
 	end;
