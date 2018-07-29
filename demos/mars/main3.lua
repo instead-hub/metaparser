@@ -872,7 +872,7 @@ obj {
 	end;
 	found_in = { 'марс5', 'берег', 'у маяка' };
 	description = function(s)
-		if here() ^ 'у моря' or here() ^ 'берег' then
+		if here() ^ 'у маяка' or here() ^ 'берег' then
 			p [[Некоторое время ты наблюдаешь, как волны накатываются на берег.]]
 			return
 		end
