@@ -107,7 +107,7 @@ end)
 
 function anim(name)
 	anim_fn = name
-	if not name then D(); return; end
+	if not name then D(); timer:stop(); return; end
 	_G['anim_'..name]()
 end
 
@@ -145,6 +145,7 @@ end)
 
 declare 'pan_left' (function(v)
 	if v.fx >= v.w - theme.scr.w() then
+		timer:stop()
 		return
 	end
 	v.fx = v.fx + 1
@@ -152,6 +153,7 @@ end)
 
 declare 'pan_right' (function(v)
 	if v.fx <= 0 then
+		timer:stop()
 		return
 	end
 	v.fx = v.fx - 1
@@ -187,7 +189,6 @@ cutscene {
 	};
 	next_to = 'шлюз';
 	onexit = function()
-		timer:stop()
 		anim(false)
 		fading.set {"fadeblack", max = FADE_LONG}
 	end;
@@ -705,7 +706,6 @@ room {
 		end
 	end;
 	onenter = function(s)
-		timer:stop()
 		anim(false)
 		dark_theme()
 	end;
