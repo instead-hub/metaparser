@@ -6,6 +6,8 @@ require "fading"
 include "gfx"
 game.dsc = [[]]
 
+local FADE_LONG = 64
+
 function dark_theme()
 	T('scr.col.bg', '#151515')
 	T('win.col.fg', '#dddddd')
@@ -46,7 +48,69 @@ function light_theme3()
 	sprite.scr():fill(mars_col3)
 end
 
-local FADE_LONG = 64
+global 'anim_fn' (false)
+
+declare 'anim_stars' (function()
+	_'@decor'.bgcol = 'black'
+	timer:set(50)
+	D {'mars', 'img', 'gfx/mars3.jpg',
+		x = theme.scr.w(),
+		y = theme.scr.h(),
+		z = 5,
+		process = mars_proc
+	}
+	D'mars'.x = D'mars'.x - D'mars'.w / 3
+	D'mars'.y = D'mars'.y - D'mars'.h / 4
+	make_stars(stars_left)
+end)
+
+declare 'anim_pan' (function()
+	light_theme2()
+	fading.set {"crossfade", max = FADE_LONG, now = true}
+	timer:set(70)
+	D {'mars', 'img', 'gfx/pan.jpg',
+	   fx = 4096 - theme.scr.w(),
+	   y = theme.scr.h() - 388,
+	   fy = 0,
+	   z = 5,
+	   background = true,
+	   process = pan_right,
+	}
+end)
+
+declare 'anim_lighthouse' (function()
+	fading.set {"crossfade", max = FADE_LONG, now = true}
+	timer:set(70)
+	D {'mars', 'img', 'gfx/lighthouse.jpg',
+	   fx = 1222 - theme.scr.w(),
+	   y = theme.scr.h() - 368,
+	   fy = 0,
+	   z = 5,
+	   background = true,
+	   process = pan_right,
+	}
+end)
+
+declare 'anim_coast' (function()
+	light_theme3();
+	fading.set {"crossfade", max = FADE_LONG, now = true}
+	timer:set(70)
+	D {'mars', 'img', 'gfx/coast.jpg',
+	   fx = 0,
+	   y = theme.scr.h() - 448,
+	   fy = 0,
+	   z = 5,
+	   background = true,
+	   process = pan_left,
+	}
+end)
+
+function anim(name)
+	anim_fn = name
+	if not name then D(); return; end
+	_G['anim_'..name]()
+end
+
 
 room {
 	nam = 'main';
@@ -110,17 +174,7 @@ end)
 cutscene {
 	nam = 'intro';
 	onenter = function()
-		_'@decor'.bgcol = 'black'
-		timer:set(50)
-		D {'mars', 'img', 'gfx/mars3.jpg',
-			x = theme.scr.w(),
-			y = theme.scr.h(),
-			z = 5,
-			process = mars_proc
-		}
-		D'mars'.x = D'mars'.x - D'mars'.w / 3
-		D'mars'.y = D'mars'.y - D'mars'.h / 4
-		make_stars(stars_left)
+		anim'stars'
 	end;
 	text = {
 		[[{$fmt y, 20%}Год 2027 от Рождества Христова.^^
@@ -134,7 +188,7 @@ cutscene {
 	next_to = 'шлюз';
 	onexit = function()
 		timer:stop()
-		D ()
+		anim(false)
 		fading.set {"fadeblack", max = FADE_LONG}
 	end;
 }
@@ -551,17 +605,7 @@ room {
 	end;
 	cant_go = [[Твоё внимание привлекают обломки скал на северо-востоке. Ты решаешь изменить свой маршрут.]];
 	onenter = function(s)
-		light_theme2()
-		fading.set {"crossfade", max = FADE_LONG, now = true}
-		timer:set(70)
-		D {'mars', 'img', 'gfx/pan.jpg',
-		   fx = 4096 - theme.scr.w(),
-		   y = theme.scr.h() - 388,
-		   fy = 0,
-		   z = 5,
-		   background = true,
-		   process = pan_right,
-		}
+		anim 'pan'
 	end;
 	compass_look = function(s, dir)
 		if dir == 'n_to' then
@@ -662,7 +706,7 @@ room {
 	end;
 	onenter = function(s)
 		timer:stop()
-		D()
+		anim(false)
 		dark_theme()
 	end;
 	onexit = function(s)
@@ -800,16 +844,7 @@ cutscene {
 	nam = 'смотреть визор';
 	title = false;
 	onenter = function(s)
-		fading.set {"crossfade", max = FADE_LONG, now = true}
-		timer:set(70)
-		D {'mars', 'img', 'gfx/lighthouse.jpg',
-		   fx = 1222 - theme.scr.w(),
-		   y = theme.scr.h() - 368,
-		   fy = 0,
-		   z = 5,
-		   background = true,
-		   process = pan_right,
-		}
+		anim 'lighthouse'
 	end;
 	text = {
 		[[Сквозь окуляры визора ты наблюдаешь как пологие холмы сменяют другие холмы... Но... Что это?^^
@@ -999,17 +1034,7 @@ room {
 	before_Swim = [[Остатки благоразумия удерживают тебя от этой сумасшедшей мысли.]];
 	onenter = function(s)
 		if s:once'theme' then
-			light_theme3();
-			fading.set {"crossfade", max = FADE_LONG, now = true}
-			timer:set(70)
-			D {'mars', 'img', 'gfx/coast.jpg',
-			   fx = 0,
-			   y = theme.scr.h() - 448,
-			   fy = 0,
-			   z = 5,
-			   background = true,
-			   process = pan_left,
-			}
+			anim 'coast'
 		end
 	end;
 	n_to = 'у маяка';
@@ -1108,7 +1133,9 @@ function start(load)
 	else
 		mp.autohelp = false
 	end
-
+	if anim_fn then
+		anim(anim_fn)
+	end
 	if load then
 		return
 	end
