@@ -1315,6 +1315,12 @@ room {
 			return false
 		end
 	end;
+	before_Walk = function(s, w)
+		if pl:where() ^ 'песок' then
+			walk(s)
+			return false
+		end
+	end;
 	after_Exit = function(s, w)
 		if w ^ 'песок' then
 			p [[Ты поднимаешься с песка, машинально отряхивая песчинки с скафандра.]]
