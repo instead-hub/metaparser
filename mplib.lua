@@ -156,6 +156,12 @@ function std.player:walkout(w, ...)
 end;
 
 std.player.where = function(s, where)
+	if s.__room_where and s.__room_where:inroom() ~= std.here() then -- fallback to room
+		if type(where) == 'table' then
+			table.insert(where, std.ref(s.room))
+		end
+		return std.ref(s.room)
+	end
 	if type(where) == 'table' then
 		table.insert(where, std.ref(s.__room_where or s.room))
 	end

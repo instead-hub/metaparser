@@ -227,6 +227,7 @@ mp = std.obj {
 		xevent = false;
 		aliases = {};
 		first = false;
+		first_it = false;
 		second = false;
 		first_hint = '';
 		second_hint = '';
@@ -508,7 +509,7 @@ function mp.token.noun(w)
 				table.insert(ww, { optional = w.optional, word = r[k], ob = o, morph = attr, alias = v.alias, hidden = hidden })
 			end
 		end
-		if o == mp.first then
+		if o == mp.first_it then
 			for _, v in ipairs(mp:synonyms(o, w.morph)) do
 				table.insert(ww, { optional = w.optional, word = v, ob = o, morph = attr, alias = o.alias, hidden = true })
 			end
@@ -1534,6 +1535,7 @@ end
 local function get_events(self, ev)
 	local events = {}
 	self.aliases = {}
+	self.first_it = false
 	self.multi = {}
 	for _, v in ipairs(ev) do
 		local ea = str_split(v)
@@ -1577,6 +1579,9 @@ local function get_events(self, ev)
 				varg = varg .. vv
 			end
 			table.insert(args, varg)
+		end
+		if not self.first_it then
+			self.first_it = std.is_obj(args[1]) and args[1]
 		end
 		table.insert(events, { ev = e, args = args })
 	end
