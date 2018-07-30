@@ -368,7 +368,7 @@ end;
 
 std.phrase_prefix = function(n)
 	if not n then
-		return ''
+		return '-- '
 	end
 	return (string.format("%d) ", n))
 end
