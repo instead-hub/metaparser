@@ -1156,8 +1156,8 @@ local function lev_sort(t)
 end
 
 function mp:compl_match(words)
-	local verb = { words[1] }
-	local verbs = self:lookup_verb(verb)
+--	local verb = { words[1] }
+	local verbs = self:lookup_verb(words)
 --	table.remove(words, 1) -- remove verb
 	local matches = {}
 	local hints = {}
@@ -2010,9 +2010,15 @@ function mp:input(str)
 		if #m > 0 then
 			table.insert(matches, { verb = v, match = m[1] })
 		end
-		table.insert(hints, h)
-		table.insert(unknown, u)
-		table.insert(multi, mu)
+		if #h > 0 then
+			table.insert(hints, h)
+		end
+		if #u > 0 then
+			table.insert(unknown, u)
+		end
+		if #mu > 0 then
+			table.insert(multi, mu)
+		end
 	end
 	table.sort(matches, function(a, b) return #a.match > #b.match end)
 	hints = lev_sort(hints)
