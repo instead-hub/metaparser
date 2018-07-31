@@ -1889,8 +1889,10 @@ function start(load)
 	autodetect_theme()
 	if theme.name() == '.mobile' then
 		mp.autohelp = true
+		mp.togglehelp = true
 	else
 		mp.autohelp = false
+		mp.togglehelp = false
 	end
 	if anim_fn then
 		anim(anim_fn)
