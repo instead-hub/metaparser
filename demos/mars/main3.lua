@@ -1490,9 +1490,12 @@ obj {
 	-"камень,камушек";
 	nam = 'камень';
 	before_Drop = function(s, w)
-		if visited 'разговор с девушкой' then
+		if visited 'разговор с девушкой' and here() ^'берег' then
 			p [[Ты бросаешь камень в море.]]
-			walk 'закат'
+			remove(s)
+			if not visited 'закат' then
+				walk 'закат'
+			end
 			return
 		end
 		return false
@@ -1500,7 +1503,8 @@ obj {
 	before_ThrowAt = function(s, w)
 		if w ^ 'море' then
 			p [[Ты бросаешь камень в море.]]
-			if visited 'разговор с девушкой' then
+			remove(s)
+			if visited 'разговор с девушкой' and not visited 'закат' then
 				walk 'закат'
 			end
 		elseif w ^ 'песок' then
