@@ -1667,6 +1667,7 @@ obj {
 
 obj {
 	-"телескоп";
+	nam = 'телескоп';
 	found_in = "маячная комната";
 	description = [[Похоже, отец Деи любит наблюдать за небом.]];
 	['before_Walk,Search'] = function(s)
@@ -1788,7 +1789,8 @@ local titles = {
 	{"Движок:", style = 2},
 	{"INSTEAD3"},
 	{"МЕТАПАРСЕР3"},
-	{"http://instead.syscall.ru", style = 2},
+	{ };
+	{"http://instead.syscall.ru"},
 	{ };
 	{"Альфа тестирование:"},
 	{"Сергей Можайский"},
@@ -1924,9 +1926,17 @@ Verb {'#Sit',
       "сесть",
       "на {noun}/вн,supporter: Enter"
 }
+
+Verb {'#LookIn',
+      "посмотреть",
+      "в {noun_obj}/телескоп,вн: Search"
+}
+
 VerbHint ( '#Sit', function() return here() ^ 'берег' end )
 VerbHint ( '#Think', function() return here() ^ 'берег' end )
 VerbHint ( '#Listen', function() return here() ^ 'берег' end )
+VerbHint ( '#ThrowAt', function() return here() ^ 'берег' end )
+VerbHint ( '#LookIn', function() return here() ^ 'маячная комната' end )
 
 VerbHint ('#ExamCompass', function()
 	return _'визор':has'on'
@@ -1943,4 +1953,4 @@ Verb {
 	"в {noun}/вн,scene : Knock",
 }
 
-game.hint_verbs = { "#Exam", "#Walk", "#Take", "#SwitchOn", "#SwitchOff", "#Pull", "#Open", "#Close", "#Talk", "#Disrobe", "#ThrowAt" }
+game.hint_verbs = { "#Exam", "#Walk", "#Take", "#SwitchOn", "#SwitchOff", "#Pull", "#Open", "#Close", "#Talk", "#Disrobe" }

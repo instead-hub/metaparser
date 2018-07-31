@@ -952,7 +952,19 @@ function mp:animate(w)
 	end
 	return w:has'animate' or w:hint'live'
 end
-
+local function multi_select(vv, attrs)
+	local ob = vv.ob
+	for _, h in ipairs(vv.multi or {}) do
+		if attrs.held and not have(vv.ob) and have(h) then
+			ob = h
+			break
+		elseif attrs.scene and have(vv.ob) and not have(h) then
+			ob = h
+			break
+		end
+	end
+	return ob
+end
 function mp:compl_filter(v)
 	if v.hidden then return false end
 	local inp, pre = self:compl_ctx()
@@ -984,8 +996,8 @@ function mp:compl_filter(v)
 	if attrs.live and not self:animate(v.ob) then return false end
 	if attrs.inside and not v.ob:has'container' and not v.ob:has'supporter' then return false end
 	if not attrs.held and not attrs.scene then return true end
-	if attrs.held and have(v.ob) then return true end
-	if attrs.scene and (not have(v.ob) and v.ob ~= std.me()) then return true end
+	if attrs.held and have(multi_select(v, attrs)) then return true end
+	if attrs.scene and (not have(multi_select(v, attrs)) and v.ob ~= std.me()) then return true end
 	return false
 end
 
@@ -1101,8 +1113,19 @@ function mp:compl(str)
 			if not dups[v.word] then
 				dups[v.word] = v
 				table.insert(ret, v)
-			elseif dups[v.word].hidden then
-				dups[v.word].hidden = v.hidden
+			else
+				local o = dups[v.word]
+				if o.hidden then
+					o.hidden = v.hidden
+				end
+				if v.ob then
+					if o.ob then
+        					o.multi = o.multi or {}
+						table.insert(o.multi, v.ob)
+					else
+						o.ob = v.ob
+					end
+				end
 			end
 		end
 	end
@@ -1564,16 +1587,7 @@ local function get_events(self, ev)
 				for _, h in ipairs(str_split(vv.morph, ",")) do
 					attrs[h] = true
 				end
-				local ob = vv.ob
-				for _, h in ipairs(vv.multi or {}) do
-					if attrs.held and not have(vv.ob) and have(h) then
-						ob = h
-						break
-					elseif attrs.scene and have(vv.ob) and not have(h) then
-						ob = h
-						break
-					end
-				end
+				local ob = multi_select(vv, attrs)
 				if reverse then
 					table.insert(args, 1, ob)
 				else
