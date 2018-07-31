@@ -683,8 +683,9 @@ function mp:post_Any()
 		p(l, std.scene_delim)
 		game.player:need_scene(false)
 	end
-
-	mp:step()
+	if not mp.xevent then
+		mp:step()
+	end
 end
 function mp:check_touch()
 	if self.first and not self.first:access() and not self.first:type'room' then

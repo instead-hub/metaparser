@@ -1742,6 +1742,7 @@ end
 function mp:subaction(verb, ...)
 	local events = { {ev = verb, args = { ... }}}
 	local ctx = self:save_ctx()
+	self.xevent = self.event
 	local r, v = self:__action(events)
 	self:restore_ctx(ctx)
 	self.reaction = false
