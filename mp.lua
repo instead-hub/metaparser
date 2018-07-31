@@ -1765,7 +1765,12 @@ function mp:action()
 end
 
 function mp:correct(inp)
+	if inp:find("^[ \t]*%*") then
+		return
+	end
+
 	local rinp = ''
+
 	for _, v in ipairs(self.parsed) do
 		if rinp ~= '' then rinp = rinp .. ' ' end
 		rinp = rinp .. v
@@ -1798,7 +1803,13 @@ function mp:parse(inp)
 	local prompt = std.pget(); std.pclr()
 	local inp1 = inp
 	inp = inp:gsub("[ ]+", " "):gsub("["..inp_split.."]+", " "):gsub("[ \t]+$", "")
-	local r, v = self:input(self:norm(inp))
+	local r, v
+	if inp:find("^[ \t]*%*") then
+		r = false
+		v = nil
+	else
+		r, v = self:input(self:norm(inp))
+	end
 
 	self.cache = { tokens = {} }; -- to completion
 	if not r then
