@@ -168,7 +168,7 @@ room {
 		walk 'маячная комната 0'
 	end;
 	hint_verbs_only = { "#Yes", "#No" };
-}
+}:attr 'noprompt'
 
 cutscene.help = fmt.em "<дальше>";
 
