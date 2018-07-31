@@ -1,4 +1,8 @@
 --$Name:Другой Марс$
+--$Author:Пётр Косых$
+--$Info:июль 2018$
+--$Version:0.1$
+
 require "mp-ru"
 require "fmt"
 require "decor"
