@@ -1,7 +1,7 @@
 --$Name:Другой Марс$
 --$Author:Пётр Косых$
 --$Info:июль 2018$
---$Version:0.2$
+--$Version:0.3$
 
 require "mp-ru"
 require "fmt"
@@ -1798,8 +1798,8 @@ local titles = {
 	{"Альфа тестирование:"},
 	{"Irremann"},
 	{"Wol4ik"},
+	{"j-maks"},
 	{"Сергей Можайский"},
-	{"Василий Воронков"},
 	{ };
 	{"Благодарности:", style = 2},
 	{"Семье (за терпение)" },
@@ -1944,6 +1944,7 @@ VerbHint ( '#Think', function() return here() ^ 'берег' end )
 VerbHint ( '#Listen', function() return here() ^ 'берег' end )
 VerbHint ( '#ThrowAt', function() return here() ^ 'берег' end )
 VerbHint ( '#LookIn', function() return here() ^ 'маячная комната' end )
+VerbHint ( '#Wear', function() return here() ^ 'шлюз' end )
 
 VerbHint ('#ExamCompass', function()
 	return _'визор':has'on'
