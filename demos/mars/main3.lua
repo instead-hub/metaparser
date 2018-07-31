@@ -1830,8 +1830,9 @@ local titles = {
 	{"Irremann"},
 	{"Peter Sovietov"},
 	{"Wol4ik"},
-	{"j-maks"},
 	{"Сергей Можайский"},
+	{"j-maks"},
+	{"Zlobot"},
 	{ };
 	{"Благодарности:", style = 2},
 	{"Семье (за терпение)" },
