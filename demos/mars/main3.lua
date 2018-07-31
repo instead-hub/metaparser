@@ -144,7 +144,7 @@ room {
 	before_Yes = function(s)
 		fading.set {"fadeblack", max = FADE_LONG }
 		game:reaction(false)
-		walk 'intro'
+		walk 'маячная комната 0'
 	end;
 	hint_verbs_only = { "#Yes", "#No" };
 }
@@ -1516,6 +1516,33 @@ obj {
 }
 
 room {
+	nam = 'маячная комната 0';
+	OnError = function(s)
+		p [[Ты должен закрыть глаза!]];
+	end;
+	title = false;
+	enter = function(s)
+		take 'глаза'
+	end;
+	exit = function(s)
+		fading.set {"fadeblack", max = FADE_LONG }
+		remove 'глаза'
+	end;
+	dsc = [[Ты слышишь громкий возглас отца Деи:^^
+-- Дея?^
+-- Да, Отец!^^
+Глаза! Закрыть глаза! Ты должен закрыть глаза!]];
+	before_Any = function(s, ev, w)
+		if ev == 'Close' and w ^ 'глаза' then
+			walk 'intro'
+			return
+		end
+		p [[Ты должен закрыть глаза!]]
+		return
+	end;
+}
+
+room {
 	nam = 'маячная комната';
 	eyes = false;
 	title = 'Вахтенная';
@@ -1562,7 +1589,7 @@ obj {
 
 obj {
 	-"отец Деи,отец,мужчина,старик";
-	found_in = 'маячная комната';
+	found_in = {'маячная комната' };
 	description = [[Он невысокого роста, плотного телосложения. Небольшая, но густая борода с сединой, скрывает нижнюю часть лица.
 Его глаза пристально рассматривают тебя.]];
 	dsc = function(s)
