@@ -1904,6 +1904,8 @@ Verb {
 	"провер/ить",
 	"{noun}/вн : Exam";
 }
+
+
 VerbHint ( '#Yes', function() return here() ^ 'main' end )
 VerbHint ( '#No', function() return here() ^ 'main' end )
 
@@ -1917,6 +1919,14 @@ Verb {'#Climb2',
       "подняться,подниматься,поднимись,поднимусь",
       "по {noun}/пр: Climb"
 }
+
+Verb {'#Sit',
+      "сесть",
+      "на {noun}/вн,supporter: Enter"
+}
+VerbHint ( '#Sit', function() return here() ^ 'берег' end )
+VerbHint ( '#Think', function() return here() ^ 'берег' end )
+VerbHint ( '#Listen', function() return here() ^ 'берег' end )
 
 VerbHint ('#ExamCompass', function()
 	return _'визор':has'on'
@@ -1933,4 +1943,4 @@ Verb {
 	"в {noun}/вн,scene : Knock",
 }
 
-game.hint_verbs = { "#Exam", "#Walk", "#Take", "#SwitchOn", "#SwitchOff", "#Pull" }
+game.hint_verbs = { "#Exam", "#Walk", "#Take", "#SwitchOn", "#SwitchOff", "#Pull", "#Open", "#Close", "#Talk", "#Disrobe", "#ThrowAt" }
