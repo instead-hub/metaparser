@@ -63,6 +63,17 @@ declare 'anim_earth' (function()
 	   process = pan_down,
 	}
 end)
+
+declare 'anim_titles' (function()
+	timer:set(50)
+	make_stars(stars_down)
+	D {'mars', 'img', 'gfx/logo.png',
+		x = 0,
+		y = 0,
+		z = 1,
+	}
+end)
+
 declare 'anim_stars' (function()
 	_'@decor'.bgcol = 'black'
 	timer:set(50)
@@ -1721,6 +1732,18 @@ cutscene {
 		[[Ты стараешься не думать о том, что ты будешь делать теперь, когда ты знаешь...]];
 		[[Что такое...]];
 	};
+	next_to = 'titles';
+}
+room {
+	nam = 'titles';
+	title = false;
+	dsc = false;
+	noparser = true;
+	enter = function()
+		D()
+		anim'titles'
+		fading.set {"fadeblack", max = FADE_LONG }
+	end;
 }
 
 function init()
