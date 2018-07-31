@@ -1343,10 +1343,10 @@ function mp:match(verb, w, compl)
 				found = true
 			end
 		end
-		if #multi > 0 then
-			matches = {}
-			break
-		end
+--		if #multi > 0 then
+--			matches = {}
+--			break
+--		end
 		if found or all_optional then
 			local fixed = verb.verb[verb.word_nr]
 			fixed = fixed.word .. (fixed.morph or '')
@@ -1361,12 +1361,22 @@ function mp:match(verb, w, compl)
 
 	table.sort(matches, function(a, b) return #a > #b end)
 
-	if #unknown > 0 and #matches > 0 then
+	if #matches > 0 and matches[1].extra then
 		local lev = #matches[1]
-		for k, v in ipairs(unknown) do
-			if v.lev >= lev and not v.skip then
-				matches = {}
-				break
+		if #unknown > 0 then
+			for k, v in ipairs(unknown) do
+				if v.lev >= lev and not v.skip then
+					matches = {}
+					break
+				end
+			end
+		end
+		if #multi > 0 and #matches > 0 then
+			for k, v in ipairs(multi) do
+				if v.lev >= lev and not v.skip then
+					matches = {}
+					break
+				end
 			end
 		end
 	end
@@ -1385,16 +1395,16 @@ end
 if false then
 	print "MATCHES: "
 	for _, v in ipairs(matches) do
-		for _, vv in pairs(v.args) do
+		for _, vv in pairs(v) do
 			print(_, vv)
 		end
 	end
 
-	for _, v in ipairs(hints) do
-		for _, vv in ipairs(hints) do
-			print(vv.word, vv.fuzzy, vv.lev)
-		end
-	end
+--	for _, v in ipairs(hints) do
+--		for _, vv in ipairs(hints) do
+--			print(vv.word, vv.fuzzy, vv.lev)
+--		end
+--	end
 end
 	hints = lev_sort(hints)
 	unknown = lev_sort(unknown)
