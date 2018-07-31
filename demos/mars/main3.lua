@@ -3,6 +3,7 @@ require "mp-ru"
 require "fmt"
 require "decor"
 require "fading"
+require "snd"
 include "gfx"
 game.dsc = [[]]
 
@@ -66,6 +67,7 @@ end)
 
 declare 'anim_titles' (function()
 	timer:set(50)
+	dark_theme()
 	make_stars(stars_down)
 	D {'logo', 'img', 'gfx/logo.png',
 		x = 0,
@@ -1762,6 +1764,9 @@ local titles = {
 	{"Иллюстрации:", style = 2},
 	{"Свободные изображения"},
 	{ };
+	{"Музыка:", style = 2},
+	{"Александр Соборов"},
+	{ };
 	{"Движок:", style = 2},
 	{"INSTEAD3"},
 	{"МЕТАПАРСЕР3"},
@@ -1770,6 +1775,12 @@ local titles = {
 	{"Альфа тестирование:"},
 	{"Сергей Можайский"},
 	{"Василий Воронков"},
+	{ };
+	{"Благодарности:", style = 2},
+	{"Семье (за терпение)" },
+	{"Работодателю (за зарплату)"},
+	{"Вам (за прохождение)"},
+	{"Всем тем, кто не мешал"},
 	{ };
 	{"КОНЕЦ", style = 1};
 }
@@ -1796,6 +1807,7 @@ room {
 		end
 	end;
 	enter = function(s)
+		snd.music 'mus/sunflower.ogg'
 		s.font_height = 16
 		s.w, s.h = std.tonum(theme.get 'scr.w'), std.tonum(theme.get 'scr.h')
 		D()
