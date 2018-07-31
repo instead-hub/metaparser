@@ -147,6 +147,10 @@ end
 room {
 	nam = 'main';
 	noparser = false;
+	OnError = function(s)
+		mp:clear()
+		std.pclr()
+	end;
 	title = "{$fmt y,40%}{$fmt c|Внимание}";
 	dsc = [[{$fmt y,60%}{$fmt c|В этой игре вам придётся вводить фразы с помощью клавиатуры.^
 Если вы согласны, наберите "да" и нажмите <ввод>.}]];
