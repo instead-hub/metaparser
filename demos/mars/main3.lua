@@ -754,7 +754,7 @@ obj {
 	before_Default = "Добраться туда можно, если идти на северо-восток.";
 	before_Exam = [[Тебе всё-равно куда идти, но эти скалы привлекли твоё внимание. Ты решаешь идти на северо-восток.]];
 	['before_Enter,Walk,Climb'] = function(s)
-		walkin 'intro2'
+		walkin 'марс3'
 	end;
 }:attr'scenery';
 
