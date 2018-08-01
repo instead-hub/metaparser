@@ -1,7 +1,7 @@
 --$Name:Другой Марс$
 --$Author:Пётр Косых$
 --$Info:июль 2018$
---$Version:0.3$
+--$Version:0.5$
 
 require "mp-ru"
 require "fmt"
@@ -18,6 +18,7 @@ function dark_theme()
 	T('win.col.fg', '#dddddd')
 	T('inv.col.fg', '#dddddd')
 	T('inv.col.link', '#dddddd')
+	T('inv.col.alink', '#888888')
 	sprite.scr():fill '#151515'
 	_'@decor'.bgcol = '#151515'
 end
@@ -31,6 +32,7 @@ function light_theme()
 	T('win.col.fg', '#000000')
 	T('inv.col.fg', '#151515')
 	T('inv.col.link', '#151515')
+	T('inv.col.alink', '#555555')
 	_'@decor'.bgcol = mars_col -- '#eadaca'
 	sprite.scr():fill(mars_col) -- '#eadaca'
 end
@@ -40,6 +42,7 @@ function light_theme2()
 	T('win.col.fg', '#000000')
 	T('inv.col.fg', '#000000')
 	T('inv.col.link', '#000000')
+	T('inv.col.alink', '#444444')
 	_'@decor'.bgcol = mars_col2
 	sprite.scr():fill(mars_col2)
 end
@@ -49,6 +52,7 @@ function light_theme3()
 	T('win.col.fg', '#000000')
 	T('inv.col.fg', '#000000')
 	T('inv.col.link', '#000000')
+	T('inv.col.alink', '#444444')
 	_'@decor'.bgcol = mars_col3
 	sprite.scr():fill(mars_col3)
 end
@@ -406,6 +410,9 @@ obj {
 				else
 					p [[А что если... Ты еще раз краем глаза смотришь на приборы. Нет, это безумие. Внезапно, тебе становится страшно.]]
 				end
+				if _'девушка'.listen then
+					p [[Девушка продолжает что-то говорить...]]
+				end
 				return
 			end
 			p [[На Марсе невозможно выжить без скафандра!]]
@@ -464,6 +471,10 @@ obj {
 		if s:has'on' then
 			p [[Для того, чтобы пользоваться визором, достаточно просто смотреть в ту сторону света, которая тебя интересует.]]
 		else
+			if mp.event == 'Search' then
+				p [[Сначала визор нужно включить.]]
+				return
+			end
 			return false
 		end
 	end;
@@ -1828,7 +1839,7 @@ local titles = {
 	{ };
 	{"Альфа тестирование:"},
 	{"Irremann"},
-	{"Peter Sovietov"},
+	{"Пётр Советов"},
 	{"Wol4ik"},
 	{"Сергей Можайский"},
 	{"j-maks"},
