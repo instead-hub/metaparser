@@ -1269,7 +1269,8 @@ obj {
 	end;
 	before_Talk = function(s)
 		if _'шлем':has'worn' then
-			p [[Я пытаюсь что-то сказать, но девушка грустно качает головой из стороны в сторону.]];
+			p [[Я пытаюсь что-то сказать, но девушка грустно качает головой из стороны в сторону. Конечно, в шлеме она не может тебя слышать.
+			Но ты можешь послушать её.]];
 		else
 			if visited 'разговор с девушкой' then
 				if visited 'закат' then
@@ -1447,6 +1448,13 @@ room {
 		else
 			return false
 		end
+	end;
+	before_Wait = function(s)
+		if not pl:where() ^ 'песок' then
+			p [[Может быть, сесть на песок?]];
+			return
+		end
+		return false
 	end;
 	before_Think = function(s)
 		if pl:where() ^ 'песок' then
