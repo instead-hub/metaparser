@@ -1,7 +1,7 @@
 --$Name:Другой Марс$
 --$Author:Пётр Косых$
 --$Info:июль 2018$
---$Version:0.5$
+--$Version:0.6$
 
 require "mp-ru"
 require "fmt"
@@ -918,9 +918,19 @@ room {
 	nam = 'марс4';
 	title = 'Марс';
 	in_to = 'выход арки';
+	seen = false;
 	compass_look = function(s, dir)
 		if _'визор':hasnt 'on' then
 			p [[Так как горизонт сейчас чист, ты можешь воспользоваться визором.]]
+			return
+		end
+		if dir == 'n_to' then
+			p [[В этом направлении не видно ничего примечательного.]]
+			if s.seen then
+				p [[ Ширина обзора визора невелика. Возможно,
+				тебе стоит осмотреть другие северные направления.]];
+			end
+			s.seen = true
 			return
 		end
 		if dir == 'nw_to' then
