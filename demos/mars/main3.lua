@@ -1,7 +1,7 @@
 --$Name:Другой Марс$
 --$Author:Пётр Косых$
 --$Info:июль 2018$
---$Version:0.6$
+--$Version:0.7$
 
 require "mp-ru"
 require "fmt"
@@ -484,7 +484,11 @@ obj {
 			s:attr'~on'
 		end
 	end;
-}:attr'switchable';
+}:attr'switchable':dict {
+    ["визор/дт"] = "визору",
+    ["визор/тв"] = "визором",
+    ["визор/рд"] = "визора",
+};
 
 obj {
 	-"приборы,показател*|левый рукав/но|рукав";
@@ -2007,6 +2011,16 @@ VerbHint ( '#Listen', function() return here() ^ 'берег' end )
 VerbHint ( '#ThrowAt', function() return here() ^ 'берег' end )
 VerbHint ( '#LookIn', function() return here() ^ 'маячная комната' end )
 VerbHint ( '#Wear', function() return here() ^ 'шлюз' end )
+
+function mp:Use(w)
+	p [[Как именно?]]
+end
+
+Verb {
+    "использовать,воспользовать/ся",
+    "{noun}/вн : Use",
+    "{noun}/тв : Use",
+}
 
 VerbHint ('#ExamCompass', function()
 	return _'визор':has'on'
