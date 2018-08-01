@@ -1248,7 +1248,7 @@ obj {
 			p [[Она небольшого роста, с миниатюрной, но изящной фигурой. Тёмные волосы заплетены в хвост. Ты понимаешь, что девушка тебе симпатична.]]
 		end
 	end;
-	['before_Kiss,Touch'] = function(s)
+	['before_Kiss,Touch,Taste'] = function(s)
 		if insuit() then
 			return false
 		end
