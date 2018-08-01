@@ -1,7 +1,7 @@
 --$Name:Другой Марс$
 --$Author:Пётр Косых$
 --$Info:июль 2018$
---$Version:0.9$
+--$Version:1.0$
 
 require "mp-ru"
 require "fmt"
@@ -388,6 +388,12 @@ obj {
 			return
 		end
 		return false
+	end;
+	before_Enter = function(s)
+		mp:xaction("Wear", s)
+	end;
+	before_Exit = function(s)
+		mp:xaction("Disrobe", s)
 	end;
 	before_Disrobe = function(s)
 		if not insuit() then
