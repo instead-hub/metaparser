@@ -799,7 +799,7 @@ function mp:Enter(w)
 		return
 	end
 
-	if have(w) and w:has'clothing' then
+	if w:has'clothing' and not w:has'enterable' then
 		mp:xaction ("Wear", w)
 		return
 	end
