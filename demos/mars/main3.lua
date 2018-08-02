@@ -1956,10 +1956,12 @@ room {
 function init()
 	snd.music_fading(2000, 2000)
 	if theme.name() == '.mobile' then
+		mp.togglehelp = true
 		mp.autohelp = true
 		mp.autohelp_limit = 1000
 		mp.compl_thresh = 0
 	else
+		mp.togglehelp = false
 		mp.autohelp = false
 		mp.autohelp_limit = 8
 		mp.compl_thresh = 1
