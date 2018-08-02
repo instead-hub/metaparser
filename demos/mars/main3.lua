@@ -1,7 +1,7 @@
 --$Name:Другой Марс$
 --$Author:Пётр Косых$
 --$Info:июль 2018$
---$Version:1.0$
+--$Version:1.2$
 
 require "mp-ru"
 require "fmt"
@@ -388,12 +388,6 @@ obj {
 			return
 		end
 		return false
-	end;
-	before_Enter = function(s)
-		mp:xaction("Wear", s)
-	end;
-	before_Exit = function(s)
-		mp:xaction("Disrobe", s)
 	end;
 	before_Disrobe = function(s)
 		if not insuit() then
@@ -827,8 +821,7 @@ room {
 	nam = 'арка2';
 	title = "В арке";
 	out_to = 'марс3';
-	in_to = "арка3";
-	u_to = function(s)
+	['in_to,u_to'] = function(s)
 		if pl:has'light' or _'арка3':has'visited' then
 			return 'арка3';
 		end

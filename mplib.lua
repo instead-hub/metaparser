@@ -799,6 +799,11 @@ function mp:Enter(w)
 		return
 	end
 
+	if have(w) and w:has'clothing' then
+		mp:xaction ("Wear", w)
+		return
+	end
+
 	if seen(w, me()) then
 		p (mp.msg.Enter.INV)
 		return
@@ -870,6 +875,10 @@ function mp:Exit(w)
 	local wh = std.me():where()
 	w = w or std.me():where()
 	if wh ~= w then
+		if have(w) and w:has'worn' then
+			mp:xaction ("Disrobe", w)
+			return
+		end
 		p (mp.msg.Exit.NOTHERE)
 		return
 	end
