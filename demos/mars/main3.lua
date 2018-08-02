@@ -1979,8 +1979,10 @@ function start(load)
 		mp.autohelp = true
 		mp.togglehelp = true
 	else
-		mp.autohelp = false
-		mp.togglehelp = false
+--		mp.autohelp = false
+		mp.togglehelp = true
+		mp.autohelp_noverbs = true
+		mp.compl_thresh = 1
 	end
 	if anim_fn then
 		anim(anim_fn)

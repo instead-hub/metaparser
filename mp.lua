@@ -176,6 +176,7 @@ mp = std.obj {
 	nam = '@metaparser';
 	score = false;
 	autohelp = false;
+	autohelp_noverbs = false;
 	togglehelp = true;
 	errhints = true;
 	autocompl = true;
@@ -392,13 +393,12 @@ instead.get_inv = std.cacheable('inv', function(horiz)
 		local r, v = std.call(std.here(), 'help')
 		return ret .. (r or '')
 	end
+
+	if mp.autohelp_noverbs and mp.inp:find("^[ \t]*$") then
+		return ret
+	end
+
 	delim = delim or ' | '
-
---	local ww = str_split(mp.inp, inp_split)
-
---	if utf_len(ww[#ww]) < 3 or mp.inp:find(" $") or true then
---		return ret
---	end
 
 	for _, v in ipairs(mp.completions) do
 		local t = iface:xref(std.fmt(v.word), mp, v.word)
