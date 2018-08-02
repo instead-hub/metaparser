@@ -1,7 +1,7 @@
 --$Name:Другой Марс$
 --$Author:Пётр Косых$
 --$Info:июль 2018$
---$Version:1.2$
+--$Version:1.3$
 
 require "mp-ru"
 require "fmt"
@@ -1977,11 +1977,10 @@ function start(load)
 	autodetect_theme()
 	if theme.name() == '.mobile' then
 		mp.autohelp = true
-		mp.togglehelp = true
+		mp.autohelp_limit = 1000
+		mp.compl_thresh = 0
 	else
---		mp.autohelp = false
-		mp.togglehelp = true
-		mp.autohelp_noverbs = true
+		mp.autohelp_limit = 8
 		mp.compl_thresh = 1
 	end
 	if anim_fn then
@@ -2036,7 +2035,7 @@ function mp:Use(w)
 end
 
 Verb {
-    "использовать,воспользовать/ся",
+    "~ использовать,воспользовать/ся",
     "{noun}/вн : Use",
     "{noun}/тв : Use",
 }

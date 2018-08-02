@@ -176,6 +176,7 @@ mp = std.obj {
 	nam = '@metaparser';
 	score = false;
 	autohelp = false;
+	autohelp_limit = 1000;
 	autohelp_noverbs = false;
 	togglehelp = true;
 	errhints = true;
@@ -403,6 +404,10 @@ instead.get_inv = std.cacheable('inv', function(horiz)
 	for _, v in ipairs(mp.completions) do
 		local t = iface:xref(std.fmt(v.word), mp, v.word)
 		if v.ob and have(v.ob) then t = iface:em(t) end
+		if _ >= mp.autohelp_limit then
+			ret = ret .. t .. ' ...' .. delim
+			break
+		end
 		ret = ret .. t .. delim
 	end
 	if #mp.completions == 0 or mp.completions.eol then
@@ -966,7 +971,9 @@ local function multi_select(vv, attrs)
 	return ob
 end
 function mp:compl_filter(v)
-	if v.hidden then return false end
+	if v.hidden and self.compl_thresh == 0 then
+		return false
+	end
 	local inp, pre = self:compl_ctx()
 	if utf_len(pre) < self.compl_thresh then
 		return false
