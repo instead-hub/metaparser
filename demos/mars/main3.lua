@@ -1954,6 +1954,16 @@ room {
 }
 
 function init()
+	snd.music_fading(2000, 2000)
+	if theme.name() == '.mobile' then
+		mp.autohelp = true
+		mp.autohelp_limit = 1000
+		mp.compl_thresh = 0
+	else
+		mp.autohelp = false
+		mp.autohelp_limit = 8
+		mp.compl_thresh = 1
+	end
 	take 'скафандр'
 	take 'шлем'
 	dark_theme()
@@ -1973,19 +1983,7 @@ function autodetect_theme()
 	end
 end
 function start(load)
-	snd.music_fading(2000, 2000)
 	autodetect_theme()
-	if theme.name() == '.mobile' then
-		mp.autohelp = true
-		mp.autohelp_limit = 1000
-		mp.compl_thresh = 0
-	else
-		mp.autohelp = false
-		mp.autohelp_limit = 8
-		mp.compl_thresh = 1
-	end
-	mp:compl_reset()
-	mp:compl_fill(mp:compl(""))
 	if anim_fn then
 		anim(anim_fn)
 	end
