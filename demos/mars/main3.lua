@@ -1980,9 +1980,12 @@ function start(load)
 		mp.autohelp_limit = 1000
 		mp.compl_thresh = 0
 	else
+		mp.autohelp = false
 		mp.autohelp_limit = 8
 		mp.compl_thresh = 1
 	end
+	mp:compl_reset()
+	mp:compl_fill(mp:compl(""))
 	if anim_fn then
 		anim(anim_fn)
 	end
