@@ -1338,7 +1338,7 @@ obj {
 		if player_moved() then move(s, std.here()); p [[Девушка проследовала за тобой.]] end
 	end;
 	each_turn = function(s)
-		if not insuit() then
+		if not insuit() or _'скафандр'.dis then
 			return
 		end
 		s.step = s.step + 1
