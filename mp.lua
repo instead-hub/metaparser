@@ -808,7 +808,6 @@ function mp:lookup_verb(words, lev)
 				   if a.lev == b.lev then return a.word_nr < b.word_nr end
 				   return a.lev < b.lev
 		end)
-		ret = { ret[1] }
 	elseif #ret > 0 then
 		table.sort(ret, function(a, b)
 			if a.verb_nr == b.verb_nr then return a.word_nr < b.word_nr end
@@ -1467,6 +1466,7 @@ function mp:err(err)
 					hint = true
 					p (self.msg.UNKNOWN_VERB, " ", iface:em(self.words[verb.verb_nr]), ".")
 					p (self.msg.UNKNOWN_VERB_HINT, " ", iface:em(fixed.word .. (fixed.morph or "")), "?")
+					break
 				end
 			end
 		end
