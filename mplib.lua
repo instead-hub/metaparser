@@ -1549,14 +1549,15 @@ function mp:Taste(w)
 		return
 	end
 
-	if mp:check_live(w) then
-		return
-	end
-
 	if w:has'edible' then
 		mp:xaction("Eat", w)
 		return
 	end
+
+	if mp:check_live(w) then
+		return
+	end
+
 	return false
 end
 
