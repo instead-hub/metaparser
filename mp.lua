@@ -639,7 +639,7 @@ end
 function mp:verb_remove(tag, w)
 	local v, k = self:verb_find(tag, w)
 	if v then
-		table.remove(w or game, k)
+		table.remove((w or game).__Verbs, k)
 	end
 	return v
 end

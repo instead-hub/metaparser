@@ -458,7 +458,7 @@ Kitten = Class {
 		s.seen = false
 		s.this_kittens_turn = not s.this_kittens_turn;
 		if not s.this_kittens_turn or rnd(3) == 2 then return end
-		pn()
+--		pn()
 		p (s:Noun(1))
 		if s.state == HELD_STATE then
 			local n = rnd(5)

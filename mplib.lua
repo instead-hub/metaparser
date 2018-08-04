@@ -639,8 +639,8 @@ function mp:step()
 		if o:disabled() then
 			return nil, false
 		end
-		local r, v = std.call(o, 'daemon')
-		if r then p(r) end
+		local r = mp:runorval(o, 'daemon')
+		if r == true then return true end
 		if o:closed() then
 			return nil, false
 		end
@@ -649,8 +649,10 @@ function mp:step()
 	std.here():attr 'visited'
 	for _, v in ipairs(oo) do
 		if v.each_turn ~= nil then
-			local r, v = std.call(v, 'each_turn')
-			if r then pr(r) end
+			local r = mp:runorval(v, 'each_turn')
+			if r == true then
+				break
+			end
 		end
 	end
 end
