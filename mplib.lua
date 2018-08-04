@@ -2228,7 +2228,7 @@ local function fn_aliases(wh)
 			local str = k
 			if ss then
 				pref = k:sub(1, ee);
-				if pref == 'before_' or pref == 'after_' or pref == 'post_' then
+				if pref == 'before_' or pref == 'after_' or pref == 'post_' or pref == 'life_' then
 					str = k:sub(ee + 1)
 				else
 					pref = ''
