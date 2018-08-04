@@ -1548,6 +1548,11 @@ function mp:Taste(w)
 	if mp:check_touch() then
 		return
 	end
+
+	if mp:check_live(w) then
+		return
+	end
+
 	if w:has'edible' then
 		mp:xaction("Eat", w)
 		return
