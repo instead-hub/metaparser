@@ -1979,7 +1979,7 @@ function autodetect_theme()
 		f:close()
 		return
 	end
-	if PLATFORM == "ANDROID" or PLATFORM == "IOS" or PLATFORM == "S60" then
+	if PLATFORM == "ANDROID" or PLATFORM == "IOS" or PLATFORM == "S60" or PLATFORM == "WINRT" or PLATFORM == "WINCE" then
 		local f = io.open(instead.savepath().."/config.ini", "w")
 		f:write("theme = mobile")
 		f:close()
