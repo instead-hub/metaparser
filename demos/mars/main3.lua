@@ -2050,14 +2050,20 @@ VerbHint ('#ExamCompass', function()
 end)
 
 function mp:Knock(w)
-	p [[Ты постучал в]]
-	p (w:noun'вн', ".")
+	if mp.args[1].word == 'в' then
+		p [[Ты постучал в]]
+		p (w:noun'вн', ".")
+	else
+		p [[Ты постучал по]]
+		p (w:noun'дт', ".")
+	end
 	p "Ничего не произошло."
 end
 
 Verb {
 	"~ [ |по]стуча/ть,удар/ить",
 	"в {noun}/вн,scene : Knock",
+	"~ по {noun}/дт,scene : Knock",
 }
 
 game.hint_verbs = { "#Exam", "#Walk", "#Take", "#SwitchOn", "#SwitchOff", "#Pull", "#Open", "#Close", "#Talk", "#Disrobe" }

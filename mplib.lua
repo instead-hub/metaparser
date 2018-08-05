@@ -2145,6 +2145,33 @@ function mp:TranscriptOn()
 	end
 end
 
+local restart_yes = false
+
+function mp:after_Any()
+	restart_yes = false
+	return false
+end
+
+function mp:before_No()
+	if restart_yes then
+		restart_yes = false
+		return
+	end
+	return false
+end
+function mp:before_Yes()
+	if restart_yes then
+		instead.restart()
+	end
+	return false
+end
+
+mp.msg.MetaRestart = {}
+function mp:MetaRestart()
+	restart_yes = true
+	p (mp.msg.MetaRestart.RESTART)
+end
+
 function mp:MetaSave()
 	instead.menu 'save'
 end

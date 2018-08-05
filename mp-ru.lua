@@ -1014,6 +1014,14 @@ Verb {
 	"~загрузи/ть",
 	"MetaLoad"
 }
+
+mp.msg.MetaRestart.RESTART = "Начать заново?";
+
+Verb {
+	"#MetaRestart",
+	"~заново,~рестарт",
+	"MetaRestart"
+}
 Verb {
 	"#MetaHelp",
 	"~помощь,помоги/те",
