@@ -1841,6 +1841,7 @@ function mp:parse(inp)
 	end
 	local tt = std.pget(); std.pclr()
 	if std.here():has 'cutscene' or std.here():has 'noprompt' or player_moved() or std.abort_cmd then
+		mp:log(prompt)
 		prompt = false
 	end
 	pr(prompt and (prompt .. '^') or '', tt or '')
