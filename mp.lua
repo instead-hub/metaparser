@@ -164,6 +164,7 @@ function input:key(press, key)
 			elseif mp.autocompl then
 				mp:compl(mp.inp)
 			end
+			if key == 'f6' and mp.autoplay then key = 'enter' end
 			return '@mp_key '..tostring(key)
 		end
 	end
@@ -264,6 +265,11 @@ function mp:key(key)
 		self.autohelp = not self.autohelp
 		return true
 	end
+	if key == 'f6' and DEBUG then
+		self:autoscript()
+		return true
+	end
+
 	if key == 'left' then
 		return self:inp_left()
 	end
