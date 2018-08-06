@@ -2,6 +2,15 @@ function mp:clear()
 	self.text = ''
 end
 
+function mp:cls()
+	if std.call_ctx[1] then
+		std.call_ctx[1].txt = ''
+	end
+	if std.cctx() then
+		std.pclr()
+	end
+end
+
 mp.door = std.class({
 	before_Walk = function(s)
 		return s:before_Enter();
@@ -128,6 +137,9 @@ function std.player:walk(w, doexit, doenter, dofrom)
 			self:need_scene(true)
 			return nil, true
 		end
+		if mp.clear_on_move then
+			mp:cls()
+		end
 		local r, v = owalk(self, w, doexit, doenter, dofrom)
 		self.__room_where = false
 		return r, v
@@ -140,6 +152,9 @@ function std.player:walk(w, doexit, doenter, dofrom)
 			self.__room_where = w
 			self:need_scene(true)
 			return nil, true
+		end
+		if mp.clear_on_move then
+			mp:cls()
 		end
 		local r, v = owalk(self, w:inroom(), doexit, doenter, dofrom)
 		self.__room_where = w
@@ -655,9 +670,23 @@ function mp:step()
 			end
 		end
 	end
+	local s = std.game -- after reset game is recreated
+	local r = std.pget()
+	if std.strip_call and type(r) == 'string' then
+		r = r:gsub("^[%^\n\r\t ]+", "") -- extra heading ^ and spaces
+		r = r:gsub("[%^\n\r\t ]+$", "") -- extra trailing ^ and spaces
+	end
+	s:reaction(r or false)
+	std.pclr()
+	s:step()
+	local r = s:display(true)
+	s:lastreact(s:reaction() or false)
+	s:lastdisp(r)
+	std.pr(r)
+	std.abort_cmd = true
 end
 
-function mp:post_Any()
+function mp:post_action()
 	if std.here().noparser or game.noparser then return end
 	if self.event and self.event:find("Meta", 1, true) then
 		return
@@ -685,9 +714,7 @@ function mp:post_Any()
 		p(l, std.scene_delim)
 		game.player:need_scene(false)
 	end
-	if not mp.xevent then
-		mp:step()
-	end
+	mp:step()
 end
 function mp:check_touch()
 	if self.first and not self.first:access() and not self.first:type'room' then
@@ -2137,7 +2164,9 @@ function mp:TranscriptOn()
 		local f = io.open(logfile, "rb")
 		if not f then
 			self.logfile = logfile
-			p ("Logging is enabled: ", logfile)
+			if std.cctx() then
+				p ("Logging is enabled: ", logfile)
+			end
 			return
 		end
 		f:close()
@@ -2242,6 +2271,15 @@ end
 function mp:MetaTraceOff()
 	pn "Tracing is off"
 	self.debug.trace_action = false
+end
+
+function mp:MetaAutoplay(w)
+	mp:autoscript(w)
+	if mp.autoplay then
+		pn ([[Script file: ]], w)
+	else
+		pn ([[Can not open script file: ]], w)
+	end
 end
 
 local __oini = std.obj.__ini

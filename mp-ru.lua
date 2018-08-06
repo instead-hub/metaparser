@@ -1015,6 +1015,14 @@ Verb {
 	"MetaLoad"
 }
 
+if DEBUG then
+Verb {
+	"#MetaAutoplay",
+	"~автоскрипт",
+	"MetaAutoplay"
+}
+end
+
 mp.msg.MetaRestart.RESTART = "Начать заново?";
 
 Verb {

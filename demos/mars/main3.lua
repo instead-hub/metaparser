@@ -1995,6 +1995,7 @@ function start(load)
 		return
 	end
 	fading.set {"crossfade", max = FADE_LONG, now = true}
+--	mp:autoscript 'autoscript'
 end
 
 Verb {

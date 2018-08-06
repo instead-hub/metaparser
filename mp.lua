@@ -186,11 +186,13 @@ mp = std.obj {
 	detailed_inv = false;
 	daemons = std.list {};
 	{
-		version = "0.2";
+		version = "0.3";
 		cache = { tokens = {} };
 		scope = std.list {};
 		logfile = false;
 		lognum = 0;
+		clear_on_move = true;
+		autoplay = false;
 		inp = '';
 		cur = 1;
 		utf = {
@@ -1787,42 +1789,47 @@ function mp:correct(inp)
 		pn(fmt.em("("..rinp..")"))
 	end
 end
+
 function mp:log(t)
 	if mp.logfile then
 		t = std.fmt(t)
 		local f = io.open(mp.logfile, "a+b")
 		if not f then return end
-		f:write((t or '').."\n")
+		f:write((t or '').."\n\n")
 		f:close()
 	end
 end
 
 function mp:show_prompt(inp)
 	if std.cmd[1] == 'look' then
-		return
+		return false
+	end
+	if std.here():has 'cutscene' or std.here():has 'noprompt' or player_moved() or std.abort_cmd then
+		return false
 	end
 	pn(fmt.b(self.prompt .. inp))
+	return true
 end
 
 function mp:parse(inp)
 	inp = std.strip(inp)
-	mp:show_prompt(inp)
-	local prompt = std.pget(); std.pclr()
-	local inp1 = inp
+
+	local noprompt = not mp:show_prompt(inp)
+
 	inp = inp:gsub("[ ]+", " "):gsub("["..inp_split.."]+", " "):gsub("[ \t]+$", "")
+
 	local r, v
+
 	if inp:find("^[ \t]*%*") then
 		r = false
 		v = nil
 	else
 		r, v = self:input(self:norm(inp))
 	end
-
 	self.cache = { tokens = {} }; -- to completion
 	if not r then
 		if v then
-			pr(prompt)
-			pn()
+--			pn()
 			self:err(v)
 			local s = std.game
 			s:reaction(std.pget())
@@ -1831,20 +1838,13 @@ function mp:parse(inp)
 			return r, false
 		end
 	else
-		if std.cmd[1] ~= 'look' then
-			mp:show_prompt(inp1);
+		if std.cmd[1] ~= 'look' and not noprompt then
 			self:correct(inp)
-			prompt = std.pget(); std.pclr()
 		end
 		-- here we do action
 		mp:action()
 	end
-	local tt = std.pget(); std.pclr()
-	if std.here():has 'cutscene' or std.here():has 'noprompt' or player_moved() or std.abort_cmd then
-		mp:log(prompt)
-		prompt = false
-	end
-	pr(prompt and (prompt .. '^') or '', tt or '')
+	mp:post_action()
 end
 
 std.world.display = function(s, state)
@@ -1853,7 +1853,9 @@ std.world.display = function(s, state)
 		local r = std.call(game, 'dsc')
 		mp.text = r .. '^^'
 	end
-	if player_moved() then mp.text = '' end
+	if mp.clear_on_move then
+		if player_moved() then mp:clear() end
+	end
 	mp:trim()
 	local reaction = s:reaction() or nil
 	if state then
@@ -1931,6 +1933,17 @@ function mp:key_enter()
 		end
 	end
 ]]--
+	if self.autoplay then
+		self.inp = self.autoplay:read("*line") or false
+		if not self.inp then
+			self.inp = ''
+			self.autoplay:close()
+			self.autoplay = false
+		else
+			dprint("> ",self.inp)
+		end
+	end
+
 	self.cur = self.inp:len() + 1;
 	if self.autohelp then
 		self:compl_fill(self:compl(self.inp))
@@ -2040,7 +2053,7 @@ function mp:input(str)
 		else
 			w = self.default_Event or "Exam"
 		end
-		pn()
+--		pn()
 		self:xaction(w, ob[1].ob)
 --		verbs = self:lookup_verb(w)
 --		if #verbs == 0 then
@@ -2143,13 +2156,35 @@ function(cmd)
 			return true, false
 		end
 --		mp.inp = mp:docompl(mp.inp)
-		return mp:key_enter(cmd[1] == 'look')
+		local r, v
+		repeat
+			std.abort_cmd = false
+			std.me():moved(false)
+			std.me():need_scene(false)
+
+			r, v = mp:key_enter(cmd[1] == 'look')
+		until not mp.autoplay or std.here().noparser or game.noparser
+		return r, v
 	end
 	if cmd[1] ~= '@mp_key' then
 		return
 	end
 	return true, false
 end)
+
+function mp:autoscript(w)
+	if self.autoplay then
+		self.autoplay:close()
+	end
+	self.autoplay = io.open(w or 'autoscript')
+	if self.autoplay then
+		self:TranscriptOn();
+		std.cmd = { 'autoscript' }
+		return true
+	end
+	return false
+end
+
 std.mod_init(
 function()
 	if DEBUG and mp.undo == 0 then mp.undo = 5 end
