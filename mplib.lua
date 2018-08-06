@@ -2,12 +2,9 @@ function mp:clear()
 	self.text = ''
 end
 
-function mp:cls()
+function mp:cls_prompt()
 	if std.call_ctx[1] then
 		std.call_ctx[1].txt = ''
-	end
-	if std.cctx() then
-		std.pclr()
 	end
 end
 
@@ -138,7 +135,7 @@ function std.player:walk(w, doexit, doenter, dofrom)
 			return nil, true
 		end
 		if mp.clear_on_move then
-			mp:cls()
+			mp:cls_prompt()
 		end
 		local r, v = owalk(self, w, doexit, doenter, dofrom)
 		self.__room_where = false
@@ -154,7 +151,7 @@ function std.player:walk(w, doexit, doenter, dofrom)
 			return nil, true
 		end
 		if mp.clear_on_move then
-			mp:cls()
+			mp:cls_prompt()
 		end
 		local r, v = owalk(self, w:inroom(), doexit, doenter, dofrom)
 		self.__room_where = w
