@@ -1289,21 +1289,26 @@ function mp:match(verb, w, compl)
 				need_required = false
 				if found.ob then
 					local same
+					local exact
 					for _, pp in ipairs(pat) do
-						if pp.ob and self:eq(found.word, pp.word) then
+						if pp.ob and pp.ob ~= found.ob and self:eq(found.word, pp.word) then
 							if not found.multi then
 								found.multi = {}
 							end
-							if pp.ob:noun(found.morph, pp.alias) == pp.word then -- excactly match
-								table.insert(found.multi, found.ob)
-								found.ob = pp.ob
+							if not exact and pp.ob:noun(found.morph, pp.alias) == pp.word then -- excactly match
+								exact = pp.ob
 							else
 								table.insert(found.multi, pp.ob)
-								if found.ob:noun(found.alias) ~= pp.ob:noun(pp.alias) then
-									table.insert(multi, { word = pp.ob:noun(pp.alias), lev = rlev })
-								end
+							end
+							if found.ob:noun(found.alias) ~= pp.ob:noun(pp.alias) then
+								table.insert(multi, { word = pp.ob:noun(pp.alias), lev = rlev })
 							end
 						end
+					end
+					if exact then
+						found = std.clone(found)
+						found.ob = exact
+						multi = {}
 					end
 					if #multi > 0 then
 						table.insert(multi, 1, { word = found.ob:noun(found.alias), lev = rlev })
