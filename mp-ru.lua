@@ -1055,6 +1055,8 @@ Verb ({'#Next', "дальше", "Next" }, mp.cutscene)
 Verb ({'#Exam', "~ осмотреть", "Look" }, std.dlg)
 
 mp.cutscene.default_Verb = "дальше"
+mp.cutscene.help = fmt.em "<дальше>";
+
 std.dlg.default_Verb = "осмотреть"
 
 function content(...)
