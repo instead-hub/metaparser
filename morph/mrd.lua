@@ -463,7 +463,7 @@ function mrd:gram_compat(base, aa, bb)
 			return false
 		end
 		local g0 = self:gram_info(base)
---		if not __gram_compat(g0, g1) then return false end
+		if not __gram_compat(g0, g1) then return false end
 		if not __gram_compat(g0, g2, true) then return false end
 	end
 	return __gram_compat(g1, g2)
