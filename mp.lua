@@ -1294,7 +1294,7 @@ function mp:match(verb, w, compl)
 							if not found.multi then
 								found.multi = {}
 							end
-							if pp.ob:noun(found.morph, pp.alias) == word then -- excactly match
+							if pp.ob:noun(found.morph, pp.alias) == pp.word then -- excactly match
 								table.insert(found.multi, found.ob)
 								found.ob = pp.ob
 							else
