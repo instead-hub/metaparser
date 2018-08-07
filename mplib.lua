@@ -677,6 +677,10 @@ function mp:step()
 	std.pclr()
 	s:step()
 	local r = s:display(true)
+	if std.strip_call and type(r) == 'string' then
+		r = r:gsub("^[%^\n\r\t ]+", "") -- extra heading ^ and spaces
+		r = r:gsub("[%^\n\r\t ]+$", "") -- extra trailing ^ and spaces
+	end
 	s:lastreact(s:reaction() or false)
 	s:lastdisp(r)
 	std.pr(r)
