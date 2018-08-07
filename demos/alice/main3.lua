@@ -143,7 +143,7 @@ obj {
 }
 
 obj {
-	-"каминный коврик|коврик,ковер";
+	-"каминный коврик,коврик|ковер";
 	nam = 'rug';
 	founded = false;
 	found_in = 'Drawing_Room';
