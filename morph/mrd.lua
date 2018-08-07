@@ -769,9 +769,9 @@ function mrd:obj(w, n, nn)
 			local dd = raw and { w } or str_split(w, ',')
 			for _, vv in ipairs(dd) do
 				table.insert(nd, { word = vv, hint = hint2 or '', alias = k, idx = _ })
-				for w in vv:gmatch("[^ ]+") do
-					table.insert(nd, { word = w, hint = hint2 or '', alias = k, idx = _ })
-				end
+--				for w in vv:gmatch("[^ ]+") do
+--					table.insert(nd, { word = w, hint = hint2 or '', alias = k, idx = _ })
+--				end
 			end
 		end
 		d = nd
