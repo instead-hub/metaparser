@@ -2027,10 +2027,13 @@ function mp:input(str)
 	if #w == 0 then
 		return false, "EMPTY_INPUT"
 	end
-	local verbs = self:lookup_verb(w)
+	local ob = self:lookup_noun(w)
+	local verbs = {}
+	if #ob == 0 then
+		verbs = self:lookup_verb(w)
+	end
 	if #verbs == 0 then
 		-- match object?
-		local ob = self:lookup_noun(w)
 		if #ob > 1 then
 			self.multi = {}
 			for _, v in ipairs(ob) do
