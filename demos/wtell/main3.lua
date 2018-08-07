@@ -472,9 +472,17 @@ Verb {
 
 function mp:Salute(w)
 	if mp:animate(w) then
-		p (w:Noun(), " приветствует тебя.")
+		if w:hint'мн' then
+			p (w:Noun(), " приветствуют тебя.")
+		else
+			p (w:Noun(), " приветствует тебя.")
+		end
 	else
-		p (w:Noun(), " не замечает этого.")
+		if w:hint'мн' then
+			p (w:Noun(), " не замечают этого.")
+		else
+			p (w:Noun(), " не замечает этого.")
+		end
 	end
 end
 
