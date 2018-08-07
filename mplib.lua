@@ -75,9 +75,9 @@ std.class({
 		p(mp.msg.CUTSCENE_HELP)
 	end;
 	Next = function(s, force)
---		if game:time() == 0 then
---			return
---		end
+		if game:time() == 0 then
+			return
+		end
 		s.__num = s.__num + 1
 		if force or type(s.text) == 'string' or (type(s.text) == 'table' and s.__num > #s.text) then
 			local r, v = mp:runorval(s, 'next_to')

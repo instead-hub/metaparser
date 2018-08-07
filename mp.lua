@@ -2162,13 +2162,15 @@ function(cmd)
 			return true, false
 		end
 --		mp.inp = mp:docompl(mp.inp)
-		local r, v
+		local r, v, n
 		repeat
-			std.abort_cmd = false
-			std.me():moved(false)
-			std.me():need_scene(false)
-
+			if n then
+				std.abort_cmd = false
+				std.me():moved(false)
+				std.me():need_scene(false)
+			end
 			r, v = mp:key_enter(cmd[1] == 'look')
+			n = true
 		until not mp.autoplay or std.here().noparser or game.noparser
 		return r, v
 	end
