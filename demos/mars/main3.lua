@@ -1,7 +1,7 @@
 --$Name:Другой Марс$
 --$Author:Пётр Косых$
 --$Info:июль 2018$
---$Version:1.4$
+--$Version:1.5$
 
 require "mp-ru"
 require "fmt"
