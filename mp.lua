@@ -936,7 +936,7 @@ function mp:hint_verbs(v)
 	end
 	if r then return r end
 	if std.here().hint_verbs then
-		for _, vv in ipairs(game.hint_verbs) do
+		for _, vv in ipairs(std.here().hint_verbs) do
 			if v.tag == vv then
 				r = true
 				break
