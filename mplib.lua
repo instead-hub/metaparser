@@ -456,7 +456,7 @@ obj {
 			end
 			return
 		end
-		return std.call(s, 'before_Default', ...)
+		return std.call(s, 'before_Default', ev, ...)
 	end;
 }:persist():attr'~light,transparent':with {
 	compass_dir 'n_to',
