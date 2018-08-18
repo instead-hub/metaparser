@@ -1277,7 +1277,7 @@ obj {
 ```
 room {
 	nam = 'main';
-	['before_Walk,Enter'] = function(s, ev, w)
+	['before_Walk,Enter'] = function(s, w)
 		p ("Событие: ", ev)
 		p ("Попытка идти к/в ",w)
 		return false
@@ -1295,7 +1295,7 @@ Walk этого объекта. Если вам нужно определить 
 ```
 room {
 	nam = 'main';
-	['before_Walk,Enter'] = function(s, ev, w)
+	['before_Walk,Enter'] = function(s, w)
 		if mp:compass_dir(w) == 'n_to' then
 			pn ("Игрок пытается идти на север.")
 		end
