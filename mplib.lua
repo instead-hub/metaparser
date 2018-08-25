@@ -1908,6 +1908,18 @@ function mp:Cut(w, wh)
 	end
 end
 
+mp.msg.Tear = {}
+function mp:Tear(w)
+	if mp:check_touch() then
+		return
+	end
+	if mp:check_live(w) then
+		return
+	end
+	p (mp.msg.Tear.TEAR)
+	return
+end
+
 mp.msg.Tie = {}
 
 function mp:Tie(w, wh)
