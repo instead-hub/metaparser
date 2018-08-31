@@ -646,8 +646,8 @@ Verb { "#Inv",
 Verb { "#Take",
 	"взять,возьм/и,[ |за|подо]брать,[ |за|под]бер/и,доста/ть,схват/ить,украсть,украд/и,извле/чь,вын/уть,вытащ/ить",
 	"{noun}/вн,scene : Take",
-	"{noun}/вн из|с|со|у {noun}/рд,inside: Remove",
-	"~ из|с|со|у {noun}/рд,container {noun}/вн: Remove reverse",
+	"{noun}/вн,scene из|с|со|у {noun}/рд,inside,holder: Remove",
+	"~ из|с|со|у {noun}/рд,inside,holder {noun}/вн,scene: Remove reverse",
 }
 
 Verb { "#Drop",

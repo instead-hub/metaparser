@@ -187,7 +187,7 @@ mp = std.obj {
 	detailed_inv = false;
 	daemons = std.list {};
 	{
-		version = "0.3";
+		version = "0.5";
 		cache = { tokens = {} };
 		scope = std.list {};
 		logfile = false;
@@ -964,19 +964,39 @@ function mp:animate(w)
 	end
 	return w:has'animate' or w:hint'live'
 end
-local function multi_select(vv, attrs)
+
+local function holded_by(ob, holder)
+	if not holder then
+		return true
+	end
+	local h = holder.ob
+	if not h then return false end
+	if ob:where() == h then return true end
+	for _, h in ipairs(holder.multi or {}) do
+		if ob:where() == h then
+			return true
+		end
+	end
+	return false
+end
+
+local function multi_select(vv, attrs, holder)
 	local ob = vv.ob
 	for _, h in ipairs(vv.multi or {}) do
-		if attrs.held and not have(vv.ob) and have(h) then
+		if holded_by(h, holder) then
 			ob = h
-			break
-		elseif attrs.scene and have(vv.ob) and not have(h) then
-			ob = h
-			break
+			if attrs.held and not have(vv.ob) and have(h) then
+				ob = h
+				break
+			elseif attrs.scene and have(vv.ob) and not have(h) then
+				ob = h
+				break
+			end
 		end
 	end
 	return ob
 end
+
 function mp:compl_filter(v)
 	if v.hidden and self.compl_thresh == 0 then
 		return false
@@ -1607,13 +1627,23 @@ local function get_events(self, ev)
 				reverse = true
 			end
 		end
-		for _, vv in ipairs(self.args) do
+		local attrs = {}
+		local holder
+		for k, vv in ipairs(self.args) do
 			if vv and std.is_obj(vv.ob) then
-				local attrs = {}
+				attrs[k] = {}
 				for _, h in ipairs(str_split(vv.morph, ",")) do
-					attrs[h] = true
+					attrs[k][h] = true
+					if h == 'holder' then
+						holder = vv
+					end
 				end
-				local ob = multi_select(vv, attrs)
+			end
+		end
+
+		for k, vv in ipairs(self.args) do
+			if vv and std.is_obj(vv.ob) then
+				local ob = multi_select(vv, attrs[k], holder)
 				if reverse then
 					table.insert(args, 1, ob)
 				else
@@ -1622,6 +1652,7 @@ local function get_events(self, ev)
 				self.aliases[ob] = vv.alias
 			end
 		end
+
 		if self.vargs and #self.vargs > 0 then
 			local varg = ''
 			for _, vv in ipairs(self.vargs) do
