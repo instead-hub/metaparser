@@ -68,7 +68,8 @@ function mrd:gramtab(path)
 end
 
 local function section(f, fn, ...)
-	local n = tonumber(f:read("*line"))
+	local n = f:read("*line")
+	n = n and tonumber(n)
 	if not n then
 		return false
 	end
