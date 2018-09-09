@@ -982,6 +982,10 @@ end
 
 local function multi_select(vv, attrs, holder)
 	local ob = vv.ob
+	if holded_by(ob, holder) and ((attrs.held and have(ob)) or
+		(attrs.scene and not have(ob))) then
+		return ob
+	end
 	for _, h in ipairs(vv.multi or {}) do
 		if holded_by(h, holder) then
 			ob = h
