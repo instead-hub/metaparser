@@ -980,20 +980,26 @@ local function holded_by(ob, holder)
 	return false
 end
 
+local function multi_held(ob, attrs)
+	if not attrs.held and not attrs.scene then
+		return true
+	end
+	if ((attrs.held and have(ob)) or
+		(attrs.scene and not have(ob))) then
+		return true
+	end
+	return false
+end
+
 local function multi_select(vv, attrs, holder)
 	local ob = vv.ob
-	if holded_by(ob, holder) and ((attrs.held and have(ob)) or
-		(attrs.scene and not have(ob))) then
+	if holded_by(ob, holder) and multi_held(ob, attrs) then
 		return ob
 	end
 	for _, h in ipairs(vv.multi or {}) do
 		if holded_by(h, holder) then
 			ob = h
-			if attrs.held and not have(vv.ob) and have(h) then
-				ob = h
-				break
-			elseif attrs.scene and have(vv.ob) and not have(h) then
-				ob = h
+			if multi_held(ob, attrs) then
 				break
 			end
 		end
