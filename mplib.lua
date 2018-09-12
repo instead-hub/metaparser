@@ -244,7 +244,7 @@ function std.obj:access()
 --		if v:has 'concealed' then
 --			return nil, false
 --		end
-		table.insert(plw, v)
+		plw[v] = true
 		if v:has 'container' then -- or v:has 'supporter' then
 			return nil, false
 		end
@@ -256,15 +256,41 @@ function std.obj:access()
 		if check_persist(v) then
 			return true
 		end
-		for _, o in ipairs(plw) do
-			if v == o then
-				return true
-			end
+		if plw[v] then
+			return true
 		end
 		if v:has 'container' and not v:has 'open' then
 			return nil, false
 		end
 	end)
+end
+
+function mp:distance(v, wh)
+	local plw = {}
+	wh = wh or std.me()
+	local a = 0
+
+	mp:trace(wh, function(v)
+		plw[v] = a
+		table.insert(plw, v)
+		a = a + 1
+		if v:has 'container' then
+			return nil, false
+		end
+	end)
+
+	local dist = 0
+	if v:where() ~= wh then
+		dist = dist + 1
+		mp:trace(v, function(o)
+			if plw[o] then
+				dist = dist + plw[o]
+				return true
+			end
+			dist = dist + 1
+		end)
+	end
+	return dist
 end
 
 function mp:offerslight(what)

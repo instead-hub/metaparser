@@ -992,19 +992,29 @@ local function multi_held(ob, attrs)
 end
 
 local function multi_select(vv, attrs, holder)
+	local res = {}
 	local ob = vv.ob
 	if holded_by(ob, holder) and multi_held(ob, attrs) then
-		return ob
+		table.insert(res, ob)
 	end
 	for _, h in ipairs(vv.multi or {}) do
 		if holded_by(h, holder) then
 			ob = h
 			if multi_held(ob, attrs) then
-				break
+				table.insert(res, ob)
 			end
 		end
 	end
-	return ob
+	local dist = -1;
+	ob = res[1]
+	for _, v in ipairs(res) do
+		local d = mp:distance(v)
+		if d < dist or dist == -1 then
+			ob = v
+			dist = d
+		end
+	end
+	return ob or vv.ob
 end
 
 function mp:compl_filter(v)
