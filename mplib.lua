@@ -279,9 +279,9 @@ function mp:distance(v, wh)
 		end
 	end)
 
-	local dist = 0
+	local dist = 10000 -- infinity
 	if v:where() ~= wh then
-		dist = dist + 1
+		dist = 1
 		mp:trace(v, function(o)
 			if plw[o] then
 				dist = dist + plw[o]
@@ -289,6 +289,8 @@ function mp:distance(v, wh)
 			end
 			dist = dist + 1
 		end)
+	else
+		dist = 0
 	end
 	return dist
 end
