@@ -2091,6 +2091,7 @@ function mp:input(str)
 	end
 	if type(mp.pre_input) == 'function' then
 		str = mp:pre_input(str)
+		if not str then return false end
 	end
 	local w = str_split(str, inp_split)
 	self.words = w
