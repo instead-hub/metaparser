@@ -1053,7 +1053,7 @@ end, 1)
 std.mod_start(function()
 	if mp.undo > 0 then
 		mp.msg.MetaUndo.EMPTY = "Отменять нечего."
-		Verb {
+		MetaVerb {
 			"#MetaUndo",
 			"~отмен/ить",
 			"MetaUndo",
