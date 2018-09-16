@@ -80,6 +80,7 @@ function mp.msg.SCORE(d)
 	end
 end
 mp.door.word = -"дверь";
+mp.msg.YES = "Да"
 mp.msg.WHEN_DARK = "Кромешная тьма."
 mp.msg.UNKNOWN_THEDARK = "Возможно, это потому что в темноте ничего не видно?"
 mp.msg.COMPASS_NOWAY = "Этот путь недоступен."
@@ -1053,7 +1054,7 @@ end, 1)
 std.mod_start(function()
 	if mp.undo > 0 then
 		mp.msg.MetaUndo.EMPTY = "Отменять нечего."
-		Verb {
+		MetaVerb {
 			"#MetaUndo",
 			"~отмен/ить",
 			"MetaUndo",

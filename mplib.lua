@@ -715,8 +715,9 @@ function mp:step()
 end
 
 function mp:post_action()
-	if std.here().noparser or game.noparser then return end
-	if self.event and self.event:find("Meta", 1, true) then
+	if std.here().noparser or game.noparser or
+		(self.event and self.event:find("Meta", 1, true)) then
+		game:time(game:time() - 1)
 		return
 	end
 	if mp.undo > 0 then
@@ -2214,32 +2215,22 @@ function mp:TranscriptOn()
 	end
 end
 
-local restart_yes = false
-
-function mp:after_Any()
-	restart_yes = false
-	return false
-end
-
-function mp:before_No()
-	if restart_yes then
-		restart_yes = false
-		return
-	end
-	return false
-end
-function mp:before_Yes()
-	if restart_yes then
-		instead.restart()
-		return
-	end
-	return false
-end
-
 mp.msg.MetaRestart = {}
+
+local old_pre_input
+
 function mp:MetaRestart()
-	restart_yes = true
 	p (mp.msg.MetaRestart.RESTART)
+	if old_pre_input then return end
+	old_pre_input = mp.pre_input
+	std.rawset(mp, 'pre_input', function(s, str)
+		std.rawset(mp, 'pre_input', old_pre_input)
+		old_pre_input = false
+		if mp:eq(str, mp.msg.YES) then
+			instead.restart()
+		end
+		return false
+	end)
 end
 
 function mp:MetaSave()
