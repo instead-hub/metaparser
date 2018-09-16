@@ -2277,7 +2277,7 @@ function mp:MetaDump()
 			if d > 8 then d = 8 end
 			for _ = 1, d do pr(fmt.nb' ') end
 			local t = '<'..std.tostr(o)..'>'
-			t = t .. std.call(o, 'word')
+			t = t .. (std.call(o, 'word') or std.call(o, 'raw_word') or '')
 			if have(o) then t = fmt.em(t) end
 			pn(t, attr_string(o))
 		end
