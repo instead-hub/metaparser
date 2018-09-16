@@ -1003,6 +1003,11 @@ if DEBUG then
 		"да : MetaTraceOn",
 		"нет : MetaTraceOff",
 	}
+	MetaVerb {
+		"#MetaDump",
+		"~_дамп",
+		"MetaDump"
+	}
 end
 MetaVerb {
 	"#MetaTranscript",

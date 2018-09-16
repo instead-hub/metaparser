@@ -269,7 +269,6 @@ function mp:distance(v, wh)
 	local plw = {}
 	wh = wh or std.me()
 	local a = 0
-
 	mp:trace(wh, function(v)
 		plw[v] = a
 		table.insert(plw, v)
@@ -2249,6 +2248,40 @@ end
 
 function mp:MetaLoad()
 	instead.menu 'load'
+end
+local function attr_string(o)
+	local a = ''
+	for k, v in pairs(o.__ro) do
+		if type(k) == 'string' and k:find("__attr__", 1, true) == 1 then
+			if a ~= '' then a = a .. ', ' end
+			a = a .. k:sub(9)
+		end
+	end
+	local b = ''
+	for k, v in pairs(o) do
+		if type(k) == 'string' and k:find("__attr__", 1, true) == 1 then
+			if b ~= '' then b = b .. ', ' end
+			b = b .. k:sub(9)
+		end
+	end
+	if b ~= '' then b = '!'..b..'' end
+	a = a .. b
+	if a ~= '' then a = ' [' .. a .. '] ' end
+	return a
+end
+function mp:MetaDump()
+	local oo = mp:nouns()
+	for _, o in ipairs(oo) do
+		if not std.is_system(o) and o ~= std.me() then
+			local d = mp:distance(o)
+			if d > 8 then d = 8 end
+			for _ = 1, d do pr(fmt.nb' ') end
+			local t = '<'..std.tostr(o)..'>'
+			t = t .. std.call(o, 'word')
+			if have(o) then t = fmt.em(t) end
+			pn(t, attr_string(o))
+		end
+	end
 end
 
 function mp:MetaWord(w)
