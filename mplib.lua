@@ -2232,6 +2232,7 @@ end
 function mp:before_Yes()
 	if restart_yes then
 		instead.restart()
+		return
 	end
 	return false
 end

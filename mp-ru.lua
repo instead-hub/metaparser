@@ -987,24 +987,24 @@ Verb {
 }
 
 if DEBUG then
-	Verb {
+	MetaVerb {
 		"#MetaWord",
 		"~_слово",
 		"* : MetaWord"
 	}
-	Verb {
+	MetaVerb {
 		"#MetaNoun",
 		"~_сущ/ествительное",
 		"* : MetaNoun"
 	}
-	Verb {
+	MetaVerb {
 		"#MetaTrace",
 		"~_трассировка",
 		"да : MetaTraceOn",
 		"нет : MetaTraceOff",
 	}
 end
-Verb {
+MetaVerb {
 	"#MetaTranscript",
 	"~транскрипт",
 	"да : TranscriptOn",
@@ -1012,19 +1012,19 @@ Verb {
 	"Transcript",
 }
 
-Verb {
+MetaVerb {
 	"#MetaSave",
 	"~сохрани/ть",
 	"MetaSave"
 }
-Verb {
+MetaVerb {
 	"#MetaLoad",
 	"~загрузи/ть",
 	"MetaLoad"
 }
 
 if DEBUG then
-Verb {
+MetaVerb {
 	"#MetaAutoplay",
 	"~автоскрипт",
 	"MetaAutoplay"
@@ -1033,12 +1033,12 @@ end
 
 mp.msg.MetaRestart.RESTART = "Начать заново?";
 
-Verb {
+MetaVerb {
 	"#MetaRestart",
 	"~заново,~рестарт",
 	"MetaRestart"
 }
-Verb {
+MetaVerb {
 	"#MetaHelp",
 	"~помощь,помоги/те",
 	"MetaHelp",

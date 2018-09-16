@@ -731,7 +731,14 @@ end
 
 function mp:verbs()
 	local w = std.here().__Verbs or std.me().__Verbs or game.__Verbs or {}
-	return w
+	local t = {}
+	for _, v in ipairs(w) do
+		table.insert(t, v)
+	end
+	for _, v in ipairs(mp.__Verbs or {}) do
+		table.insert(t, v)
+	end
+	return t
 end
 
 local function word_search(t, w, lev)
@@ -1734,6 +1741,7 @@ function mp:events_call(events, oo, t)
 	for _, o in ipairs(oo) do
 		for _, e in ipairs(events) do
 			self.event = e.ev
+			local meta = self.event and self.event:find("Meta", 1, true)
 			local ename = t .. e.ev
 			local eany = t .. 'Any'
 			local edef = t .. 'Default'
@@ -1747,7 +1755,7 @@ function mp:events_call(events, oo, t)
 				table.remove(e.args, 1)
 			end
 			local r, v
-			if std.is_obj(ob) and (o ~= 'obj' or ob ~= std.here()) then
+			if (meta and o == mp) or (not meta and std.is_obj(ob) and (o ~= 'obj' or ob ~= std.here())) then
 				r, v = self:call(ob, eany, e.ev, std.unpack(e.args))
 				if r then std.pn(r) end
 				if not v then
@@ -2171,6 +2179,10 @@ function mp:input(str)
 	self.args = self.parsed.args
 	self.vargs = self.parsed.vargs or {}
 	return true
+end
+
+function MetaVerb(t)
+	return mp:verb(t, mp)
 end
 
 function Verb(t, w)
