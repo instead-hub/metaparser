@@ -717,7 +717,9 @@ end
 function mp:post_action()
 	if std.here().noparser or game.noparser or
 		(self.event and self.event:find("Meta", 1, true)) then
-		game:time(game:time() - 1)
+		if not std.abort_cmd then
+			game:time(game:time() - 1)
+		end
 		return
 	end
 	if mp.undo > 0 then

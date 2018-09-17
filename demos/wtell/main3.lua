@@ -1,7 +1,7 @@
 --$Name:Вильгельм Телль$
 require "mp-ru"
 require "fmt"
-
+mp.undo = 5
 mp.score = 0 -- enable scoring
 mp.detailed_inv = true
 instead.notitle = false -- enable status
