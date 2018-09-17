@@ -2278,6 +2278,7 @@ function mp:MetaDump()
 end
 
 function mp:MetaWord(w)
+	if not w then return end
 	w = w:gsub("_", "/")
 	local w, g = self.mrd:word(w)
 	pn(w)

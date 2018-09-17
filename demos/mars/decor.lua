@@ -1,1 +1,1 @@
-/home/peter/Devel/stead3-modules/decor/decor.lua
+../../../../stead3-modules/decor/decor.lua
