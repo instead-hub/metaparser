@@ -1,1 +1,1 @@
-../../../../stead3-modules/fading/fading.lua
+../../../fading/fading.lua

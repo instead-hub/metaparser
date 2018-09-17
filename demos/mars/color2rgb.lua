@@ -1,1 +1,1 @@
-../../../../stead3-modules/decor/color2rgb.lua
+../../../decor/color2rgb.lua
