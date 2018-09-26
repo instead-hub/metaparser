@@ -2490,6 +2490,25 @@ function std.obj:it(hint)
 	end
 end
 
+function mp:traceinside(w, fn)
+	local ww = w and w.obj or std.here().obj
+	while #ww > 0 do
+		local nww = {}
+		for _, o in ipairs(ww) do
+			local r, v = fn(o)
+			if r ~= nil then
+				return r
+			end
+			if v ~= false then
+				for _, vv in ipairs(o.obj) do
+					table.insert(nww, vv)
+				end
+			end
+		end
+		ww = nww
+	end
+end
+
 function mp:trace(w, fn)
 	local ww = {}
 	w:where(ww)

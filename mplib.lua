@@ -293,24 +293,31 @@ function mp:distance(v, wh)
 	end
 	return dist
 end
-
-function mp:offerslight(what)
-	local w = std.me()
-	if w:has'light' then
+local function trace_light(v)
+	if v:has 'light' then
 		return true
 	end
+	if not v:has 'transparent' and not v:has 'open' and not v:has 'supporter' then
+		return nil, false
+	end
+end
+function mp:offerslight(what)
+	if std.me():has'light' or mp:traceinside(std.me(), trace_light) then
+		return true
+	end
+
 	if what and (what:has'light' or std.me():lookup(what)) then
 		return true
 	end
-	local l = mp:trace(w, function(v)
-		if v:has 'light' then
-			return true
-		end
-		if not v:has 'transparent' and not v:has 'open' and not v:has 'supporter' then
-			return nil, false
-		end
-	end)
-	return l
+
+	what = what or std.me()
+
+	local w = what:where() or what
+	local h = mp:visible_scope(w)
+
+	if h:has'light' then return true end
+
+	return mp:traceinside(h, trace_light)
 end
 
 function std.obj:visible()
