@@ -2397,6 +2397,22 @@ local function fn_aliases(wh)
 		wh[k] = v
 	end
 end
+
+std.obj.for_multi = function(s, fn)
+	if not s:hint 'plural' then
+		return false
+	end
+	for _, v in ipairs(mp.multi[s] or {}) do
+		if v ~= s then
+			local r = fn(v)
+			if r ~= nil then
+				return r
+			end
+		end
+	end
+	return
+end
+
 std.obj.__ini = function(s, ...)
 	if s.__mp_ini then
 		return __oini(s, ...)

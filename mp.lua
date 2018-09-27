@@ -1021,7 +1021,7 @@ local function multi_select(vv, attrs, holder)
 			dist = d
 		end
 	end
-	return ob or vv.ob
+	return ob or vv.ob, res
 end
 
 function mp:compl_filter(v)
@@ -1181,7 +1181,7 @@ function mp:compl(str)
 				end
 				if v.ob then
 					if o.ob then
-        					o.multi = o.multi or {}
+						o.multi = o.multi or {}
 						table.insert(o.multi, v.ob)
 					else
 						o.ob = v.ob
@@ -1670,7 +1670,8 @@ local function get_events(self, ev)
 
 		for k, vv in ipairs(self.args) do
 			if vv and std.is_obj(vv.ob) then
-				local ob = multi_select(vv, attrs[k], holder)
+				local ob, m = multi_select(vv, attrs[k], holder)
+				self.multi[ob] = m
 				if reverse then
 					table.insert(args, 1, ob)
 				else
