@@ -1515,7 +1515,7 @@ end
 end
 
 function mp:err(err)
-	if self.inp:find("^[ \t]*%*") then
+	if self:comment() then
 		return
 	end
 	if std.here().OnError then
@@ -1850,7 +1850,7 @@ function mp:action()
 end
 
 function mp:correct(inp)
-	if inp:find("^[ \t]*%*") then
+	if self:comment() then
 		return
 	end
 
@@ -1887,6 +1887,10 @@ function mp:show_prompt(inp)
 	return true
 end
 
+function mp:comment(inp)
+	if self.inp:find("^[ \t]*%*") then return true end
+end
+
 function mp:parse(inp)
 	inp = std.strip(inp)
 
@@ -1898,7 +1902,7 @@ function mp:parse(inp)
 
 	local r, v
 
-	if inp:find("^[ \t]*%*") then
+	if self:comment() then
 		r = false
 		v = nil
 	else
@@ -2266,7 +2270,7 @@ function mp:autoscript(w)
 	end
 	self.autoplay = io.open(w or 'autoscript') or false
 	if self.autoplay then
-		self:TranscriptOn();
+		self:MetaTranscriptOn();
 		std.cmd = { 'autoscript' }
 		return true
 	end

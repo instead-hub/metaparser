@@ -1013,9 +1013,9 @@ end
 MetaVerb {
 	"#MetaTranscript",
 	"~транскрипт",
-	"да : TranscriptOn",
-	"нет : TranscriptOff",
-	"Transcript",
+	"да : MetaTranscriptOn",
+	"нет : MetaTranscriptOff",
+	"MetaTranscript",
 }
 
 MetaVerb {

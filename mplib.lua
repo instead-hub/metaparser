@@ -734,7 +734,8 @@ end
 
 function mp:post_action()
 	if std.here().noparser or game.noparser or
-		(self.event and self.event:find("Meta", 1, true)) then
+		(self.event and self.event:find("Meta", 1, true)) or
+		self:comment() then
 		if not std.abort_cmd then
 			game:time(game:time() - 1)
 		end
@@ -2205,21 +2206,21 @@ function mp:No()
 	p (mp.msg.Yes.YES)
 end
 
-function mp:Transcript()
+function mp:MetaTranscript()
 	if self.logfile then
 		p("Log file: ", self.logfile)
 	else
-		self:TranscriptOn()
+		self:MetaTranscriptOn()
 	end
 end
 
-function mp:TranscriptOff()
+function mp:MetaTranscriptOff()
 	self.logfile = false
 	self.lognum = self.lognum + 1
 	p("Logging is stopped.")
 end
 
-function mp:TranscriptOn()
+function mp:MetaTranscriptOn()
 	while true do
 		local logfile = string.format("%s/log%03d.txt", instead.gamepath(), self.lognum)
 		local f = io.open(logfile, "rb")
