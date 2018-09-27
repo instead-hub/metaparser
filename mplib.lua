@@ -106,8 +106,23 @@ std.room.dsc = function(s)
 	p (mp.msg.SCENE);
 end
 
-function mp:thedark()
-	return not mp:offerslight()
+local function trace_light(v)
+	if v:has 'light' then
+		return true
+	end
+	if v:has 'container' and not v:has 'transparent' and not v:has 'open' then
+		return nil, false
+	end
+end
+
+function mp:thedark(what)
+	if std.me():has'light' or mp:traceinside(std.me(), trace_light) then
+		return false
+	end
+	local w = what or std.me():where()
+	local h = mp:light_scope(w)
+	if h:has'light' then return false end
+	return not mp:traceinside(h, trace_light)
 end
 
 function std.obj:scene()
@@ -308,35 +323,11 @@ function mp:distance(v, wh)
 	return dist
 end
 
-local function trace_light(v)
-	if v:has 'light' then
-		return true
-	end
-	if v:has 'container' and not v:has 'transparent' and not v:has 'open' then
-		return nil, false
-	end
-end
-
 function mp:offerslight(what)
-	if std.me():has'light' or mp:traceinside(std.me(), trace_light) then
+	if what and what:has'light' or what:has'luminous' or mp:inside(what, std.me()) then
 		return true
 	end
-
-	if what and (what:has'light' or what:has'luminous' or std.me():lookup(what)) then
-		return true
-	end
-
-	what = what or std.me():where()
-	local w = what
-	if not mp:inside(std.me(), w) then
-		w = w:where() or what
-	end
-	local h = mp:light_scope(w)
-	if h:has'light' then return true end
-	if check_persist(h) or mp.scope:lookup(h) then
-		return true
-	end
-	return mp:traceinside(h, trace_light)
+	return not mp:thedark()
 end
 
 function std.obj:visible()
@@ -346,16 +337,16 @@ function std.obj:visible()
 		return true
 	end
 
+	if not mp:offerslight(self) then
+		return false
+	end
+
 	if check_persist(self) then
 		return true
 	end
 
 	if mp.scope:lookup(self) then
 		return true
-	end
-
-	if not mp:offerslight(self) then
-		return false
 	end
 
 	mp:trace(std.me(), function(v)
@@ -596,7 +587,7 @@ function mp:content(w)
 		inside = true
 		pn()
 		local dsc, v
-		if not mp:offerslight(w) then
+		if mp:thedark(w) then
 			dsc, v = std.call(w, 'dark_dsc')
 			if dsc then p(dsc) end
 			if not v then
