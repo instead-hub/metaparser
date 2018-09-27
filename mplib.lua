@@ -2404,13 +2404,10 @@ std.obj.for_multi = function(s, fn)
 	end
 	for _, v in ipairs(mp.multi[s] or {}) do
 		if v ~= s then
-			local r = fn(v)
-			if r ~= nil then
-				return r
-			end
+			fn(v)
 		end
 	end
-	return
+	return true
 end
 
 std.obj.__ini = function(s, ...)
