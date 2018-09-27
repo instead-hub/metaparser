@@ -326,10 +326,6 @@ function mp:offerslight(what)
 		return true
 	end
 
-	if what and check_persist(what) then
-		return std.here():has'light'
-	end
-
 	what = what or std.me():where()
 	local w = what
 	if not mp:inside(std.me(), w) then
@@ -337,8 +333,8 @@ function mp:offerslight(what)
 	end
 	local h = mp:light_scope(w)
 	if h:has'light' then return true end
-	if check_persist(h) then
-		return std.here():has'light'
+	if check_persist(h) or mp.scope:lookup(h) then
+		return true
 	end
 	return mp:traceinside(h, trace_light)
 end
@@ -346,9 +342,6 @@ end
 function std.obj:visible()
 	local plw = { }
 	local ww = {}
-	if not mp:offerslight(self) then
-		return false
-	end
 	if std.me():where() == self then
 		return true
 	end
@@ -359,6 +352,10 @@ function std.obj:visible()
 
 	if mp.scope:lookup(self) then
 		return true
+	end
+
+	if not mp:offerslight(self) then
+		return false
 	end
 
 	mp:trace(std.me(), function(v)
