@@ -1890,6 +1890,8 @@ end
 function mp:parse(inp)
 	inp = std.strip(inp)
 
+	mp:log("> "..inp)
+
 	local noprompt = not mp:show_prompt(inp)
 
 	inp = inp:gsub("[ ]+", " "):gsub("["..inp_split.."]+", " "):gsub("[ \t]+$", "")
@@ -2262,7 +2264,7 @@ function mp:autoscript(w)
 	if self.autoplay then
 		self.autoplay:close()
 	end
-	self.autoplay = io.open(w or 'autoscript')
+	self.autoplay = io.open(w or 'autoscript') or false
 	if self.autoplay then
 		self:TranscriptOn();
 		std.cmd = { 'autoscript' }

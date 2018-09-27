@@ -184,6 +184,20 @@ std.room.display = function(s)
 	local c = std.call(mp, 'content', s)
 	return c
 end
+
+function mp:light_scope(s)
+	local h = s
+	if not s:has 'container' or s:has 'transparent' or s:has 'open' then
+		mp:trace(s, function(v)
+				h = v
+				if v:has 'container' and not s:has'transparent' and not has 'open' then
+					return nil, false
+				end
+		end)
+	end
+	return h
+end
+
 function mp:visible_scope(s)
 	local h = s
 	if s:has 'transparent' or s:has 'supporter' then
@@ -293,14 +307,16 @@ function mp:distance(v, wh)
 	end
 	return dist
 end
+
 local function trace_light(v)
 	if v:has 'light' then
 		return true
 	end
-	if not v:has 'transparent' and not v:has 'open' and not v:has 'supporter' then
+	if v:has 'container' and not v:has 'transparent' and not v:has 'open' then
 		return nil, false
 	end
 end
+
 function mp:offerslight(what)
 	if std.me():has'light' or mp:traceinside(std.me(), trace_light) then
 		return true
@@ -309,14 +325,18 @@ function mp:offerslight(what)
 	if what and (what:has'light' or what:has'luminous' or std.me():lookup(what)) then
 		return true
 	end
+	if what and check_persist(what) then
+		return std.here():has'light'
+	end
 
 	what = what or std.me()
 
 	local w = what:where() or what
-	local h = mp:visible_scope(w)
-
+	local h = mp:light_scope(w)
 	if h:has'light' then return true end
-
+	if check_persist(h) then
+		return std.here():has'light'
+	end
 	return mp:traceinside(h, trace_light)
 end
 
