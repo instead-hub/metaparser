@@ -325,13 +325,16 @@ function mp:offerslight(what)
 	if what and (what:has'light' or what:has'luminous' or std.me():lookup(what)) then
 		return true
 	end
+
 	if what and check_persist(what) then
 		return std.here():has'light'
 	end
 
-	what = what or std.me()
-
-	local w = what:where() or what
+	what = what or std.me():where()
+	local w = what
+	if not mp:inside(std.me(), w) then
+		w = w:where() or what
+	end
 	local h = mp:light_scope(w)
 	if h:has'light' then return true end
 	if check_persist(h) then
