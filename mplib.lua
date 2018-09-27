@@ -2399,15 +2399,9 @@ local function fn_aliases(wh)
 end
 
 std.obj.for_multi = function(s, fn)
-	if not s:hint 'plural' then
-		return false
+	for _, v in ipairs(mp.multi[s] or { s }) do
+		fn(v)
 	end
-	for _, v in ipairs(mp.multi[s] or {}) do
-		if v ~= s then
-			fn(v)
-		end
-	end
-	return true
 end
 
 std.obj.__ini = function(s, ...)
