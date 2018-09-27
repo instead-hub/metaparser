@@ -306,7 +306,7 @@ function mp:offerslight(what)
 		return true
 	end
 
-	if what and (what:has'light' or std.me():lookup(what)) then
+	if what and (what:has'light' or what:has'luminous' or std.me():lookup(what)) then
 		return true
 	end
 
