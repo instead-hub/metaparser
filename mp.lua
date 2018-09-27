@@ -473,7 +473,7 @@ function mp:nouns()
 	if std.here().word then
 		table.insert(oo, std.here())
 	end
-	if not self:offerslight(std.me():where()) then
+	if not self:offerslight() then
 		table.insert(oo, darkness)
 	end
 	local dups = {}
