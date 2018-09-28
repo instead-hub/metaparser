@@ -1,8 +1,11 @@
 local lang = require "morph/lang-ru"
 loadmod "mp"
 loadmod "mplib"
+
 local mp = _'@metaparser'
-mp.mrd.lang = lang
+
+local mrd = require "morph/mrd"
+mrd.lang = lang
 
 if type(std.SOURCES_DIRS) == 'table' then
 	mp.mrd.dirs = std.SOURCES_DIRS
@@ -10,7 +13,7 @@ end
 
 std.mod_init(
 	function()
-	mp:init()
+	mp:init(mrd)
 end)
 game.dsc = function()
 	p ([[METAPARSER3 Версия: ]]..mp.version.."^")

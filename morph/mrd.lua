@@ -883,6 +883,12 @@ local function str_hash(str)
 	return sum
 end
 
+function mrd:init()
+	self:gramtab("morph/rgramtab.tab")
+	local _, crc = self:load("dict.mrd")
+	self:create("dict.mrd", crc) -- create or update
+end
+
 function mrd:create(fname, crc)
 	local dict = {}
 	if not std.readdir then

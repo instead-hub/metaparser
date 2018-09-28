@@ -5,7 +5,7 @@ if std.ref'@theme' then
 	std.ref'@theme'.set ('win.scroll.mode', 3)
 end
 
-local mrd = require "morph/mrd"
+local mrd = false
 local inp_split = " :.,!?-"
 
 local input = std.ref '@input'
@@ -2284,10 +2284,10 @@ function()
 	_'game'.__daemons = std.list {}
 end)
 
-function mp:init()
-	mrd:gramtab("morph/rgramtab.tab")
-	local _, crc = mrd:load("dict.mrd")
-	mrd:create("dict.mrd", crc) -- create or update
+function mp:init(m)
+	mrd = m
+	self.mrd = mrd
+	mrd:init()
 	cutscene = mp.cutscene
 	door = mp.door
 end
