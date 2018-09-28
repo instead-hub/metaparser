@@ -4,23 +4,6 @@ loadmod "mplib"
 local mp = _'@metaparser'
 mp.mrd.lang = lang
 
-instead.notitle = true
-
-instead.get_title = function(s)
-	if instead.notitle then
-		return
-	end
-	local w, h = instead.theme_var('win.w'), instead.theme_var('win.h')
-	local title = std.titleof(std.here()) or ''
-	local col = instead.theme_var('win.col.fg')
-	local score = ''
-	if mp.score then
-		score = fmt.tab('70%', 'center')..fmt.nb("Счёт: " .. tostring(mp.score))
-	end
-	local moves = fmt.tab('100%', 'right')..fmt.nb("Ходы: " .. tostring(game:time() - 1))
-	return iface:left((title.. score .. moves).."\n".. iface:img(string.format("box:%dx1,%s", w, col)))
-end
-
 if type(std.SOURCES_DIRS) == 'table' then
 	mp.mrd.dirs = std.SOURCES_DIRS
 end
@@ -80,6 +63,8 @@ function mp.msg.SCORE(d)
 	end
 end
 mp.door.word = -"дверь";
+mp.msg.TITLE_SCORE = "Счёт: "
+mp.msg.TITLE_TURNS = "Ходы: "
 mp.msg.YES = "Да"
 mp.msg.WHEN_DARK = "Кромешная тьма."
 mp.msg.UNKNOWN_THEDARK = "Возможно, это потому что в темноте ничего не видно?"

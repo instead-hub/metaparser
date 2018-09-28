@@ -2479,3 +2479,20 @@ end
 function DaemonStop(w)
 	std.object(w):daemonStop()
 end
+
+instead.notitle = true
+
+instead.get_title = function(s)
+	if instead.notitle then
+		return
+	end
+	local w, h = instead.theme_var('win.w'), instead.theme_var('win.h')
+	local title = std.titleof(std.here()) or ''
+	local col = instead.theme_var('win.col.fg')
+	local score = ''
+	if mp.score then
+		score = fmt.tab('70%', 'center')..fmt.nb(mp.msg.TITLE_SCORE .. tostring(mp.score))
+	end
+	local moves = fmt.tab('100%', 'right')..fmt.nb(mp.msg.TITLE_TURNS .. tostring(game:time() - 1))
+	return iface:left((title.. score .. moves).."\n".. iface:img(string.format("box:%dx1,%s", w, col)))
+end
