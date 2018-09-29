@@ -147,9 +147,7 @@ local function gram_dump(v)
 	end
 end
 
-
 local busy_cnt = 0
-
 
 local function word_fn(l, self, dict)
 	local norm = mrd.lang.norm
@@ -801,10 +799,11 @@ std.obj.gram = function(self, ...)
 	ob, w, hint = mrd:obj(self, ...)
 	local _, gram = mrd:word(w .. '/'..hint)
 	local thint = ''
+	local t = mrd.lang.gram_t.noun
 	hint = str_split(hint, ",")
 	local g = gram and gram[1] or {}
 	for _, v in ipairs(gram or {}) do
-		if v.t == 'С' then
+		if v.t == t then
 			g = v
 			break
 		end

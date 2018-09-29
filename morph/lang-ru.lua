@@ -359,6 +359,9 @@ lang = { yo = false,
 	flex_filter = flex_filter,
 	gram_compat = gram_compat,
 	gram_score = gram_score,
+	gram_t = {
+		noun = 'С';
+	}
 }
 
 return lang
