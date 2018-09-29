@@ -22,6 +22,10 @@ Enter "HELP" for help.
 end
 local utf = mp.utf
 
+std.obj.the = function(s)
+	return "the "
+end
+
 _'@darkness'.word = "darkness"
 _'@darkness'.before_Any = "Darkness, noun.  An absence of light to see by."
 _'@darkness':attr 'persist'
@@ -60,9 +64,9 @@ _'@compass'.before_Default = 'Try to verb "go".'
 
 function mp.msg.SCORE(d)
 	if d > 0 then
-		pn ("{$fmt em|(Score increased by ", d, ")}")
+		pn ("{$fmt em|(Score is increased by ", d, ")}")
 	else
-		pn ("{$fmt em|(Score decreased by ", d, ")}")
+		pn ("{$fmt em|(Score is decreased by ", d, ")}")
 	end
 end
 mp.door.word = -"door";
@@ -71,16 +75,16 @@ mp.msg.TITLE_TURNS = "Turns: "
 mp.msg.YES = "Yes"
 mp.msg.WHEN_DARK = "Darkness."
 mp.msg.UNKNOWN_THEDARK = "Probably, it is because there is no light?"
-mp.msg.COMPASS_NOWAY = "You can't go that way."
+mp.msg.COMPASS_NOWAY = "{#Me} can't go that way."
 mp.msg.COMPASS_EXAM_NO = "Nothing interesting in that direction."
 mp.msg.ENUM = "items."
 mp.msg.CUTSCENE_HELP = "Press <Enter> or enter {$fmt em|next} to continue."
 mp.msg.DLG_HELP = "Enter number to select the phrase."
 mp.msg.TAKE_BEFORE = function(w)
-	pn (iface:em("(сначала взяв "..w:noun'вн'..")"))
+	pn (iface:em("(сначала взяв "..w:the() .. w:noun()..")"))
 end
 mp.msg.DISROBE_BEFORE = function(w)
-	pn (iface:em("(сначала сняв "..w:noun'вн'..")"))
+	pn (iface:em("(сначала сняв "..w:the() .. w:noun()..")"))
 end
 
 mp.msg.CLOSE_BEFORE = function(w)
@@ -1060,4 +1064,4 @@ std.dlg.default_Verb = "осмотреть"
 function content(...)
 	return mp:content(...)
 end
-std.player.word = -"ты/мр,2л"
+std.player.word = "you"
