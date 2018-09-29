@@ -86,22 +86,7 @@ local function section(f, fn, ...)
 	return true
 end
 
-local gram_tt = {
-	["ИНФИНИТИВ"] = true;
-	["КР_ПРИЛ"] = true;
-	["КР_ПРИЧАСТИЕ"] = true;
-	["Г"] = true;
-}
-local function flex_filter(v)
-	local an = v.an
-	if an["им"] then
-		return true
-	end
-	if an["рд"] or an["дт"] or an["тв"] or an["пр"] or an["вн"] then
-		return false
-	end
-	return gram_tt[an.t]
-end
+local flex_filter
 
 local function flex_fn(l, flex, an)
 	l = l:gsub("//.*$", "")
@@ -256,6 +241,7 @@ function mrd:load(path, dict)
 		return false, e
 	end
 	local flex = {}
+	flex_filter = mrd.lang.flex_filter
 	if not section(f, flex_fn, flex, self.gram.an) then
 		return false, "Error in section 1"
 	end
@@ -366,128 +352,6 @@ function mrd:dump(path, crc)
 	f:close()
 end
 
-function mrd:gram_norm(an)
-	local a = {}
-	local g = {}
-	for _, v in ipairs(an) do
-		a[v] = true
-		table.insert(g, v)
-	end
-	if not a['1л'] and not a['2л'] and not a['3л'] then
-		table.insert(g, '3л')
-	end
-	return g
-end
-
-function mrd:score(an, g)
-	local score = 0
-	g = self:gram_norm(g)
-	if an["фам"] then score = score - 0.1 end
-	if an["арх"] then score = score - 0.1 end
-	for kk, vv in ipairs(g or {}) do
-		if vv:sub(1, 1) == '~' then
-			vv = vv:sub(2)
-			if an[vv] then
-				score = score - 1 * (self.lang.weights[vv] or 1)
-			elseif an.t == vv then
-				score = score - 10
-			end
-		else
-			if an[vv] then
-				score = score + 1 * (self.lang.weights[vv] or 1)
-			elseif an.t == vv then
-				score = score + 10
-			end
-		end
-	end
-	return score
-end
-
-function mrd:gram_info(a)
-	local t = { }
-	if a['мр'] then
-		t.gen = 'male'
-	elseif a['жр'] then
-		t.gen = 'female'
-	elseif a['ср'] then
-		t.gen = 'neuter'
-	else
-		t.gen = 'any'
-	end
-
-	if a['мн'] then
-		t.num = 'singular'
-	elseif a['ед'] then
-		t.num = 'plural'
-	else
-		t.num = 'any'
-	end
-
-	if a['буд'] then
-		t.time = 'future'
-	elseif a['прш'] then
-		t.time = 'past'
-	elseif a['нст'] then
-		t.time = 'present'
-	else
-		t.time = 'any'
-	end
-
-	if a['1л'] then
-		t.face = 'first'
-	elseif a['2л'] then
-		t.face = 'second'
-	elseif a['3л'] then
-		t.face = 'third'
-	else
-		t.face = 'any'
-	end
-
-	return t
-end
-
-local function __gram_compat(g1, g2, time)
-	if g1.gen ~= g2.gen and g1.gen ~= 'any' and g2.gen ~= 'any' then return false end
-	if not time then
-		if g1.num ~= g2.num and g1.num ~= 'any' and g2.num ~= 'any' then return false end
-	end
-	if g1.time ~= g2.time and g1.time ~= 'any' and g2.time ~= 'any' then return false end
-	if g1.face ~= g2.face and g1.face ~= 'any' and g2.face ~= 'any' then return false end
-	return true
-end
-
-function mrd:gram_compat(base, aa, bb)
-	local a, b = aa.t, bb.t
-	local g1, g2 = self:gram_info(aa), self:gram_info(bb)
-	if bb.noun then
-		if not base['им'] then
-			return false
-		end
-		local g0 = self:gram_info(base)
-		if not __gram_compat(g0, g1, true) then return false end
-		if not __gram_compat(g0, g2, true) then return false end
-	end
-	return __gram_compat(g1, g2)
-end
-
-function mrd:gram_eq(a, b)
-	if not a or not b then return true end
-	if a == 'ИНФИНИТИВ' or b == 'ИНФИНИТИВ' then
-		return b == a or b == 'Г' or a == 'Г'
-	end
-	if a == 'КР_ПРИЛ' or b == 'КР_ПРИЛ' then
-		return b == a -- or b == 'П'
-	end
-	if a == 'КР_ПРИЧАСТИЕ' or b == 'КР_ПРИЧАСТИЕ' then
-		return b == a
-	end
-	if a == 'ПРИЧАСТИЕ' or b == 'ПРИЧАСТИЕ' then
-		return b == a
-	end
-	if a == 'Г' or b == 'Г' then return a == b end
-	return true
-end
-
 local function gram2an(g)
 	local a = {}
 	for _, v in ipairs(g) do
@@ -505,6 +369,7 @@ local cache = {
 	hash = {};
 	list = {};
 }
+
 function mrd:lookup(w, g)
 	local key  = ""
 	for _, v in ipairs(g or {}) do
@@ -525,6 +390,7 @@ function mrd:lookup(w, g)
 	end
 	return w, g
 end
+
 function mrd:__lookup(w, g)
 	local ow = w
 	local cap, upper = self.lang.is_cap(w)
@@ -534,13 +400,17 @@ function mrd:__lookup(w, g)
 		return false, "No word in dictionary"
 	end
 	local res = {}
+
+	local gram_compat = self.lang.gram_compat
+	local gram_score = self.lang.gram_score
+
 	for k, v in ipairs(w) do
 		local flex = v.flex
-		local score = self:score(v.an, g)
+		local score = gram_score(v.an, g)
 		local t = v.an.t
 		for _, f in ipairs(flex) do
-			if self:gram_eq(v.an.t, f.an.t) and self:gram_compat(v.an, f.an, gram2an(g)) then
-				local sc = self:score(f.an, g)
+			if gram_compat(v.an, f.an, gram2an(g)) then
+				local sc = gram_score(f.an, g)
 				if sc >= 0 then
 					if t ~= f.an.t then sc = sc - 1 end -- todo
 if false then
