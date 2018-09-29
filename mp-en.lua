@@ -48,6 +48,7 @@ local shorten = {
 	["se"] = "southeast";
 	["sw"] = "southwest";
 	["nw"] = "northwest";
+	["x"] = "examine";
 }
 
 function mp:pre_input(str)
@@ -139,7 +140,7 @@ end
 mp.msg.EXITBEFORE = "Возможно, {#me/дт} нужно сначала {#if_has/#where,supporter,слезть с,вылезти из} {#where/рд}."
 
 mp.default_Event = "Exam"
-mp.default_Verb = "осмотреть"
+mp.default_Verb = "examine"
 
 --"доступен"
 mp.msg.ACCESS1 = "{#First} отсюда не{#word/доступен,#first}."
@@ -591,17 +592,13 @@ Verb { "#Exit",
 	"?наружу : Exit" }
 
 Verb { "#Exam",
-	"[о| |по|рас]см/отреть,[раз|по]гляд/еть",
-	"?на {noun}/вн : Exam",
-	"?всё : Look",
-	"инвентарь : Inv",
-	"~ под {noun}/тв : LookUnder",
-	"~ под {noun}/вн : LookUnder",
-	"~ в|во|на {noun}/пр,2 : Search",
-	"~ внутри {noun}/рд : Search",
-	"~ в|во {noun}/вн : Search",
-	"~ в|во {noun}/пр,2 о|об|обо|про * : Consult",
-	"~ о|об|обо|про * в|во {noun}/пр,2 : Consult reverse",
+	"examine,exam,check,describe,watch,look",
+	"{noun} : Exam",
+	"?all : Look",
+	"inventory : Inv",
+	"~ under {noun} : LookUnder",
+	"~ in|inside|into|through|on {noun} : Search",
+	"~ up * in {noun} : Consult reverse",
 }
 
 Verb { "#Search",
