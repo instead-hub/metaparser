@@ -13,6 +13,7 @@ local lang = {
 local mrd = {
 	lang = lang;
 	dirs = {''};
+	words = {};
 }
 
 local msg = print
