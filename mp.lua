@@ -2287,6 +2287,9 @@ end)
 function mp:init(m)
 	mrd = m
 	self.mrd = mrd
+	if type(std.SOURCES_DIRS) == 'table' then
+		mrd.dirs = std.SOURCES_DIRS
+	end
 	mrd:init()
 	cutscene = mp.cutscene
 	door = mp.door

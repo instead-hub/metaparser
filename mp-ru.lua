@@ -7,10 +7,6 @@ local mp = _'@metaparser'
 local mrd = require "morph/mrd"
 mrd.lang = lang
 
-if type(std.SOURCES_DIRS) == 'table' then
-	mp.mrd.dirs = std.SOURCES_DIRS
-end
-
 std.mod_init(
 	function()
 	mp:init(mrd)
