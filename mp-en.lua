@@ -22,8 +22,8 @@ Enter "HELP" for help.
 end
 local utf = mp.utf
 
-std.obj.the = function(s)
-	return "the "
+std.obj.the_noun = function(s, ...)
+	return "the "..s:noun(...)
 end
 
 _'@darkness'.word = "darkness"
@@ -81,20 +81,61 @@ mp.msg.ENUM = "items."
 mp.msg.CUTSCENE_HELP = "Press <Enter> or enter {$fmt em|next} to continue."
 mp.msg.DLG_HELP = "Enter number to select the phrase."
 mp.msg.TAKE_BEFORE = function(w)
-	pn (iface:em("(сначала взяв "..w:the() .. w:noun()..")"))
+	pn (iface:em("(taking "..w:the_noun().." before)"))
 end
 mp.msg.DISROBE_BEFORE = function(w)
-	pn (iface:em("(сначала сняв "..w:the() .. w:noun()..")"))
+	pn (iface:em("(disrobing "..w:the_noun().." before)"))
 end
 
 mp.msg.CLOSE_BEFORE = function(w)
-	pn (iface:em("(сначала закрыв "..w:noun'вн'..")"))
+	pn (iface:em("(closing "..w:the_noun() .. " before)"))
 end
 
+local function str_split(str, delim)
+	local a = std.split(str, delim)
+	for k, _ in ipairs(a) do
+		a[k] = std.strip(a[k])
+	end
+	return a
+end
+
+function mp.shortcut.the_noun(hint)
+	local w = str_split(hint, ",")
+	if #w == 0 then
+		return ""
+	end
+	for _, k in ipairs(w) do
+		local ob = mp:shortcut_obj(k)
+		if ob then
+			return ob:the_noun()
+		end
+	end
+	return ""
+end
+
+function mp.shortcut.is(hint)
+	local w = str_split(hint, ",")
+	if #w == 0 then
+		return ""
+	end
+	for _, k in ipairs(w) do
+		local ob = mp:shortcut_obj(k)
+		if ob then
+			if ob:hint'plural' then
+				return 'are'
+			else
+				return 'is'
+			end
+		end
+	end
+	return ""
+end
+
+
 --"находиться"
-mp.msg.SCENE = "{#Me} {#word/находиться,#me,нст} {#if_has/#here,supporter,на,в} {#here/пр,2}.";
-mp.msg.INSIDE_SCENE = "{#Me} {#word/находиться,#me,нст} {#if_has/#where,supporter,на,в} {#where/пр,2}.";
-mp.msg.TITLE_INSIDE = "({#if_has/#where,supporter,на,в} {#where/пр,2})";
+mp.msg.SCENE = "{#Me} {#is/#me} {#if_has/#here,supporter,on,in} {#the_noun/#here}.";
+mp.msg.INSIDE_SCENE = "{#Me} {#is/#me} {#if_has/#where,supporter,on,in} {#the_noun/#where}.";
+mp.msg.TITLE_INSIDE = "({#if_has/#where,supporter,on,in} {#the_noun/#where})";
 
 mp.msg.COMPASS_EXAM = function(dir, ob)
 	if dir == 'u_to' then
@@ -102,16 +143,16 @@ mp.msg.COMPASS_EXAM = function(dir, ob)
 	elseif dir == 'd_to' then
 		p "Внизу"
 	elseif dir == 'out_to' or dir == 'in_to' then
-		p "В этом направлении"
+		p "In that direction there"
 	else
 		p "На {#first/пр,2}"
 	end
 	if ob:hint'plural' then
-		p "находятся"
+		p "are"
 	else
-		p "находится"
+		p "is"
 	end
-	p (ob:noun(),".")
+	p (ob:the_noun(),".")
 end
 
 mp.msg.enter = "<ввод>"
@@ -423,15 +464,15 @@ mp.msg.Answer.SELF = "Хороший ответ."
 mp.msg.Yes.YES = "Вопрос был риторическим."
 --"продаваться"
 mp.msg.Buy.BUY = "{#First} не {#word/продаваться,нст,#first}."
-mp.hint.live = 'од'
-mp.hint.nonlive = 'но'
-mp.hint.neuter = 'ср'
-mp.hint.male = 'мр'
-mp.hint.female = 'жр'
-mp.hint.plural = 'мн'
-mp.hint.first = '1л'
-mp.hint.second = '2л'
-mp.hint.third = '3л'
+mp.hint.live = 'live'
+mp.hint.nonlive = 'nonlive'
+mp.hint.neuter = 'neutwe'
+mp.hint.male = 'male'
+mp.hint.female = 'female'
+mp.hint.plural = 'plural'
+mp.hint.first = 'first'
+mp.hint.second = 'second'
+mp.hint.third = 'third'
 
 mp.keyboard_space = '<пробел>'
 mp.keyboard_backspace = '<удалить>'
@@ -1064,4 +1105,4 @@ std.dlg.default_Verb = "осмотреть"
 function content(...)
 	return mp:content(...)
 end
-std.player.word = "you"
+std.player.word = "you/plural"
