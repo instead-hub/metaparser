@@ -115,37 +115,44 @@ end
 
 function mp.shortcut.is(hint)
 	local w = str_split(hint, ",")
-	if #w == 0 then
+	if #w ~= 1 then
 		return ""
 	end
-	for _, k in ipairs(w) do
-		local ob = mp:shortcut_obj(k)
-		if ob then
-			if ob:hint'plural' then
-				return 'are'
-			else
-				return 'is'
-			end
-		end
+	local ob = mp:shortcut_obj(w[1])
+	if not ob then return "" end
+	if ob:hint'plural' then
+		return 'are'
 	end
-	return ""
+	return 'is'
+end
+
+function mp.shortcut.have(hint)
+	local w = str_split(hint, ",")
+	if #w ~= 1 then
+		return ""
+	end
+	local ob = mp:shortcut_obj(w[1])
+	if not ob then return "" end
+	if ob:hint'plural' or ob:hint'first' or ob:hint'second' then
+		return 'have'
+	end
+	return 'has'
 end
 
 
---"находиться"
 mp.msg.SCENE = "{#Me} {#is/#me} {#if_has/#here,supporter,on,in} {#the_noun/#here}.";
 mp.msg.INSIDE_SCENE = "{#Me} {#is/#me} {#if_has/#where,supporter,on,in} {#the_noun/#where}.";
 mp.msg.TITLE_INSIDE = "({#if_has/#where,supporter,on,in} {#the_noun/#where})";
 
 mp.msg.COMPASS_EXAM = function(dir, ob)
 	if dir == 'u_to' then
-		p "Вверху"
+		p "Upwards there"
 	elseif dir == 'd_to' then
-		p "Внизу"
+		p "Downwards there"
 	elseif dir == 'out_to' or dir == 'in_to' then
 		p "In that direction there"
 	else
-		p "На {#first/пр,2}"
+		p "In the {#first} direction there"
 	end
 	if ob:hint'plural' then
 		p "are"
@@ -155,58 +162,56 @@ mp.msg.COMPASS_EXAM = function(dir, ob)
 	p (ob:the_noun(),".")
 end
 
-mp.msg.enter = "<ввод>"
-mp.msg.EMPTY = 'Простите?'
-mp.msg.UNKNOWN_VERB = "Непонятный глагол"
-mp.msg.UNKNOWN_VERB_HINT = "Возможно, вы имели в виду"
-mp.msg.INCOMPLETE = "Нужно дополнить предложение."
-mp.msg.INCOMPLETE_NOUN = "К чему вы хотите применить команду?"
-mp.msg.UNKNOWN_OBJ = "Такого предмета тут нет"
-mp.msg.UNKNOWN_WORD = "Фраза не распознана"
-mp.msg.HINT_WORDS = "Возможно, вы имели в виду"
-mp.msg.HINT_OR = "или"
-mp.msg.HINT_AND = "и"
-mp.msg.AND = "и"
-mp.msg.MULTIPLE = "Тут есть"
-mp.msg.LIVE_ACTION = "{#Firstit/дт} это не понравится."
+mp.msg.enter = "<Enter>"
+mp.msg.EMPTY = 'Excuse me?'
+mp.msg.UNKNOWN_VERB = "Unknown verb"
+mp.msg.UNKNOWN_VERB_HINT = "Maybe you meant"
+mp.msg.INCOMPLETE = "The sentence must be supplemented."
+mp.msg.INCOMPLETE_NOUN = "What do you want to apply the command to?"
+mp.msg.UNKNOWN_OBJ = "Here is no such thing"
+mp.msg.UNKNOWN_WORD = "Phrase not recognized"
+mp.msg.HINT_WORDS = "Maybe you meant"
+mp.msg.HINT_OR = "or"
+mp.msg.HINT_AND = "and"
+mp.msg.AND = "and"
+mp.msg.MULTIPLE = "Here are"
+mp.msg.LIVE_ACTION = "{#Firstit} would not like it."
 mp.msg.NOTINV = function(t)
-	p (lang.cap(t:noun'вн') .. " сначала нужно взять.")
+	p (lang.cap(t:the_noun()) .. " must be taken first.")
 end
---"надет"
 mp.msg.WORN = function(w)
 	local hint = w:gram().hint
-	pr (" (",mp.mrd:word('надет/' .. hint), ")")
+	pr (" (worn)")
 end
---"открыт"
 mp.msg.OPEN = function(w)
 	local hint = w:gram().hint
-	pr (" (",mp.mrd:word('открыт/' .. hint), ")")
+	pr (" (opened)")
 end
-mp.msg.EXITBEFORE = "Возможно, {#me/дт} нужно сначала {#if_has/#where,supporter,слезть с,вылезти из} {#where/рд}."
+
+mp.msg.EXITBEFORE = "May be, {#me} should to {#if_has/#where,supporter,get off,get out of} {#the_noun/#where}."
 
 mp.default_Event = "Exam"
 mp.default_Verb = "examine"
 
---"доступен"
-mp.msg.ACCESS1 = "{#First} отсюда не{#word/доступен,#first}."
-mp.msg.ACCESS2 = "{#Second} отсюда не{#word/доступен,#second}."
+mp.msg.ACCESS1 = "{#The_noun/#first} {#is/#first} not accessible from here."
+mp.msg.ACCESS2 = "{#The_noun/#second} {#is/#second} not accessible from here."
 
-mp.msg.Look.HEREIS = "Здесь есть"
-mp.msg.Look.HEREARE = "Здесь есть"
+mp.msg.Look.HEREIS = "Here is"
+mp.msg.Look.HEREARE = "Here are"
 mp.msg.Look.SUPPORTER = function(o)
-	p ("На ",o:noun'пр,2')
+	p ("On ",o:the_noun())
 end
+
 mp.msg.NOROOM = function(w)
 	if w == std.me() then
-		p ("У {#me/вн} слишком много вещей.")
+		p ("{#Me} {#is/#me} {#have/#me} too many things.")
 	elseif w:has'supporter' then
-		p ("На ", w:noun'пр,2', " больше нет места.")
+		p ("There is no space on ", w:the_noun(), ".")
 	else
-		p ("В ", w:noun'пр,2', " больше нет места.")
+		p ("There is no space in ", w:the_noun(), ".")
 	end
 end
---"включён"
---"выключен"
+
 mp.msg.Exam.SWITCHSTATE = "{#First} сейчас {#if_has/#first,on,{#word/включён,#first},{#word/выключен,#first}}."
 mp.msg.Exam.NOTHING = "ничего нет."
 mp.msg.Exam.IS = "находится"
@@ -502,13 +507,13 @@ end
 function mp:it(w, hint)
 	hint = hint or ''
 	if w:hint'plural' then
-		return mp.mrd:noun(-"они/"..hint)
-	elseif w:hint'neuter' then
-		return mp.mrd:noun(-"оно/"..hint)
+		return "they"
 	elseif w:hint'female' then
-		return mp.mrd:noun(-"она/"..hint)
+		return "she"
+	elseif w:hint'male' then
+		return "he"
 	end
-	return mp.mrd:noun(-"он/"..hint)
+	return "it"
 end
 
 function mp:synonyms(w, hint)
@@ -1105,4 +1110,4 @@ std.dlg.default_Verb = "осмотреть"
 function content(...)
 	return mp:content(...)
 end
-std.player.word = "you/plural"
+std.player.word = "you/plural,second"
