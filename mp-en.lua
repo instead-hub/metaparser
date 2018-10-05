@@ -139,6 +139,28 @@ function mp.shortcut.have(hint)
 	return 'has'
 end
 
+function mp.shortcut.does(hint)
+	local w = str_split(hint, ",")
+	if #w ~= 1 then
+		return ""
+	end
+	local ob = mp:shortcut_obj(w[1])
+	if not ob then return "" end
+	if ob:hint'plural' or ob:hint'first' or ob:hint'second' then
+		return 'do'
+	end
+	return 'does'
+end
+
+function mp.shortcut.yourself(hint)
+	local w = str_split(hint, ",")
+	if #w ~= 1 then
+		return ""
+	end
+	local ob = mp:shortcut_obj(w[1])
+	if not ob then return "" end
+	return mp:myself(ob)[1]
+end
 
 mp.msg.SCENE = "{#Me} {#is/#me} {#if_has/#here,supporter,on,in} {#the_noun/#here}.";
 mp.msg.INSIDE_SCENE = "{#Me} {#is/#me} {#if_has/#where,supporter,on,in} {#the_noun/#where}.";
@@ -212,15 +234,15 @@ mp.msg.NOROOM = function(w)
 	end
 end
 
-mp.msg.Exam.SWITCHSTATE = "{#First} сейчас {#if_has/#first,on,{#word/включён,#first},{#word/выключен,#first}}."
-mp.msg.Exam.NOTHING = "ничего нет."
-mp.msg.Exam.IS = "находится"
-mp.msg.Exam.ARE = "находятся"
-mp.msg.Exam.IN = "В {#first/пр,2}"
-mp.msg.Exam.ON = "На {#first/пр,2}"
---"видеть"
-mp.msg.Exam.DEFAULT = "{#Me} не {#word/видеть,#me,нст} {#vo/{#first/пр}} ничего необычного.";
-mp.msg.Exam.SELF = "{#Me} не {#word/видеть,#me,нст} в себе ничего необычного.";
+mp.msg.Exam.SWITCHSTATE = "{#The_noun/#first} {#is/#first} switched {#if_has/#first,on,on,off}."
+mp.msg.Exam.NOTHING = "nothing."
+mp.msg.Exam.IS = "there is"
+mp.msg.Exam.ARE = "there are"
+mp.msg.Exam.IN = "In {#the_noun/#first}"
+mp.msg.Exam.ON = "On {#the_noun/#first}"
+
+mp.msg.Exam.DEFAULT = "{#Me} {#does/#me} not see anything unusual in {#the_noun/#first}.";
+mp.msg.Exam.SELF = "{#Me} {#does/#me} not see anything unusual in {#yourself/#me}.";
 
 --"открыт"
 mp.msg.Exam.OPENED = "{#First} {#word/открыт,нст,#first}."
@@ -493,15 +515,23 @@ local function dict(t, hint)
 	end
 end
 
-function mp:myself(w, hint)
-	local ww = dict({
-			["вн"] = "себя";
-			["дт"] = "себе";
-			["тв"] = "собой";
-			["пр"] = "себе";
-			["рд"] = "себя";
-		 }, hint)
-	return { ww }
+function mp:myself(ob, hint)
+	if ob:hint'first' then
+		return { "myself", "me" }
+	end
+	if ob:hint'second' then
+		return { "yourself", "me", "myself" }
+	end
+	if ob:hint'plural' then
+		return { "themselves", "our" }
+	end
+	if ob:hint'female' then
+		return { "herself", "me" }
+	end
+	if ob:hint'male' then
+		return { "himself", "me" }
+	end
+	return { "itself" }
 end
 
 function mp:it(w, hint)
