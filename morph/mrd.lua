@@ -490,7 +490,7 @@ function mrd:word(w)
 		function(w)
 			if noun then return w end
 			local ww, gg = self:lookup(w, g)
-			noun = gg.t == 'С'
+			noun = gg.t == mrd.lang.gram_t.noun
 			if not ww then
 				found = false
 			else
