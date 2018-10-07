@@ -220,6 +220,9 @@ local function flex_filter(v)
 	if an["рд"] or an["дт"] or an["тв"] or an["пр"] or an["вн"] then
 		return false
 	end
+	if an["0"] then
+		return true
+	end
 	return gram_tt[an.t]
 end
 
