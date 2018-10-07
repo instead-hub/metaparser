@@ -502,6 +502,9 @@ function mrd:word(w, ob)
 				ww, gg = self:lookup(w, g)
 				noun = gg.t == mrd.lang.gram_t.noun
 			end
+			if gg and (gg[mp.hint.proper] or gg[mp.hint.surname]) then
+				noun = false
+			end
 			if not ww then
 				found = false
 			else
@@ -800,7 +803,7 @@ std.obj.gram = function(self, ...)
 	hint = str_split(hint, ",")
 	local g = gram and gram[1] or {}
 	for _, v in ipairs(gram or {}) do
-		if (v.t and v.t == t) or (not v.t and v[t]) then
+		if v.t == t then
 			g = v
 			break
 		end
