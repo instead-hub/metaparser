@@ -474,23 +474,34 @@ end
 end
 local word_match = "[^ \t,%-!/:%+&]+"
 local missed_words = {}
-function mrd:word(w)
+function mrd:word(w, ob)
 	local ow = w
 	local s, e = w:find("/[^/]*$")
 	local g = {}
 	local grams = {}
+	local hints = ''
 	if s then
-		local gg = w:sub(s + 1)
+		hints = w:sub(s + 1)
 		w = w:sub(1, s - 1)
-		g = split(gg, "[^, ]+")
+		g = split(hints, "[^, ]+")
 	end
 	local found = true
 	local noun = false
 	w = w:gsub(word_match,
 		function(w)
 			if noun then return w end
-			local ww, gg = self:lookup(w, g)
-			noun = gg.t == mrd.lang.gram_t.noun
+			local ww, gg
+			if ob then
+				ww, gg = self:dict(ob.__dict, w..'/'..hints)
+			end
+			if not ww then
+				ww, gg = self:dict(game.__dict, w..'/'..hints)
+			end
+			noun = gg and gg[mrd.lang.gram_t.noun]
+			if not ww then
+				ww, gg = self:lookup(w, g)
+				noun = gg.t == mrd.lang.gram_t.noun
+			end
 			if not ww then
 				found = false
 			else
@@ -559,17 +570,19 @@ local function str_split(str, delim)
 end
 
 function mrd:dict(dict, word)
+	if not dict then return end
 	local tab = {}
 	local w, hints = str_hint(word)
 	hints = str_split(hints, ",")
 	for k, v in pairs(dict) do
 		local ww, hh = str_hint(k)
 		local hints2 = {}
-		for _, v in ipairs(str_split(hh, ",")) do
+		hh = str_split(hh, ",")
+		for _, v in ipairs(hh) do
 			hints2[v] = true
 		end
 		if ww == w then
-			local t = { ww, score = 0, pos = #tab, w = v }
+			local t = { ww, score = 0, pos = #tab, w = v, hints = hh }
 			for _, v in ipairs(hints) do
 				if v:sub(1, 1) ~= '~' then
 					if hints2[v] then
@@ -593,7 +606,7 @@ function mrd:dict(dict, word)
 				   return a.score > b.score
 		end)
 		if tab[1].score > 0 then
-			return tab[1].w
+			return tab[1].w, gram2an(tab[1].hints)
 		end
 	end
 end
@@ -721,25 +734,8 @@ function mrd:noun(w, n, nn)
 	end
 	for _, v in ipairs(w) do
 		local hint2 = self:noun_hint(ob, v.alias)
-		found = false
-		if ob and type(ob.__dict) == 'table' then
-			local ww = self:dict(ob.__dict, v.word .. '/'.. v.hint .. hint2)
-			if ww then
-				found = true
-				rc = noun_append(rc, tab, ww)
-			end
-		end
-		if not found and type(game.__dict) == 'table' then
-			local ww = self:dict(game.__dict, v.word .. '/'.. v.hint .. hint2)
-			if ww then
-				found = true
-				rc = noun_append(rc, tab, ww)
-			end
-		end
-		if not found then
-			local m = self:word(v.word .. '/'.. v.hint .. hint2)
-			rc = noun_append(rc, tab, m)
-		end
+		local m = self:word(v.word .. '/'.. v.hint .. hint2, ob)
+		rc = noun_append(rc, tab, m)
 	end
 	return tab and tab or rc
 end
@@ -804,7 +800,7 @@ std.obj.gram = function(self, ...)
 	hint = str_split(hint, ",")
 	local g = gram and gram[1] or {}
 	for _, v in ipairs(gram or {}) do
-		if v.t == t then
+		if (v.t and v.t == t) or (not v.t and v[t]) then
 			g = v
 			break
 		end
