@@ -756,7 +756,8 @@ Verb { "#Inv",
 Verb { "#Take",
 	"take,get,pick,hold,carry,peel",
 	"{noun}/scene : Take",
-	"{noun}/scene from {noun}/inside,holder: Remove",
+	"{noun}/scene from {noun}/inside,holder : Remove",
+	"off {noun}/worn : Disrobe",
 }
 
 Verb { "#Drop",
@@ -787,46 +788,53 @@ Verb {
 
 Verb {
 	"#Wear",
-	"wear",
+	"wear,don",
 	"{noun}/held : Wear",
 }
 
 Verb {
 	"#Disrobe",
-	"снять,сним/ать",
-	"{noun}/вн,worn : Disrobe",
-	"~ {noun}/вн с|со {noun}/рд : Remove",
-	"~ с|со {noun}/рд {noun}/вн : Remove reverse"
+	"disrobe,shed,doff",
+	"{noun}/worn : Disrobe",
+}
+
+Verb {
+	"#Remove",
+	"~ {noun}/held : Disrobe",
+	"{noun} from {noun} : Remove",
+	"~ {noun}/scene : Take",
 }
 
 Verb {
 	"#SwitchOn",
-	"включ/ить,вруб/ить,активи/ровать",
-	"{noun}/вн : SwitchOn",
+	"switch",
+	"on {noun}: SwitchOn",
+	"~ {noun} : SwitchOn",
+	"~ {noun} on : SwitchOn",
 }
 
 Verb {
 	"#SwitchOff",
-	"выключ/ить,выруб/ить,деактиви/ровать",
-	"{noun}/вн : SwitchOff",
+	"off {noun}: SwitchOff",
+	"~ {noun} off : SwitchOff",
 }
 
 Verb {
 	"#Eat",
-	"есть,съе/сть,куша/ть,скуша/ть,сожр/ать,жри,жрать,ешь",
-	"{noun}/вн,held : Eat",
+	"eat",
+	"{noun}/held : Eat",
 }
 
 Verb {
 	"#Taste",
-	"лизать,лизн/уть,попроб/овать,полиз/ать,сосать,пососа/ть",
-	"{noun}/вн : Taste"
+	"taste,lick",
+	"{noun} : Taste"
 }
 
 Verb {
 	"#Drink",
-	"пить,выпить,выпей,выпью,пью",
-	"{noun}/вн,held : Drink",
+	"drink,sip,swallow",
+	"{noun}/held : Drink",
 }
 
 Verb {
