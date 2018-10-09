@@ -23,11 +23,18 @@ end
 local utf = mp.utf
 
 std.obj.the_noun = function(s, ...)
-	return "the "..s:noun(...)
+	local t = s:noun(...)
+	if s:hint'proper' or s:hint'surname' then
+		return t
+	end
+	return "the "..t
 end
 
 std.obj.a_noun = function(s, ...)
 	local t = s:noun(...)
+	if s:hint'plural' then
+		return t
+	end
 	if lang.is_vowel(utf.char(t, 1)) then
 		return "an "..t
 	else
@@ -413,8 +420,8 @@ mp.msg.Take.SELF = "{#Me} always {#have/#me} {#yourself/#me}."
 mp.msg.Take.WHERE = "It is impossible to take the thing {#me} {#is/#me} standing in/on."
 
 mp.msg.Take.LIFE = "{#Firstit}'ll not like it."
-mp.msg.Take.STATIC = "{#Thats} fixed in place."
-mp.msg.Take.SCENERY = "{#Thats} hardly portable."
+mp.msg.Take.STATIC = "{#Thats/#first} fixed in place."
+mp.msg.Take.SCENERY = "{#Thats/#first} hardly portable."
 
 mp.msg.Take.WORN = "{#Thefirst} {#is/#first} worn on {#thenoun/#firstwhere}."
 mp.msg.Take.PARTOF = "{#Thefirst} {#is/#first} a part of {#thenoun/#firstwhere}."
@@ -447,11 +454,11 @@ mp.msg.Wear.WEAR = "{#Me} {#present/#me,put} on {#thefirst}."
 mp.msg.Disrobe.NOTWORN = "{#Me} {#is/#me} not wearing {#thefirst}."
 mp.msg.Disrobe.DISROBE = "{#Me} {#present/#me,take} off {#thefirst}."
 
-mp.msg.SwitchOn.NONSWITCHABLE = "{#Thats} not something {#me} can switch."
+mp.msg.SwitchOn.NONSWITCHABLE = "{#Thats/#first} not something {#me} can switch."
 mp.msg.SwitchOn.ALREADY = "{#Thefirst} {#is/#first} already on"
 mp.msg.SwitchOn.SWITCHON = "{#Me} {#present/#me,switch} on {#thefirst}."
 
-mp.msg.SwitchOff.NONSWITCHABLE = "{#Thats} not something {#me} can switch."
+mp.msg.SwitchOff.NONSWITCHABLE = "{#Thats/#first} not something {#me} can switch."
 mp.msg.SwitchOff.ALREADY = "{#Thefirst} {#is/#first} already off"
 mp.msg.SwitchOff.SWITCHOFF = "{#Me} {#present/#me,switch} off {#thefirst}."
 
@@ -510,7 +517,6 @@ mp.msg.Smell.SMELL2 = "{#present/#first,Smell} as {#anoun/#first}."
 mp.msg.Listen.LISTEN = "{#Me} {#present/#me,hear} nothing unexpected."
 mp.msg.Listen.LISTEN2 = "{#Me} {#present/#me,hears} {#thefirst}. Nothing unexpected."
 
---"выкопать"
 mp.msg.Dig.DIG = "Digging would achieve nothing here."
 mp.msg.Dig.DIG2 = "Digging {#thefirst} would achieve nothing."
 mp.msg.Dig.DIG3 = "Digging {#thefirst} with {#thesecond} would achieve nothing."
@@ -520,57 +526,48 @@ mp.msg.Cut.CUT2 = "Cutting {#that/#first} up with {#thesecond} would achieve lit
 
 mp.msg.Tear.TEAR = "Tearing {#firstit} would achieve nothing."
 
-mp.msg.Tie.TIE = "Привязывать {#first/вн} бессмысленно."
-mp.msg.Tie.TIE2 = "Привязывать {#first/вн} к {#second/дт} бессмысленно."
+mp.msg.Tie.TIE = "{#Me} would achieve nothing by this."
+mp.msg.Tie.TIE2 = "{#Me} would achieve nothing by this."
 
-mp.msg.Blow.BLOW = "Дуть на/в {#first/вн} бессмысленно."
+mp.msg.Blow.BLOW = "{#Me} can't usefully blow {#that}."
 
-mp.msg.Attack.LIFE = "Агрессия к {#first/дт} неоправданна."
-mp.msg.Attack.ATTACK = "Сила есть -- ума не надо?"
---"хотеть"
-mp.msg.Sleep.SLEEP = "{#Me} не {#word/хотеть,#me,нст} спать."
-mp.msg.Swim.SWIM = "Для этого здесь недостаточно воды."
-mp.msg.Fill.FILL = "Наполнять {#first/вн} бессмысленно."
---"подпрыгивать"
-mp.msg.Jump.JUMP = "{#Me} глупо {#word/подпрыгивать,#me,нст}."
-mp.msg.JumpOver.JUMPOVER = "Прыгать через {#first/вн} бессмысленно."
+mp.msg.Attack.LIFE = "Violence isn't the answer to {#thefirst}."
+mp.msg.Attack.ATTACK = "Violence isn't the answer."
 
---"находить"
-mp.msg.Consult.CONSULT = "{#Me} не {#word/находить,#me,нст} ничего подходящего."
+mp.msg.Sleep.SLEEP =  "{#Me} {#is/#me} not feeling especially drowsy."
 
---"помахать"
-mp.msg.WaveHands.WAVE = "{#Me} глупо {#word/помахать,прш,#me} руками."
-mp.msg.Wave.WAVE = "{#Me} глупо {#word/помахать,прш,#me} {#first/тв}."
+mp.msg.Swim.SWIM = "There's not enough water to swim in."
 
-mp.msg.Talk.SELF = "Беседы не получилось."
---"уметь"
-mp.msg.Talk.NOTLIVE = "{#First} не {#word/уметь,#first,нст} разговаривать."
---"отреагировать"
-mp.msg.Talk.LIVE = "{#First} никак не {#word/отреагировать,#first}."
+mp.msg.Fill.FILL = "It's useless to fill {#thefirst}."
 
-mp.msg.Tell.SELF = "Беседы не получилось."
+mp.msg.Jump.JUMP = "{#Me} {#present/#me,jump} on the spot, fruitlessly."
 
---"безмолвен"
-mp.msg.Tell.NOTLIVE = "{#First} {#word/безмолвен,#first}."
---"отреагировать"
-mp.msg.Tell.LIVE = "{#First} никак не {#word/отреагировать,#first}."
---"нашёл"
-mp.msg.Tell.EMPTY = "{#Me} не {#word/нашёл,#me,прш} что сказать."
+mp.msg.JumpOver.JUMPOVER = "{#Me} would achieve nothing by jumping over {#thefirst}."
 
---"отвечать"
-mp.msg.Ask.NOTLIVE = "Ответа не последовало."
---"ответить"
-mp.msg.Ask.LIVE = "{#First} не {#word/ответить,прш,#first}."
---"придумать"
-mp.msg.Ask.EMPTY = "{#Me} не {#word/придумать,#me,прш} что спросить."
-mp.msg.Ask.SELF = "Хороший вопрос."
+mp.msg.Consult.CONSULT = "{#Me} {#present/#me,discover} nothing of interest."
 
---"отвечать"
-mp.msg.Answer.NOTLIVE = "Ответа не последовало."
---"ответить"
-mp.msg.Answer.LIVE = "{#First} не {#word/ответить,прш,#first}."
---"придумать"
-mp.msg.Answer.EMPTY = "{#Me} не {#word/придумать,#me,прш} что ответить."
+mp.msg.WaveHands.WAVE = "{#Me} {#present/#me,wave}, feeling foolish."
+
+mp.msg.Wave.WAVE = "{#Me} {#present/#me,wave} to {#thefirst}, feeling foolish."
+
+mp.msg.Talk.SELF = "No dialog happens."
+mp.msg.Talk.NOTLIVE = "{#Thefirst} can't speak."
+mp.msg.Talk.LIVE = "No reaction from {#thefirst}."
+
+mp.msg.Tell.SELF = "No dialog happens."
+
+mp.msg.Tell.NOTLIVE = "Silence."
+mp.msg.Tell.LIVE = "No reaction from {#thefirst}."
+mp.msg.Tell.EMPTY = "{#Me} can't find words to tell."
+
+mp.msg.Ask.NOTLIVE = "No answer."
+mp.msg.Ask.LIVE = "{#Firstit} {#doesnt/#first} answer."
+mp.msg.Ask.EMPTY = "{#Me} can't find anything to ask."
+mp.msg.Ask.SELF = "Good question."
+
+mp.msg.Answer.NOTLIVE = "No reaction."
+mp.msg.Answer.LIVE = "{#Firstit} {#doesnt/#first} say anything."
+mp.msg.Answer.EMPTY = "{#Me} can't find anything to answer."
 mp.msg.Answer.SELF = "Good answer."
 
 mp.msg.Yes.YES = "That was a rhetorical question."
@@ -621,6 +618,13 @@ end
 
 function mp:it(w, hint)
 	hint = hint or ''
+	if w == std.me() then
+		if w:hint'first' then
+			return "me"
+		elseif w:hint'second' then
+			return "you"
+		end
+	end
 	if w:hint'plural' then
 		return "they"
 	elseif w:hint'female' then
@@ -634,7 +638,13 @@ end
 function mp:synonyms(w, hint)
 	local t = self:it(w, hint)
 	local w = { t }
-	if t == 'его' or t == 'её' or t == 'ее' or t == 'ей' or t == 'им' then t = 'н'..t; w[2] = t end
+	if t == 'he' then
+		w[2] = 'him'
+	elseif t == 'she' then
+		w[2] = 'her'
+	elseif t == 'they' then
+		w[2] = 'them'
+	end
 	return w
 end
 
@@ -654,31 +664,8 @@ local function hints(w)
 end
 
 function mp:err_noun(noun)
-	if noun == '*' then return "{$fmt em|<любое слово>}" end
-	local hint = std.split(noun, "/")
-	local rc = "{$fmt em|существительное в"
-	if #hint == 2 then
-		local h = hints(hint[2])
-		local acc = 'именительном'
-		if h["им"] then
-			acc = 'именительном'
-		elseif h["рд"] then
-			acc = 'родительном'
-		elseif h["дт"] then
-			acc = 'дательном'
-		elseif h["вн"] then
-			acc = 'винительном'
-		elseif h["тв"] then
-			acc = 'творительном'
-		elseif h["пр"] or h["пр2"] then
-			acc = 'предложном'
-		end
-		rc = rc ..  " "..acc .. " падеже"
-	else
-		rc = rc .. " именительном падеже"
-	end
-	rc = rc .. "}"
-	return rc
+	if noun == '*' then return "{$fmt em|<word>}" end
+	return "{$fmt em|noun}"
 end
 
 function mp:before_Enter(w)
@@ -691,23 +678,23 @@ end
 
 function mp:MetaHelp()
 
-	pn("{$fmt b|КАК ИГРАТЬ?}")
+	pn("{$fmt b|INSTRUCTIONS}")
 
-	pn([[Вводите ваши действия в виде простых предложений вида: глагол -- существительное. Например:^
-> открыть дверь^
-> отпереть дверь ключом^
-> идти на север^
-> взять кепку^
+	pn([[Enter your actions in verb noun form. For example:^
+> open door^
+> unlock door with key^
+> go north^
+> take cap^
 ^
-Чтобы осмотреть предмет, введите "осмотреть книгу" или просто "книга".^
+To examine a thing, enter "exam book" or just "book".^
 ^
-Чтобы осмотреть всю сцену, наберите "осмотреть" или нажмите "ввод".^
+To examine whole scene, enter "exam" or press "Enter".^
 ^
-Для того чтобы узнать, что вы носите с собой, наберите "инвентарь".^
+To exam your inventory, enter "inv".^
 ^
-Для перемещений используйте стороны света, например: "идти на север" или "север" или просто "с".
+Use compass directions to walk. For example: "go north" or "north" or just "n".
 ^^
-Вы можете воспользоваться клавишой "TAB" для автодополнения ввода.
+You may use the "TAB" key for autocompletion.
 ]])
 end
 
@@ -721,16 +708,17 @@ end
 
 std.mod_init(function(s)
 Verb { "#Walk",
-	"идти,иду,[по|подо|за|во]йти,[по|подо|за|во]йди,иди,[ |по|под]бежать,бег/и,влез/ть,[ |по]ехать,едь,поеду,сесть,сядь,сяду,лечь,ляг,вста/ть",
-	"на {compass1} : Walk",
-	"на|в|во {noun}/вн,scene,enterable : Enter",
-	"к {noun}/дт,scene : Walk",
-	"{compass2}: Walk" }
+	"go,walk,run,enter",
+	"{compass1} : Walk",
+	"in|into|inside {noun}/scene,enterable : Enter",
+	"{noun}/scene : Walk",
+	"{compass2}: Walk",
+	"outside|out|away: Exit" }
 
 Verb { "#Exit",
-	"выйти,выйд/и,уйти,уйд/и,вылез/ти,выхо/ди,обратно,назад,выбраться,выберись,выберусь,выбираться",
-	"из|с|со {noun}/рд,scene : Exit",
-	"?наружу : Exit" }
+	"exit,out",
+	"?from {noun}/scene : Exit",
+	": Exit"}
 
 Verb { "#Exam",
 	"examine,exam,check,describe,watch,look",
@@ -743,65 +731,64 @@ Verb { "#Exam",
 }
 
 Verb { "#Search",
-	"искать,обыскать,ищ/и,обыщ/и,изуч/ать,исслед/овать",
-	"{noun}/вн : Search",
-	"в|во|на {noun}/пр,2 : Search",
-	"под {noun}/тв : LookUnder",
-	"~ в|во {noun}/пр,2 * : Consult",
-	"~ * в|во {noun}/пр,2 : Consult reverse",
+	"search,investigate",
+	"{noun} : Search",
+	"in|into|inside|on|through {noun} : Search",
+	"under {noun} : LookUnder",
 }
 
 Verb { "#Open",
-	"откр/ыть,распах/нуть,раскр/ыть,отпереть,отвори/ть,отопр/и",
-	"{noun}/вн : Open",
-	"{noun}/вн {noun}/тв : Unlock",
-	"~ {noun}/тв {noun}/вн : Unlock reverse",
+	"open,unlock",
+	"{noun} : Open",
+	"{noun} with {noun}/held : Unlock"
 }
 
 Verb { "#Close",
-	"закр/ыть,запереть",
-	"{noun}/вн : Close",
-	"{noun}/вн {noun}/тв : Lock",
-	"~ {noun}/тв {noun}/вн : Lock reverse",
+	"close,lock",
+	"{noun} : Close",
+	"{noun} with {noun}/held : Lock",
 }
 
 Verb { "#Inv",
-	"инв/ентарь,с собой",
+	"inv/entory",
 	"Inv" }
 
 Verb { "#Take",
-	"взять,возьм/и,[ |за|подо]брать,[ |за|под]бер/и,доста/ть,схват/ить,украсть,украд/и,извле/чь,вын/уть,вытащ/ить",
-	"{noun}/вн,scene : Take",
-	"{noun}/вн,scene из|с|со|у {noun}/рд,inside,holder: Remove",
-	"~ из|с|со|у {noun}/рд,inside,holder {noun}/вн,scene: Remove reverse",
+	"take,get,pick,hold,carry,peel",
+	"{noun}/scene : Take",
+	"{noun}/scene from {noun}/inside,holder: Remove",
 }
 
 Verb { "#Drop",
-	"полож/ить,постав/ить,посади/ть,класть,клади/,вставь/,помест/ить,сун/уть,засун/уть,воткн/уть,втык/ать,встав/ить,влож/ить",
-	"{noun}/вн,held : Drop",
-	"{noun}/вн,held в|во {noun}/вн,inside : Insert",
-	"~ {noun}/вн,held внутрь {noun}/рд : Insert",
-	"{noun}/вн,held на {noun}/вн : PutOn",
-	"~ в|во {noun}/вн {noun}/вн : Insert reverse",
-	"~ внутрь {noun}/рд {noun}/вн : Insert reverse",
-	"~ на {noun}/вн {noun}/вн : PutOn reverse",
+	"drop,discard,throw",
+	"{noun}/held : Drop",
+	"{noun}/held in|into|down {noun}/inside : Insert",
+	"{noun}/held on|onto {noun} : PutOn",
+}
+
+Verb { "#Put",
+	"~put",
+	"~ {noun}/held : Drop",
+	"~ {noun}/held in|into|inside {noun}/inside : Insert",
+	"~ {noun}/held on|onto {noun} : PutOn",
+	"~ on {noun}/held : Wear",
+	"~ down {noun}/held : Drop",
+	"~ {noun}/held down: Drop",
 }
 
 Verb {
 	"#ThrowAt",
-	"брос/ить,выбро/сить,кин/уть,кида/ть,швыр/нуть,метн/уть,метать",
-	"{noun}/вн,held : Drop",
-	"{noun}/вн,held в|во|на {noun}/вн : ThrowAt",
-	"~ в|во|на {noun}/вн {noun}/вн : ThrowAt reverse",
-	"~ {noun}/вн {noun}/дт : ThrowAt",
-	"~ {noun}/дт {noun}/вн : ThrowAt reverse",
-
+	"throw",
+	"~ {noun}/held : Drop",
+	"~ {noun}/held in|into|down {noun}/inside : Insert",
+	"~ {noun}/held on|onto {noun} : PutOn",
+	"{noun}/held at|against|on|onto {noun} : ThrowAt",
 }
 
 Verb {
 	"#Wear",
-	"наде/ть,оде/ть,облачи/ться",
-	"{noun}/вн,held : Wear",
+	"wear",
+	"{noun}/held : Wear",
 }
 
 Verb {
@@ -1115,29 +1102,29 @@ Verb {
 if DEBUG then
 	MetaVerb {
 		"#MetaWord",
-		"~_слово",
+		"~_word",
 		"* : MetaWord"
 	}
 	MetaVerb {
 		"#MetaNoun",
-		"~_сущ/ествительное",
+		"~_noun",
 		"* : MetaNoun"
 	}
 	MetaVerb {
 		"#MetaTrace",
-		"~_трассировка",
+		"~_trace",
 		"да : MetaTraceOn",
 		"нет : MetaTraceOff",
 	}
 	MetaVerb {
 		"#MetaDump",
-		"~_дамп",
+		"~_dump",
 		"MetaDump"
 	}
 end
 MetaVerb {
 	"#MetaTranscript",
-	"~транскрипт",
+	"~transcript",
 	"да : MetaTranscriptOn",
 	"нет : MetaTranscriptOff",
 	"MetaTranscript",
@@ -1145,19 +1132,19 @@ MetaVerb {
 
 MetaVerb {
 	"#MetaSave",
-	"~сохрани/ть",
+	"~save",
 	"MetaSave"
 }
 MetaVerb {
 	"#MetaLoad",
-	"~загрузи/ть",
+	"~load",
 	"MetaLoad"
 }
 
 if DEBUG then
 MetaVerb {
 	"#MetaAutoplay",
-	"~автоскрипт",
+	"~autoplay",
 	"MetaAutoplay"
 }
 end
@@ -1166,22 +1153,22 @@ mp.msg.MetaRestart.RESTART = "Начать заново?";
 
 MetaVerb {
 	"#MetaRestart",
-	"~заново,~рестарт",
+	"~restart",
 	"MetaRestart"
 }
 MetaVerb {
 	"#MetaHelp",
-	"~помощь,помоги/те",
+	"~help,instructions",
 	"MetaHelp",
 }
 end, 1)
 
 std.mod_start(function()
 	if mp.undo > 0 then
-		mp.msg.MetaUndo.EMPTY = "Отменять нечего."
+		mp.msg.MetaUndo.EMPTY = "Nothing to undo."
 		MetaVerb {
 			"#MetaUndo",
-			"~отмен/ить",
+			"~undo",
 			"MetaUndo",
 		}
 	end

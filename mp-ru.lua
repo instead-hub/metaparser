@@ -615,15 +615,15 @@ Verb { "#Search",
 Verb { "#Open",
 	"откр/ыть,распах/нуть,раскр/ыть,отпереть,отвори/ть,отопр/и",
 	"{noun}/вн : Open",
-	"{noun}/вн {noun}/тв : Unlock",
-	"~ {noun}/тв {noun}/вн : Unlock reverse",
+	"{noun}/вн {noun}/тв,held : Unlock",
+	"~ {noun}/тв,held {noun}/вн : Unlock reverse",
 }
 
 Verb { "#Close",
 	"закр/ыть,запереть",
 	"{noun}/вн : Close",
-	"{noun}/вн {noun}/тв : Lock",
-	"~ {noun}/тв {noun}/вн : Lock reverse",
+	"{noun}/вн {noun}/тв,held : Lock",
+	"~ {noun}/тв,held {noun}/вн : Lock reverse",
 }
 
 Verb { "#Inv",
