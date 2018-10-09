@@ -411,22 +411,12 @@ instead.get_inv = std.cacheable('inv', function(horiz)
 
 	for _, v in ipairs(mp.completions) do
 		local t = iface:xref(std.fmt(v.word), mp, v.word)
-		local filter = true
-		if v.ob and v.ob.hint_noun ~= nil then
-			if type(v.ob.hint_noun) == 'function' then
-				filter = v.ob:hint_noun(v)
-			else
-				filter = v.ob.hint_noun
-			end
+		if v.ob and have(v.ob) then t = iface:em(t) end
+		if _ >= mp.autohelp_limit then
+			ret = ret .. t .. ' ...' .. delim
+			break
 		end
-		if filter then
-			if v.ob and have(v.ob) then t = iface:em(t) end
-			if _ >= mp.autohelp_limit then
-				ret = ret .. t .. ' ...' .. delim
-				break
-			end
-			ret = ret .. t .. delim
-		end
+		ret = ret .. t .. delim
 	end
 	if #mp.completions == 0 or mp.completions.eol then
 		ret = ret .. iface:xref(mp.msg.enter or "<enter>", mp, "<enter>") .. delim
@@ -1035,7 +1025,15 @@ local function multi_select(vv, attrs, holder)
 end
 
 function mp:compl_filter(v)
-	if v.hidden and self.compl_thresh == 0 then
+	local hidden = v.hidden
+	if not hidden and v.ob and v.ob.hint_noun ~= nil then
+		if type(v.ob.hint_noun) == 'function' then
+			hidden = not v.ob:hint_noun(v)
+		else
+			hidden = not v.ob.hint_noun
+		end
+	end
+	if hidden and self.compl_thresh == 0 then
 		return false
 	end
 	local inp, pre = self:compl_ctx()
