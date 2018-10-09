@@ -411,12 +411,22 @@ instead.get_inv = std.cacheable('inv', function(horiz)
 
 	for _, v in ipairs(mp.completions) do
 		local t = iface:xref(std.fmt(v.word), mp, v.word)
-		if v.ob and have(v.ob) then t = iface:em(t) end
-		if _ >= mp.autohelp_limit then
-			ret = ret .. t .. ' ...' .. delim
-			break
+		local filter = true
+		if v.ob and v.ob.hint_noun ~= nil then
+			if type(v.ob.hint_noun) == 'function' then
+				filter = v.ob:hint_noun(v)
+			else
+				filter = v.ob.hint_noun
+			end
 		end
-		ret = ret .. t .. delim
+		if filter then
+			if v.ob and have(v.ob) then t = iface:em(t) end
+			if _ >= mp.autohelp_limit then
+				ret = ret .. t .. ' ...' .. delim
+				break
+			end
+			ret = ret .. t .. delim
+		end
 	end
 	if #mp.completions == 0 or mp.completions.eol then
 		ret = ret .. iface:xref(mp.msg.enter or "<enter>", mp, "<enter>") .. delim
