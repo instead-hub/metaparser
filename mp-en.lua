@@ -26,6 +26,15 @@ std.obj.the_noun = function(s, ...)
 	return "the "..s:noun(...)
 end
 
+std.obj.a_noun = function(s, ...)
+	local t = s:noun(...)
+	if lang.is_vowel(utf.char(t, 1)) then
+		return "an "..t
+	else
+		return "a "..t
+	end
+end
+
 _'@darkness'.word = "darkness"
 _'@darkness'.before_Any = "Darkness, noun.  An absence of light to see by."
 _'@darkness':attr 'persist'
@@ -99,18 +108,36 @@ local function str_split(str, delim)
 	return a
 end
 
-function mp.shortcut.the_noun(hint)
+function mp.shortcut.thenoun(hint)
 	local w = str_split(hint, ",")
-	if #w == 0 then
+	if #w ~= 2 then
 		return ""
 	end
-	for _, k in ipairs(w) do
-		local ob = mp:shortcut_obj(k)
-		if ob then
-			return ob:the_noun()
-		end
+	local ob = mp:shortcut_obj(w[1])
+	if not ob then
+		return ""
 	end
-	return ""
+	return ob:the_noun()
+end
+
+function mp.shortcut.anoun(hint)
+	local w = str_split(hint, ",")
+	if #w ~= 2 then
+		return ""
+	end
+	local ob = mp:shortcut_obj(w[1])
+	if not ob then
+		return ""
+	end
+	return ob:a_noun()
+end
+
+function mp.shortcut.thefirst(hint)
+	return mp.first:the_noun()
+end
+
+function mp.shortcut.thesecond(hint)
+	return mp.second:the_noun()
 end
 
 function mp.shortcut.is(hint)
@@ -152,6 +179,32 @@ function mp.shortcut.does(hint)
 	return 'does'
 end
 
+function mp.shortcut.doesnt(hint)
+	local w = str_split(hint, ",")
+	if #w ~= 1 then
+		return ""
+	end
+	local ob = mp:shortcut_obj(w[1])
+	if not ob then return "" end
+	if ob:hint'plural' or ob:hint'first' or ob:hint'second' then
+		return "don't"
+	end
+	return "doesn't"
+end
+
+function mp.shortcut.present(hint)
+	local w = str_split(hint, ",")
+	if #w ~= 2 then
+		return ""
+	end
+	local ob = mp:shortcut_obj(w[1])
+	if not ob then return "" end
+	if ob:hint'plural' or ob:hint'first' or ob:hint'second' then
+		return w[2]
+	end
+	return w[2]..'s'
+end
+
 function mp.shortcut.yourself(hint)
 	local w = str_split(hint, ",")
 	if #w ~= 1 then
@@ -162,9 +215,73 @@ function mp.shortcut.yourself(hint)
 	return mp:myself(ob)[1]
 end
 
-mp.msg.SCENE = "{#Me} {#is/#me} {#if_has/#here,supporter,on,in} {#the_noun/#here}.";
-mp.msg.INSIDE_SCENE = "{#Me} {#is/#me} {#if_has/#where,supporter,on,in} {#the_noun/#where}.";
-mp.msg.TITLE_INSIDE = "({#if_has/#where,supporter,on,in} {#the_noun/#where})";
+function mp.shortcut.thats(hint)
+	local w = str_split(hint, ",")
+	if #w ~= 1 then
+		return ""
+	end
+	local ob = mp:shortcut_obj(w[1])
+	if not ob then return "" end
+	if ob == std.me() then
+		if ob:hint'first' then return "i'm" end
+		return ob:noun()..(ob:hint'plural' and "'re" or "'s")
+	elseif ob:has'plural' then
+		return "they're"
+	elseif ob:has'female' then
+		return "she's"
+	elseif ob:has'male' then
+		return "he's"
+	end
+	return "that's"
+end
+
+function mp.shortcut.his(hint)
+	local w = str_split(hint, ",")
+	local ob
+	if #w ~= 1 then
+		ob = std.me()
+	else
+		ob = mp:shortcut_obj(w[1])
+	end
+	if not ob then return "" end
+	if ob == std.me() then
+		if ob:hint'first' then
+			return "my"
+		end
+		if ob:hint'second' then
+			return ob:hint'plural' and "yours" or "your"
+		end
+	end
+	if ob:has'plural' then
+		return "their"
+	elseif ob:has'female' then
+		return "her"
+	elseif ob:has'male' then
+		return "his"
+	end
+	return "its"
+end
+
+function mp.shortcut.that(hint)
+	local w = str_split(hint, ",")
+	if #w ~= 1 then
+		return ""
+	end
+	local ob = mp:shortcut_obj(w[1])
+	if not ob then return "" end
+	if ob == std.me() then
+		if ob:hint'first' then return "i" end
+		return ob:noun()
+	end
+	if ob:has'plural' then
+		return "those"
+	end
+	return "that"
+end
+
+mp.msg.SCENE = "{#Me} {#is/#me} {#if_has/#here,supporter,on,in} {#thenoun/#here}.";
+mp.msg.INSIDE_SCENE = "{#Me} {#is/#me} {#if_has/#where,supporter,on,in} {#thenoun/#where}.";
+mp.msg.TITLE_INSIDE = "({#if_has/#where,supporter,on,in} {#thenoun/#where})";
 
 mp.msg.COMPASS_EXAM = function(dir, ob)
 	if dir == 'u_to' then
@@ -210,13 +327,13 @@ mp.msg.OPEN = function(w)
 	pr (" (opened)")
 end
 
-mp.msg.EXITBEFORE = "May be, {#me} should to {#if_has/#where,supporter,get off,get out of} {#the_noun/#where}."
+mp.msg.EXITBEFORE = "May be, {#me} should to {#if_has/#where,supporter,get off,get out of} {#thenoun/#where}."
 
 mp.default_Event = "Exam"
 mp.default_Verb = "examine"
 
-mp.msg.ACCESS1 = "{#The_noun/#first} {#is/#first} not accessible from here."
-mp.msg.ACCESS2 = "{#The_noun/#second} {#is/#second} not accessible from here."
+mp.msg.ACCESS1 = "{#Thefirst} {#is/#first} not accessible from here."
+mp.msg.ACCESS2 = "{#Thesecond} {#is/#second} not accessible from here."
 
 mp.msg.Look.HEREIS = "Here is"
 mp.msg.Look.HEREARE = "Here are"
@@ -234,206 +351,174 @@ mp.msg.NOROOM = function(w)
 	end
 end
 
-mp.msg.Exam.SWITCHSTATE = "{#The_noun/#first} {#is/#first} switched {#if_has/#first,on,on,off}."
+mp.msg.Exam.SWITCHSTATE = "{#Thefirst} {#is/#first} switched {#if_has/#first,on,on,off}."
 mp.msg.Exam.NOTHING = "nothing."
 mp.msg.Exam.IS = "there is"
 mp.msg.Exam.ARE = "there are"
-mp.msg.Exam.IN = "In {#the_noun/#first}"
-mp.msg.Exam.ON = "On {#the_noun/#first}"
+mp.msg.Exam.IN = "In {#thefirst}"
+mp.msg.Exam.ON = "On {#thefirst}"
 
-mp.msg.Exam.DEFAULT = "{#Me} {#does/#me} not see anything unusual in {#the_noun/#first}.";
+mp.msg.Exam.DEFAULT = "{#Me} {#does/#me} not see anything unusual in {#thefirst}.";
 mp.msg.Exam.SELF = "{#Me} {#does/#me} not see anything unusual in {#yourself/#me}.";
 
---"открыт"
-mp.msg.Exam.OPENED = "{#First} {#word/открыт,нст,#first}."
---"закрыт"
-mp.msg.Exam.CLOSED = "{#First} {#word/закрыт,нст,#first}."
---"находить"
-mp.msg.LookUnder.NOTHING = "{#Me} не {#word/находить,нст,#me} под {#first/тв} ничего интересного."
---"могу"
---"закрыт"
---"держать"
---"залезать"
-mp.msg.Enter.ALREADY = "{#Me} уже {#if_has/#first,supporter,на,в} {#first/пр,2}."
-mp.msg.Enter.INV = "{#Me} не {#word/могу,#me,нст} зайти в то, что {#word/держать,#me,нст} в руках."
-mp.msg.Enter.IMPOSSIBLE = "Но в/на {#first/вн} невозможно войти, встать, сесть или лечь."
-mp.msg.Enter.CLOSED = "{#First} {#word/закрыт,#first}, и {#me} не {#word/мочь,#me,нст} зайти туда."
+mp.msg.Exam.OPENED = "{#Thefirst} {#is/#first} opened."
+mp.msg.Exam.CLOSED = "{#Thefirst} {#is/#first} closed."
+mp.msg.LookUnder.NOTHING = "{#Me} find nothing of interest under {#thefirst}."
+
+mp.msg.Enter.ALREADY = "{#Me} {#is/#me} already {#if_has/#first,supporter,on,in} {#thefirst}."
+mp.msg.Enter.INV = "{#Me} {#is/#me} unable to enter the thing {#me} {#is} holding."
+mp.msg.Enter.IMPOSSIBLE = "But {#me} {#is/#me} unable to enter in/on {#thefirst}."
+mp.msg.Enter.CLOSED = "{#Thefirst} {#is/#first} closed and {#me} can't enter there."
 mp.msg.Enter.ENTERED = "{#Me} {#word/залезать,нст,#me} {#if_has/#first,supporter,на,в} {#first/вн}."
-mp.msg.Enter.DOOR_NOWHERE = "{#First} никуда не ведёт."
---"закрыт"
-mp.msg.Enter.DOOR_CLOSED = "{#First} {#word/закрыт,#first}."
+mp.msg.Enter.DOOR_NOWHERE = "{#Thefirst} {#present/#first,lead} nowhere."
+mp.msg.Enter.DOOR_CLOSED = "{#Thefirst} {#is/#first} closed."
 
 mp.msg.Walk.ALREADY = mp.msg.Enter.ALREADY
-mp.msg.Walk.WALK = "Но {#first} и так находится здесь."
+mp.msg.Walk.WALK = "But {#thefirst} {#is/#first} already here."
 
-mp.msg.Enter.EXITBEFORE = "Сначала нужно {#if_has/#where,supporter,слезть с {#where/рд}.,покинуть {#where/вн}.}"
+mp.msg.Enter.EXITBEFORE = "{#Me} {#present/#me,need} to {#if_has/#where,supporter,get off from,leave} {#thefirst} first."
 
-mp.msg.Exit.NOTHERE = "Но {#me} сейчас не {#if_has/#first,supporter,на,в} {#first/пр,2}."
-mp.msg.Exit.NOWHERE = "Но {#me/дт} некуда выходить."
-mp.msg.Exit.CLOSED = "Но {#first} {#word/закрыт,#first}."
+mp.msg.Exit.NOTHERE = "But {#me} {#is/#me} not {#if_has/#first,supporter,on,in} {#thefirst}."
+mp.msg.Exit.NOWHERE = "But {#me} {#have/#me} no way to exit."
+mp.msg.Exit.CLOSED = "But {#thefirst} {#is/#first} closed."
+mp.msg.Exit.EXITED = "{#Me} {#if_has/#first,supporter,{#present/#me,get} off,{#present/#me,leave}} {#thefirst}."
 
+mp.msg.Inv.NOTHING = "{#Me} {#have/#me} nothing."
+mp.msg.Inv.INV = "{#Me} {#have/#me}"
 
---"покидать"
---"слезать"
-mp.msg.Exit.EXITED = "{#Me} {#if_has/#first,supporter,{#word/слезать с,#me,нст} {#first/рд},{#word/покидать,#me,нст} {#first/вн}}."
+mp.msg.Open.OPEN = "{#Me} {#present/#me,open} {#thefirst}."
+mp.msg.Open.NOTOPENABLE = "{#Thefirst} {#is/#first} not openable."
+mp.msg.Open.WHENOPEN = "{#Thenoun/first/} {#is/#first} already opened."
+mp.msg.Open.WHENLOCKED = "It's seems that {#thefirst} {#is/#first} locked."
 
-mp.msg.Inv.NOTHING = "У {#me/рд} с собой ничего нет."
-mp.msg.Inv.INV = "У {#me/рд} с собой"
+mp.msg.Close.CLOSE = "{#Me} {#present/#me,close} {#thefirst}."
+mp.msg.Close.NOTOPENABLE = "{#Thats/#first} not something {#me} can close."
+mp.msg.Close.WHENCLOSED = "{#Thefirst} {#is/#first} already closed."
 
---"открывать"
-mp.msg.Open.OPEN = "{#Me} {#word/открывать,нст,#me} {#first/вн}."
-mp.msg.Open.NOTOPENABLE = "{#First/вн} невозможно открыть."
---"открыт"
-mp.msg.Open.WHENOPEN = "{#First/} уже {#word/открыт,#first}."
---"заперт"
-mp.msg.Open.WHENLOCKED = "Похоже, что {#first/} {#word/заперт,#first}."
+mp.msg.Lock.IMPOSSIBLE = "{#Firstit} {#doesnt/#first} seem to be something {#me} can lock."
+mp.msg.Lock.LOCKED = "{#Thefirst} {#is/#first} already locked."
+mp.msg.Lock.OPEN = "{#Me} should close {#thefirst} first."
+mp.msg.Lock.WRONGKEY = "{#That/#second} {#doesnt/#second} seem to fit the lock."
+mp.msg.Lock.LOCK = "{#Me} {#present/#me,lock} {#thefirst}."
 
---"закрывать"
-mp.msg.Close.CLOSE = "{#Me} {#word/закрывать,нст,#me} {#first/вн}."
-mp.msg.Close.NOTOPENABLE = "{#First/вн} невозможно закрыть."
---"закрыт"
-mp.msg.Close.WHENCLOSED = "{#First/} уже {#word/закрыт,#first}."
+mp.msg.Unlock.IMPOSSIBLE = "{#Firstit} {#doesnt/#first} seem to be something {#me} can unlock."
+mp.msg.Unlock.NOTLOCKED = "{#Thefirst} {#is/#first} not locked."
+mp.msg.Unlock.WRONGKEY = "{#That/#second} {#doesnt/#second} seem to fit the lock."
+mp.msg.Unlock.UNLOCK = "{#Me} {#present/#me,unlock} {#thefirst}."
 
-mp.msg.Lock.IMPOSSIBLE = "{#First/вн} невозможно запереть."
---"заперт"
-mp.msg.Lock.LOCKED = "{#First} уже {#word/заперт,#first}."
---"закрыть"
-mp.msg.Lock.OPEN = "Сначала необходимо закрыть {#first/вн}."
---"подходит"
-mp.msg.Lock.WRONGKEY = "{#Second} не {#word/подходит,#second} к замку."
---"запирать"
-mp.msg.Lock.LOCK = "{#Me} {#word/запирать,#me,нст} {#first/вн}."
+mp.msg.Take.HAVE = "{#Me} already {#have/#me} {#thefirst}."
+mp.msg.Take.TAKE = "{#Me} {#present/#me,take} {#thefirst."
+mp.msg.Take.SELF = "{#Me} always {#have/#me} {#yourself/#me}."
 
-mp.msg.Unlock.IMPOSSIBLE = "{#First/вн} невозможно отпереть."
---"заперт"
-mp.msg.Unlock.NOTLOCKED = "{#First} не {#word/заперт,#first}."
---"подходит"
-mp.msg.Unlock.WRONGKEY = "{#Second} не {#word/подходит,нст,#second} к замку."
---"отпирать"
-mp.msg.Unlock.UNLOCK = "{#Me} {#word/отпирать,#me,нст} {#first/вн}."
+mp.msg.Take.WHERE = "It is impossible to take the thing {#me} {#is/#me} standing in/on."
 
-mp.msg.Take.HAVE = "У {#me/вн} и так {#firstit} уже есть."
-mp.msg.Take.TAKE = "{#Me} {#verb/take} {#first/вн}."
-mp.msg.Take.SELF = "{#Me} есть у {#me/рд}."
---"находиться"
-mp.msg.Take.WHERE = "Нельзя взять то, в/на чём {#me} {#word/находиться,#me}."
+mp.msg.Take.LIFE = "{#Firstit}'ll not like it."
+mp.msg.Take.STATIC = "{#Thats} fixed in place."
+mp.msg.Take.SCENERY = "{#Thats} hardly portable."
 
-mp.msg.Take.LIFE = "{#First/дт} это вряд ли понравится."
---"закреплён"
-mp.msg.Take.STATIC = "{#First} жестко {#word/закреплён,#first}."
-mp.msg.Take.SCENERY = "{#First/вн} невозможно взять."
+mp.msg.Take.WORN = "{#Thefirst} {#is/#first} worn on {#thenoun/#firstwhere}."
+mp.msg.Take.PARTOF = "{#Thefirst} {#is/#first} a part of {#thenoun/#firstwhere}."
 
---"надет"
-mp.msg.Take.WORN = "{#First} {#word/надет,#first} на {#firstwhere/вн}."
-mp.msg.Take.PARTOF = "{#First} является частью {#firstwhere/рд}."
+mp.msg.Remove.WHERE = "But {#firstit} {#is/#first} not there now."
+mp.msg.Remove.REMOVE = "{#Thefirst} {#is/#first} {#if_has/#second,supporter,taken,removed} from {#thesecond}."
 
-mp.msg.Remove.WHERE = "{#First} не находится {#if_has/#second,supporter,на,в} {#second/пр,2}."
-mp.msg.Remove.REMOVE = "{#First} {#if_has/#second,supporter,поднят,извлечён из} {#second/рд}."
+mp.msg.Drop.SELF = "{#Me} can't {#does/#me} that."
+mp.msg.Drop.WORN = "{#Me}'ll to take off {#thefirst} first."
 
-mp.msg.Drop.SELF = "У {#me/рд} не хватит ловкости."
-mp.msg.Drop.WORN = "{#First/вн} сначала нужно снять."
---"помещать"
-mp.msg.Insert.INSERT = "{#Me} {#word/помещать,нст,#me} {#first/вн} в {#second/вн}."
-mp.msg.Insert.CLOSED = "{#Second} {#word/закрыт,#second}."
-mp.msg.Insert.NOTCONTAINER = "{#Second} не {#if_hint/#second,plural,могут,может} что-либо содержать."
-mp.msg.Insert.WHERE = "Нельзя поместить {#first/вн} внутрь себя."
-mp.msg.Insert.ALREADY = "Но {#first} уже и так {#word/находиться,#first} там."
-mp.msg.PutOn.NOTSUPPORTER = "Класть что-либо на {#second} бессмысленно."
---"класть"
-mp.msg.PutOn.PUTON = "{#Me} {#word/класть,нст,#me} {#first/вн} на {#second/вн}."
-mp.msg.PutOn.WHERE = "Нельзя поместить {#first/вн} на себя."
+mp.msg.Insert.INSERT = "{#Me} {#present/#me,put} {#thefirst} into {#thesecond}."
+mp.msg.Insert.CLOSED = "{#Thesecond} {#is/#second} closed."
+mp.msg.Insert.NOTCONTAINER = "{#Thesecond} can't contain things."
+mp.msg.Insert.WHERE = "{#Me} can't put something inside itself."
+mp.msg.Insert.ALREADY = "But {#thefirst} {#is/#first} already there."
 
---"брошен"
-mp.msg.Drop.DROP = "{#First} {#word/брошен,#first}."
+mp.msg.PutOn.NOTSUPPORTER = "Putting things on {#thesecond} would achieve nothing."
+mp.msg.PutOn.PUTON = "{#Me} {#present/#me,put} {#thefirst} on {#thesecond}."
+mp.msg.PutOn.WHERE = "{#Me} can't put something on top of itself."
 
-mp.msg.ThrowAt.NOTLIFE = "Бросать {#first/вн} в {#second/вн} бесполезно."
-mp.msg.ThrowAt.THROW = "У {#me/рд} не хватает решимости бросить {#first/вн} в {#second/вн}."
+mp.msg.Drop.DROP = "{#Thefirst} {#is/#first} dropped."
 
+mp.msg.ThrowAt.NOTLIFE = "Futile."
+mp.msg.ThrowAt.THROW = "You lack the nerve when it comes to the crucial moment."
 
-mp.msg.Wear.NOTCLOTHES = "Надеть {#first/вн} невозможно."
-mp.msg.Wear.WORN = "{#First} уже на {#me/дт}."
---"надевать"
-mp.msg.Wear.WEAR = "{#Me} {#word/надевать,#me,нст} {#first/вн}."
+mp.msg.Wear.NOTCLOTHES = "{#Me} can't wear {#thefirst}."
+mp.msg.Wear.WORN = "{#Me} {#is/#me} already wearing {#thefirst}."
+mp.msg.Wear.WEAR = "{#Me} {#present/#me,put} on {#thefirst}."
 
-mp.msg.Disrobe.NOTWORN = "{#First} не на {#me/дт}."
---"снимать"
-mp.msg.Disrobe.DISROBE = "{#Me} {#word/снимать,#me,нст} {#first/вн}."
+mp.msg.Disrobe.NOTWORN = "{#Me} {#is/#me} not wearing {#thefirst}."
+mp.msg.Disrobe.DISROBE = "{#Me} {#present/#me,take} off {#thefirst}."
 
-mp.msg.SwitchOn.NONSWITCHABLE = "{#First/вн} невозможно включить."
---"включён"
-mp.msg.SwitchOn.ALREADY = "{#First} уже {#word/включён,#first}."
---"включать"
-mp.msg.SwitchOn.SWITCHON = "{#Me} {#word/включать,#me,нст} {#first/вн}."
+mp.msg.SwitchOn.NONSWITCHABLE = "{#Thats} not something {#me} can switch."
+mp.msg.SwitchOn.ALREADY = "{#Thefirst} {#is/#first} already on"
+mp.msg.SwitchOn.SWITCHON = "{#Me} {#present/#me,switch} on {#thefirst}."
 
-mp.msg.SwitchOff.NONSWITCHABLE = "{#First/вн} невозможно выключить."
---"выключён"
-mp.msg.SwitchOff.ALREADY = "{#First} уже {#word/выключён,#first}."
---"выключать"
-mp.msg.SwitchOff.SWITCHOFF = "{#Me} {#word/выключать,#me,нст} {#first/вн}."
+mp.msg.SwitchOff.NONSWITCHABLE = "{#Thats} not something {#me} can switch."
+mp.msg.SwitchOff.ALREADY = "{#Thefirst} {#is/#first} already off"
+mp.msg.SwitchOff.SWITCHOFF = "{#Me} {#present/#me,switch} off {#thefirst}."
 
---"годится"
-mp.msg.Eat.NOTEDIBLE = "{#First} не {#word/годится,#first} в пищу."
-mp.msg.Taste.TASTE = "Никакого необычного вкуса нет."
+mp.msg.Eat.NOTEDIBLE = "{#Thefirst} {#is/#first} plainly inedible."
+mp.msg.Eat.EAT = "{#Me} {#present/#me,eat} {#thefirst}. Not bad."
 
---"съедать"
-mp.msg.Eat.EAT = "{#Me} {#word/съедать,нст,#me} {#first/вн}."
-mp.msg.Drink.IMPOSSIBLE = "Выпить {#first/вн} невозможно."
+mp.msg.Taste.TASTE = "You taste nothing unexpected.";
 
-mp.msg.Push.STATIC = "{#First/вн} трудно сдвинуть с места."
-mp.msg.Push.SCENERY = "{#First/вн} двигать невозможно."
-mp.msg.Push.PUSH = "Ничего не произошло."
+mp.msg.Drink.IMPOSSIBLE = "There's nothing suitable to drink here.";
 
-mp.msg.Pull.STATIC = "{#First/вн} трудно сдвинуть с места."
-mp.msg.Pull.SCENERY = "{#First/вн} двигать невозможно."
-mp.msg.Pull.PULL = "Ничего не произошло."
+mp.msg.Push.STATIC = "{#Thefirst} {#is/#first} fixed in place."
+mp.msg.Push.SCENERY = "{#Me} {#is/#first} unable to."
+mp.msg.Push.PUSH = "Nothing obvious happens."
 
-mp.msg.Turn.STATIC = "{#First/вн} трудно сдвинуть с места."
-mp.msg.Turn.SCENERY = "{#First/вн} двигать невозможно."
-mp.msg.Turn.TURN = "Ничего не произошло."
+mp.msg.Pull.STATIC = "{#Thefirst} {#is/#first} fixed in place."
+mp.msg.Pull.SCENERY = "{#Me} {#is/#first} unable to."
+mp.msg.Pull.PULL = "Nothing obvious happens."
 
-mp.msg.Wait.WAIT = "Проходит немного времени."
+mp.msg.Turn.STATIC = "{#Thefirst} {#is/#first} fixed in place."
+mp.msg.Turn.SCENERY = "{#Me} {#is/#first} unable to."
+mp.msg.Turn.TURN = "Nothing obvious happens."
 
-mp.msg.Touch.LIVE = "Не стоит давать волю рукам."
-mp.msg.Touch.TOUCH = "Никаких необычных ощущений нет."
-mp.msg.Touch.MYSELF = "{#Me} на месте."
+mp.msg.Wait.WAIT = "Time passes."
 
-mp.msg.Rub.RUB = "Тереть {#first/вн} бессмысленно."
-mp.msg.Sing.SING = "С таким слухом и голосом как у {#me/рд} этого лучше не делать."
+mp.msg.Touch.LIVE = "Keep your hands to yourself!"
+mp.msg.Touch.TOUCH = "You feel nothing unexpected."
+mp.msg.Touch.MYSELF = "{#Me} {#is/#me} here."
 
-mp.msg.Give.MYSELF = "{#First} и так у {#me/рд} есть."
-mp.msg.Give.GIVE = "{#Second/вн} это не заинтересовало."
-mp.msg.Show.SHOW = "{#Second/вн} это не впечатлило."
+mp.msg.Rub.RUB = "{#Me} {#present/#me,achieve} nothing by this."
+mp.msg.Sing.SING = "{#His/#me} singing is abominable.";
 
-mp.msg.Burn.BURN = "Поджигать {#first/вн} бессмысленно."
-mp.msg.Burn.BURN2 = "Поджигать {#first/вн} {#second/тв} бессмысленно."
---"поверь"
-mp.msg.Wake.WAKE = "Это не сон, а явь."
-mp.msg.WakeOther.WAKE = "Будить {#first/вн} не стоит."
-mp.msg.WakeOther.NOTLIVE = "Бессмысленно будить {#first/вн}."
+mp.msg.Give.MYSELF = "{#Me} already {#have/#me} {#firstit}."
+mp.msg.Give.GIVE = "{#Thesecond} {#doesnt/#second} seem interested."
 
-mp.msg.PushDir.PUSH = "Передвигать это нет смысла."
+mp.msg.Show.SHOW = "{#Thesecond} {#is/#second} unimpressed."
 
-mp.msg.Kiss.NOTLIVE = "Странное желание."
-mp.msg.Kiss.KISS = "{#Firstit/дт} это может не понравиться."
-mp.msg.Kiss.MYSELF = "Ну уж нет."
+mp.msg.Burn.BURN = "This dangerous act would achieve little."
+mp.msg.Burn.BURN2 = "This dangerous act would achieve little."
 
-mp.msg.Think.THINK = "Отличная идея!"
-mp.msg.Smell.SMELL = "Никакого необычного запаха нет."
-mp.msg.Smell.SMELL2 = "Пахнет как {#first}."
+mp.msg.Wake.WAKE = "The dreadful truth is, this is not a dream."
 
-mp.msg.Listen.LISTEN = "Никаких необычных звуков нет."
---"прислушаться"
-mp.msg.Listen.LISTEN2 = "{#Me} {#word/прислушаться,#me,прш} к {#first/дт}. Никаких необычных звуков нет."
+mp.msg.WakeOther.WAKE = "That seems unnecessary."
+mp.msg.WakeOther.NOTLIVE = "{#Thefirst} {#is/#first} not sleeping."
+
+mp.msg.PushDir.PUSH = "Is that the best {#me} can think of?"
+
+mp.msg.Kiss.NOTLIVE = "Keep your mind on the game."
+mp.msg.Kiss.KISS = "{#Firstit} would not like it."
+mp.msg.Kiss.MYSELF = "Impossible."
+
+mp.msg.Think.THINK = "What a good idea."
+
+mp.msg.Smell.SMELL = "{#Me} {#present/#me,smell} nothing unexpected."
+mp.msg.Smell.SMELL2 = "{#present/#first,Smell} as {#anoun/#first}."
+
+mp.msg.Listen.LISTEN = "{#Me} {#present/#me,hear} nothing unexpected."
+mp.msg.Listen.LISTEN2 = "{#Me} {#present/#me,hears} {#thefirst}. Nothing unexpected."
 
 --"выкопать"
-mp.msg.Dig.DIG = "{#Me} ничего не {#word/выкопать,#me,прш}."
-mp.msg.Dig.DIG2 = "Копать {#first/вн} бессмысленно."
-mp.msg.Dig.DIG3 = "Копать {#first/вн} {#second/тв} бессмысленно."
+mp.msg.Dig.DIG = "Digging would achieve nothing here."
+mp.msg.Dig.DIG2 = "Digging {#thefirst} would achieve nothing."
+mp.msg.Dig.DIG3 = "Digging {#thefirst} with {#thesecond} would achieve nothing."
 
-mp.msg.Cut.CUT = "Резать {#first/вн} бессмысленно."
-mp.msg.Cut.CUT2 = "Резать {#first/вн} {#second/тв} бессмысленно."
+mp.msg.Cut.CUT = "Cutting {#that/#first} up would achieve little."
+mp.msg.Cut.CUT2 = "Cutting {#that/#first} up with {#thesecond} would achieve little."
 
-mp.msg.Tear.TEAR = "Рвать {#first/вн} бессмысленно."
+mp.msg.Tear.TEAR = "Tearing {#firstit} would achieve nothing."
 
 mp.msg.Tie.TIE = "Привязывать {#first/вн} бессмысленно."
 mp.msg.Tie.TIE2 = "Привязывать {#first/вн} к {#second/дт} бессмысленно."
@@ -486,11 +571,11 @@ mp.msg.Answer.NOTLIVE = "Ответа не последовало."
 mp.msg.Answer.LIVE = "{#First} не {#word/ответить,прш,#first}."
 --"придумать"
 mp.msg.Answer.EMPTY = "{#Me} не {#word/придумать,#me,прш} что ответить."
-mp.msg.Answer.SELF = "Хороший ответ."
+mp.msg.Answer.SELF = "Good answer."
 
-mp.msg.Yes.YES = "Вопрос был риторическим."
---"продаваться"
-mp.msg.Buy.BUY = "{#First} не {#word/продаваться,нст,#first}."
+mp.msg.Yes.YES = "That was a rhetorical question."
+mp.msg.Buy.BUY = "Nothing is on sale."
+
 mp.hint.live = 'live'
 mp.hint.nonlive = 'nonlive'
 mp.hint.neuter = 'neutwe'
@@ -503,10 +588,8 @@ mp.hint.first = 'first'
 mp.hint.second = 'second'
 mp.hint.third = 'third'
 
-mp.keyboard_space = '<пробел>'
-mp.keyboard_backspace = '<удалить>'
-
-mp.msg.verbs.take = -"брать,#me,нст"
+mp.keyboard_space = '<space>'
+mp.keyboard_backspace = '<backspace>'
 
 local function dict(t, hint)
 	local g = std.split(hint, ",")
@@ -556,9 +639,9 @@ function mp:synonyms(w, hint)
 end
 
 mp.keyboard = {
-	'А','Б','В','Г','Д','Е','Ё','Ж','З','И','Й',
-	'К','Л','М','Н','О','П','Р','О','С','Т','У','Ф',
-	'Х','Ц','Ч','Ш','Щ','Ь','Ы','Ъ','Э','Ю','Я'
+	'A','B','C','D','E','F','G','H','I','J','K',
+	'L','M','N','O','P','Q','R','S','T','U','V',
+	'W','X','Y','Z'
 }
 
 local function hints(w)
@@ -596,30 +679,6 @@ function mp:err_noun(noun)
 	end
 	rc = rc .. "}"
 	return rc
-end
-
-function mp.shortcut.vo(hint)
-	return "в ".. hint
---	local w = std.split(hint)
---	w = w[#w]
---	if mp.utf.len(w) > 2 and
---		(lang.is_vowel(utf.char(w, 1)) or
---		lang.is_vowel(utf.char(w, 2))) then
---		return "в ".. hint
---	end
---	return "во ".. hint
-end
-
-function mp.shortcut.so(hint)
-	return "с ".. hint
---	local w = std.split(hint)
---	w = w[#w]
---	if mp.utf.len(w) > 2 and
---		(lang.is_vowel(utf.char(w, 1)) or
---		lang.is_vowel(utf.char(w, 2))) then
---		return "с ".. hint
---	end
---	return "со ".. hint
 end
 
 function mp:before_Enter(w)
