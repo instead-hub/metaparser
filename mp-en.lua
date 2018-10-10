@@ -414,7 +414,7 @@ mp.msg.Unlock.WRONGKEY = "{#That/#second} {#doesnt/#second} seem to fit the lock
 mp.msg.Unlock.UNLOCK = "{#Me} {#present/#me,unlock} {#thefirst}."
 
 mp.msg.Take.HAVE = "{#Me} already {#have/#me} {#thefirst}."
-mp.msg.Take.TAKE = "{#Me} {#present/#me,take} {#thefirst."
+mp.msg.Take.TAKE = "{#Me} {#present/#me,take} {#thefirst}."
 mp.msg.Take.SELF = "{#Me} always {#have/#me} {#yourself/#me}."
 
 mp.msg.Take.WHERE = "It is impossible to take the thing {#me} {#is/#me} standing in/on."
@@ -761,7 +761,7 @@ Verb { "#Take",
 }
 
 Verb { "#Drop",
-	"drop,discard,throw",
+	"drop,discard",
 	"{noun}/held : Drop",
 	"{noun}/held in|into|down {noun}/inside : Insert",
 	"{noun}/held on|onto {noun} : PutOn",
@@ -780,10 +780,8 @@ Verb { "#Put",
 Verb {
 	"#ThrowAt",
 	"throw",
+	"{noun}/held at|against|in|into|on|onto {noun} : ThrowAt",
 	"~ {noun}/held : Drop",
-	"~ {noun}/held in|into|down {noun}/inside : Insert",
-	"~ {noun}/held on|onto {noun} : PutOn",
-	"{noun}/held at|against|on|onto {noun} : ThrowAt",
 }
 
 Verb {
@@ -839,162 +837,156 @@ Verb {
 
 Verb {
 	"#Push",
-	"толк/ать,пих/ать,нажим/ать,нажм/и,нажать,сдвин/уть,подвин/уть,двига/ть,задви/нуть,запих/нуть,затолк/ать,[ |на]давить",
-	"?на {noun}/вн : Push",
-	"{noun}/вн на|в|во {noun}/вн : Transfer",
-	"{noun}/вн {compass2} : Transfer",
-	"~ на|в|во {noun}/вн {noun}/вн : Transfer reverse",
-	"~ {compass2} {noun}/вн : Transfer reverse"
+	"push,move,press,shift,clear",
+	"{noun} : Push",
+	"{noun} to {noun} : Transfer",
+	"{noun} ?to {compass2} : Transfer",
+}
+
+Verb {
+	"#Transfer",
+	"transfer",
+	"{noun} to {noun} : Transfer",
+	"{noun} ?to {compass2} : Transfer",
 }
 
 Verb {
 	"#Pull",
-	"[ |вы|по]тян/уть,[ |вы|по]тащ/ить,тягать,[ |по]волоч/ь,[ |по]волок/ти,дёрн/уть,дёрг/ать",
-	"?за {noun}/вн : Pull",
-	"{noun}/вн на|в|во {noun}/вн : Transfer",
-	"{noun}/вн {compass2} : Transfer",
-	"~ на|в|во {noun}/вн {noun}/вн : Transfer reverse",
-	"~ {compass2} {noun}/вн : Transfer reverse"
+	"pull,drag",
+	"{noun} : Pull",
 }
 
 Verb {
 	"#Turn",
-	"враща/ть,поверн/уть,верт/еть,поверт/еть,крути/ть",
-	"{noun}/вн : Turn"
+	"turn,rotate,screw,twist,unscrew",
+	"{noun} : Turn",
+	"~ {noun} on : SwitchOn",
+	"~ {noun} off : SwitchOff",
+	"~ on {noun} : SwitchOn",
+	"~ off {noun} : SwitchOff",
 }
 
 Verb {
 	"#Wait",
-	"ждать,жди,жду,подожд/ать,ожид/ать",
+	"wait",
 	"Wait"
 }
 
 Verb {
 	"#Rub",
-	"тереть,потр/и,потереть,тру,три",
-	"{noun}/вн : Rub"
+	"rub,clean,dust,polish,scrub,shine,sweep,wipe",
+	"{noun} : Rub"
 }
 
 Verb {
 	"#Sing",
-	"петь,спеть,спою,спой/,пой",
+	"sing",
 	"Sing"
 }
 
 Verb {
 	"#Touch",
-	"[ |по]трога/ть,трон/уть,дотрон/уться,[ |при]косну/ться,касать/ся,[ |по|о]щупа/ть,[ |по]глад/ить",
-	"{noun}/вн : Touch",
-	"~ до {noun}/рд : Touch",
-	"~ к {noun}/дт : Touch",
-	"~ {noun}/рд : Touch",
+	"touch,feel,fondle,grope",
+	"{noun} : Touch",
 }
 
 Verb {
 	"#Give",
-	"дать,отда/ть,предло/жить,предла/гать,дам,даю,дадим",
-	"{noun}/вн,held {noun}/дт,live : Give",
-	"~ {noun}/дт,live {noun}/вн,held : Give reverse",
+	"give,feed,offer,pay",
+	"?over {noun}/held to {noun}/live : Give",
+	"~ {noun}/live {noun}/held : Give reverse",
 }
 
 Verb {
 	"#Show",
-	"показ/ать,покаж/и",
-	"{noun}/вн,held {noun}/дт,live : Show",
-	"~ {noun}/дт,live {noun}/вн,held : Show reverse",
+	"show,display,present",
+	"{noun}/held to {noun}/live : Show",
+	"~ {noun}/live {noun}/held : Show reverse",
 }
 
 Verb {
 	"#Burn",
-	"[ |под]жечь,жг/и,подожги/,поджиг/ай,зажг/и,зажиг/ай,зажечь",
-	"{noun}/вн : Burn",
-	"{noun}/вн {noun}/тв,held : Burn",
-	"~ {noun}/тв,held {noun}/вн reverse",
+	"burn,light",
+	"{noun} : Burn",
+	"{noun} with {noun}/held : Burn",
 }
 
 Verb {
 	"#Wake",
-	"будить,разбуд/ить,просн/уться,бужу",
-	"{noun}/вн,live : WakeOther",
-	"Wake",
+	"wake,awake,awaken",
+	"?up : Wake",
+	"?up {noun}/вн ?up : WakeOther",
 }
 
 Verb {
 	"#Kiss",
-	"целовать,поцел/овать,чмок/нуть,обним/ать,обнять,целуй",
-	"{noun}/вн,live : Kiss"
+	"kiss,embrace,hug",
+	"{noun}/live : Kiss"
 }
 
 Verb {
 	"#Think",
-	"дума/ть,мысл/ить,подум/ать,рассужд/ать",
+	"think",
 	"Think"
 }
 
 Verb {
 	"#Smell",
-	"нюха/ть,понюха/ть,занюх/ать,нюхн/уть,принюх/аться",
+	"smell,sniff",
 	"Smell",
-	"{noun}/вн : Smell"
+	"{noun} : Smell"
 }
 
 Verb {
 	"#Listen",
-	"слуша/ть,послуша/ть,прислушать/ся,слыш/ать,слух/",
+	"listen.hear",
 	"Listen",
-	"{noun}/вн : Listen",
-	"~ к {noun}/дт : Listen",
+	"?to {noun}: Listen",
 }
 
 Verb {
 	"#Dig",
-	"копа/ть,выкопа/ть,выры/ть,рыть,рой,вырой",
+	"dig",
 	"Dig",
-	"{noun}/вн,scene : Dig",
-	"{noun}/вн,scene {noun}/тв,held : Dig",
-	"~ {noun}/тв,held {noun}/вн,scene : Dig reverse",
+	"{noun}/scene : Dig",
+	"{noun}/scene with {noun}/held : Dig",
 }
 
 Verb {
 	"#Cut",
-	"[ |раз|на|по]рез/ать,[ |раз|на|по]реж/ь",
-	"{noun}/вн : Cut",
-	"{noun}/вн {noun}/тв,held: Cut",
-	"~ {noun}/тв,held {noun}/вн: Cut reverse"
+	"cut,chop,prune,slice",
+	"{noun} : Cut",
+	"{noun} with {noun}/held: Cut",
 }
 
 Verb {
 	"#Tear",
-	"[ |по|разо|со]рвать,[ |по|разо|со]рви/,[ |по|разо|со]рву",
-	"{noun}/вн : Tear",
+	"tear",
+	"?apart {noun} : Tear",
 }
 
 Verb {
 	"#Tie",
-	"[при|с]вяз/ать,[при|с]вяж/и",
-	"{noun}/вн : Tie",
-	"{noun}/вн к {noun}/дт : Tie",
-	"~ {noun}/вн с|со {noun}/тв : Tie",
-	"~ к {noun}/дт {noun}/вн : Tie reverse",
-	"~ с|со {noun}/тв {noun}/вн : Tie reverse",
+	"tie,attach,fasten,fix",
+	"{noun} : Tie",
+	"{noun} to {noun} : Tie",
 }
 
 Verb {
 	"#Blow",
-	"дуть,дуй/,дун/ь,задут/ь,задун/ь,задую,задуй/",
-	"в|во|на {noun}/вн : Blow",
-	"~ {noun}/вн : Blow", -- задуть
+	"blow",
+	"{noun} : Blow",
 }
 
 Verb {
 	"#Attack",
-	"атак/овать,бить,бей/,удар/ить,[ |с|раз|по|вы]лома/ть,уби/ть,[ |раз]разруш/ить,поби/ть,побей/,побь/,круш/ить,напасть,напад/ать",
-	"?на {noun}/вн : Attack"
+	"attack,break,crack,destroy,fight,hit,kill,murder,punch,smash,thump,torture,wreck,kick",
+	"{noun} : Attack"
 }
 
 Verb {
 	"#Sleep",
-	"спать,усн/уть,засн/уть,дрем/ать",
+	"sleep,nap",
 	"Sleep",
 }
 
@@ -1006,104 +998,97 @@ Verb {
 
 Verb {
 	"#Consult",
-	"[ |про|по]чита/ть,проч/есть",
-	"в|во {noun}/пр,2 о|об|обо|про * : Consult",
-	"~ о|об|обо|про * в|во {noun}/пр,2 : Consult reverse",
-	"~ {noun}/вн : Exam",
+	"read",
+	"* in {noun}: Consult reverse",
+	"~ {noun} : Exam",
 }
 
 Verb {
 	"#Fill",
-	"наполн/ить,нали/ть",
-	"?в {noun}/вн : Fill",
-	"~ внутрь {noun}/рд : Fill"
+	"fill",
+	"{noun} : Fill",
 }
 
 Verb {
 	"#Jump",
-	"[ |по]прыг/ать,скак/ать,[ |пере|под]прыг/нуть,переска/чить",
+	"jump,hop,skip",
 	"Jump",
-	"через {noun}/вн,scene : JumpOver",
-	"~ {noun}/вн,scene : JumpOver",
+	"over {noun}/scene : JumpOver",
 }
 
 Verb {
 	"#Wave",
-	"мах/ать,помах/ать,помаш/и",
+	"wave",
 	"WaveHands",
-	"~ руками : WaveHands",
-	"{noun}/тв,held : Wave"
+	"{noun}/held : Wave"
 }
 
 Verb {
 	"#Climb",
-	"[ |за|по|в]лез/ть,карабк/аться,взбир/ться,взобраться,взбери/сь",
-	"на {noun}/вн,scene : Climb",
-	"по {noun}/дт,scene : Climb",
-	"~ в|во {noun}/вн,scene : Enter",
-	"{compass2}: Walk",
+	"climb,scale",
+	"{noun}/scene : Climb",
+	"~ up|over {noun}/scene : Climb",
+	"~ in|into {noun}/scene : Enter",
+	"~ {compass2}: Walk",
 }
 
 Verb {
 	"#GetOff",
-	"слез/ть,спусти/ться,встать,встан/ь",
-	"Exit",
-	"{compass2}: Walk",
-	"с|со {noun}/рд,scene : GetOff",
+	"get",
+	"off {noun}/scene : GetOff",
+	"~ out|off|up : Exit",
+	"~ in|into|on|onto {noun} : Enter",
 }
 
 Verb {
 	"#Buy",
-	"купи/ть,покупать",
-	"{noun}/вн,scene : Buy"
+	"buy,purchase",
+	"{noun}/scene : Buy"
 }
 
 Verb {
 	"#Talk",
-	"[ |по]говор/ить,[ |по]бесед/овать,разговарива/ть",
-	"с|со {noun}/тв,live : Talk"
+	"talk",
+	"with {noun}/live : Talk"
 
 }
 
 Verb {
 	"#Tell",
-	"сказать,сообщ/ить,рассказать,расскаж/ите",
-	"{noun}/дт,live о|об|обо|про * : Tell",
-	"~ * {noun}/дт,live : Tell reverse",
-	"~ {noun}/дт * : AskTo",
+	"tell",
+	"{noun}/live about * : Tell",
+	"~ {noun}/live to * : AskTo",
 }
 
 Verb {
 	"#Ask",
-	"спросит/ь,расспросит/ь",
-	"?у {noun}/вн,live о|об|обо|про * : Ask",
-	"~ о|об|обо|про * ?у {noun}/вн,live : Ask reverse",
+	"ask",
+	"{noun}/live about * : Ask",
+	"~ {noun}/live to * : AskTo",
+	"~ that {noun}/live to * : AskTo",
 }
 
 Verb {
 	"#AskFor",
-	"попроси/ть,выпроси/ть,уговори/ть,проси/ть,попрош/у,выпрош/у",
-	"у {noun}/вн,live * : AskFor",
-	"~ * у {noun}/вн,live : AskFor reverse",
-	"~ {noun}/вн,live * : AskTo",
+	"ask",
+	"{noun}/live for * : AskFor",
 }
 
 Verb {
 	"#Answer",
-	"ответ/ить,отвеч/ать",
-	"{noun}/дт,live * : Answer",
-	"~ * {noun}/дт,live : Answer reverse",
+	"answer,say,shout,speak",
+	"* to {noun}/live : Answer reverse",
 }
 
 Verb {
 	"#Yes",
-	"да",
+	"yes",
 	"Yes",
 }
 
 Verb {
 	"#No",
-	"нет",
+	"no",
 	"No",
 }
 
@@ -1121,8 +1106,8 @@ if DEBUG then
 	MetaVerb {
 		"#MetaTrace",
 		"~_trace",
-		"да : MetaTraceOn",
-		"нет : MetaTraceOff",
+		"on : MetaTraceOn",
+		"off : MetaTraceOff",
 	}
 	MetaVerb {
 		"#MetaDump",
@@ -1133,8 +1118,8 @@ end
 MetaVerb {
 	"#MetaTranscript",
 	"~transcript",
-	"да : MetaTranscriptOn",
-	"нет : MetaTranscriptOff",
+	"on : MetaTranscriptOn",
+	"off : MetaTranscriptOff",
 	"MetaTranscript",
 }
 
@@ -1157,7 +1142,7 @@ MetaVerb {
 }
 end
 
-mp.msg.MetaRestart.RESTART = "Начать заново?";
+mp.msg.MetaRestart.RESTART = "Restart?";
 
 MetaVerb {
 	"#MetaRestart",
@@ -1184,14 +1169,14 @@ end)
 -- Dialog
 std.phr.default_Event = "Exam"
 
-Verb ({"~ сказать", "{select} : Exam" }, std.dlg)
-Verb ({'#Next', "дальше", "Next" }, mp.cutscene)
-Verb ({'#Exam', "~ осмотреть", "Look" }, std.dlg)
+Verb ({"~ say", "{select} : Exam" }, std.dlg)
+Verb ({'#Next', "more|next", "Next" }, mp.cutscene)
+Verb ({'#Exam', "~ exam/ine", "Look" }, std.dlg)
 
-mp.cutscene.default_Verb = "дальше"
-mp.cutscene.help = fmt.em "<дальше>";
+mp.cutscene.default_Verb = "more"
+mp.cutscene.help = fmt.em "<more>";
 
-std.dlg.default_Verb = "осмотреть"
+std.dlg.default_Verb = "examine"
 
 function content(...)
 	return mp:content(...)
