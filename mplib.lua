@@ -561,7 +561,7 @@ function mp:multidsc(oo, inv)
 			end
 		end
 		if dup[v] > 1 then
-			pr (vv.ob:noun('мн', 1), " (", dup[v], " ", mp.msg.ENUM, ")")
+			pr (vv.ob:noun(mp.hint.plural, 1), " (", dup[v], " ", mp.msg.ENUM, ")")
 		else
 			pr (v)
 			if ob:has'worn' then

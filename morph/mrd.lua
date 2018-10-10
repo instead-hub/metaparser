@@ -500,7 +500,7 @@ function mrd:word(w, ob)
 			noun = gg and gg[mrd.lang.gram_t.noun]
 			if not ww then
 				ww, gg = self:lookup(w, g)
-				noun = gg.t == mrd.lang.gram_t.noun
+				noun = gg and gg.t == mrd.lang.gram_t.noun
 			end
 			if gg and (gg[mp.hint.proper] or gg[mp.hint.surname]) then
 				noun = false
