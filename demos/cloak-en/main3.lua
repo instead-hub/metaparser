@@ -99,12 +99,6 @@ almost seems to suck light from the room.]],
 		_'bar':attr '~light'
 		return false
 	end;
---	after_PutOn = function(s, w)
---		if not w ^ 'hook' then
---			return false
---		end
---		p [[You put повесил плащ на крючок.]]
---	end
 }: attr 'clothing'
 
 obj {
