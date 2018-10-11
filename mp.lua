@@ -1,11 +1,11 @@
 require "fmt"
 require "snapshots"
-
+--luacheck: no self
 if std.ref'@theme' then
 	std.ref'@theme'.set ('win.scroll.mode', 3)
 end
 
-local mrd = false
+local mrd = require "morph/mrd"
 local inp_split = " :.,!?-"
 
 local input = std.ref '@input'
@@ -81,7 +81,6 @@ end
 
 local function utf_chars(b)
 	local i = 1
-	local n = 0
 	local s
 	local res = {}
 	while i <= b:len() do
@@ -103,7 +102,7 @@ local function utf_lev(str1, str2)
 	local len1 = #chars1
 	local len2 = #chars2
 	local matrix = {}
-	local cost = 0
+	local cost
 
         -- quick cut-offs to save time
 	if (len1 == 0) then
@@ -143,7 +142,6 @@ local okey = input.key
 local mp
 
 function input:key(press, key)
-	local a
 	local mod
 	if key:find("alt") then
 		mp.alt = press
@@ -399,7 +397,7 @@ instead.get_inv = std.cacheable('inv', function(horiz)
 		ret = iface:xref(ret, mp, "<clear>")
 	end
 	if not mp.autohelp and not std.here().forcehelp then
-		local r, v = std.call(std.here(), 'help')
+		local r = std.call(std.here(), 'help')
 		return ret .. (r or '')
 	end
 
@@ -514,8 +512,8 @@ function mp.token.noun(w)
 				hidden = w.hidden or (v.idx ~= 1)
 			end
 			if o == std.me() and mp.myself then
-				for _, v in ipairs(mp:myself(o, w.morph)) do
-					table.insert(ww, { optional = w.optional, word = v, morph = attr, ob = o, alias = o.alias, hidden = hidden })
+				for _, vm in ipairs(mp:myself(o, w.morph)) do
+					table.insert(ww, { optional = w.optional, word = vm, morph = attr, ob = o, alias = o.alias, hidden = hidden })
 				end
 				break
 			else
@@ -624,9 +622,9 @@ function mp:pattern(t, delim)
 				w.word = v
 				table.insert(words, w)
 			else
-				for _, v in ipairs(vv) do
+				for _, exv in ipairs(vv) do
 					local ww = std.clone(w)
-					ww.word = v
+					ww.word = exv
 					table.insert(words, ww)
 				end
 			end
@@ -656,13 +654,13 @@ function mp:pref_pattern(v)
 	if not v:find("^%[[^%]]+%]") then
 		return { v }
 	end
-	local s, e = v:find("]", 1, true)
+	local _, e = v:find("]", 1, true)
 	local pre = v:sub(2, e - 1)
 	local post = v:sub(e + 1)
 	pre = str_split(pre, "|")
 	local ret = {}
-	for _, v in ipairs(pre) do
-		table.insert(ret, v .. post)
+	for _, pref in ipairs(pre) do
+		table.insert(ret, pref .. post)
 	end
 	return ret
 end
@@ -710,10 +708,8 @@ function mp:verb(t, w, extend)
 			table.insert(verb.dsc, { pat = {}, ev = dsc[1] })
 		elseif #dsc == 2 then
 			pat = str_split(dsc[1], ' ')
-			local hidden = false
 			if pat[1] == '~' then
 				table.remove(pat, 1)
-				hidden = true
 				for k, v in ipairs(pat) do
 					pat[k] = v:gsub("[^ |]+", function(s) return "~" .. s end)
 				end
@@ -785,7 +781,6 @@ function mp:lookup_verb(words, lev)
 	local ret = {}
 	local w = self:verbs()
 	for _, v in ipairs(w) do -- verbs
-		local found = false
 		local lev_v = {}
 		for _, vv in ipairs(v.verb) do
 			local verb = vv.word .. (vv.morph or "")
@@ -798,11 +793,11 @@ function mp:lookup_verb(words, lev)
 				if lev then
 					table.insert(lev_v, { lev = rlev, verb = v, verb_nr = i, verb_len = len, word_nr = _ } )
 				else
-					local vv = std.clone(v)
-					vv.verb_nr = i
-					vv.verb_len = len
-					vv.word_nr = _
-					table.insert(ret, vv)
+					local vc = std.clone(v)
+					vc.verb_nr = i
+					vc.verb_len = len
+					vc.word_nr = _
+					table.insert(ret, vc)
 				end
 			end
 		end
@@ -828,10 +823,10 @@ function mp:lookup_verb(words, lev)
 			if a.verb_nr == b.verb_nr then return a.word_nr < b.word_nr end
 			return a.verb_nr < b.verb_nr
 		end)
-		local lev = ret[1].verb_nr
+		local vlev = ret[1].verb_nr
 		local ret2 = {}
 		for _, v in ipairs(ret) do
-			if v.verb_nr == lev then
+			if v.verb_nr == vlev then
 				table.insert(ret2, v)
 			else
 				break
@@ -851,6 +846,7 @@ local function tab_sub(t, s, e)
 	return r
 end
 
+--[[
 local function tab_exclude(t, s, e)
 	local r = {}
 	e = e or #t
@@ -861,9 +857,10 @@ local function tab_exclude(t, s, e)
 	end
 	return r
 end
+]]--
 
 function mp:docompl(str, maxw)
-	local full = false
+	local full
 	local force = maxw
 	local inp, pre = self:compl_ctx()
 	if utf_len(pre) < self.compl_thresh then
@@ -952,8 +949,7 @@ function mp:hint_verbs(v)
 	end
 	return r
 end
-function mp:compl_verb(words)
-	local dups = {}
+function mp:compl_verb(_)
 	local poss = {}
 	for _, v in ipairs(self:verbs()) do
 		local filter = not self:hint_verbs(v)
@@ -979,8 +975,8 @@ local function holded_by(ob, holder)
 	local h = holder.ob
 	if not h then return false end
 	if ob:where() == h then return true end
-	for _, h in ipairs(holder.multi or {}) do
-		if ob:where() == h then
+	for _, hm in ipairs(holder.multi or {}) do
+		if ob:where() == hm then
 			return true
 		end
 	end
@@ -1036,7 +1032,7 @@ function mp:compl_filter(v)
 	if hidden and self.compl_thresh == 0 then
 		return false
 	end
-	local inp, pre = self:compl_ctx()
+	local _, pre = self:compl_ctx()
 	if utf_len(pre) < self.compl_thresh then
 		return false
 	end
@@ -1076,7 +1072,6 @@ function mp:compl_fill(compl, eol, vargs)
 	self.completions.ctx = ctx
 	self.completions.eol = eol
 	self.completions.vargs = vargs
-	local w = str_split(self.inp, inp_split)
 	for _, v in ipairs(compl) do
 		if self:compl_filter(v) then
 			table.insert(self.completions, v)
@@ -1091,8 +1086,7 @@ end
 function mp:compl_ctx_current()
 	local ctx = self.completions.ctx
 	local new = {}
-	local top = 0
-	for k, v in ipairs(ctx) do
+	for _, v in ipairs(ctx) do
 		if v.inp == '' and self.inp == '' then break end
 		if self:startswith(self.inp, v.inp) then
 			table.insert(new, v)
@@ -1121,7 +1115,7 @@ function mp:compl_ctx()
 	end
 	local inp = self:norm(self.inp)
 	local ctx_inp = self:norm(ctx[top].inp)
-	local s, e = inp:find(ctx_inp, 1, true)
+	local _, e = inp:find(ctx_inp, 1, true)
 	local pre = ''
 	if e then
 		pre = inp:sub(e + 1)
@@ -1214,7 +1208,7 @@ local function lev_sort(t)
 			return a.lev > b.lev
 	end)
 	local lev = t[1] and t[1].lev
-	local fuzzy = t[1] and t[1].fuzzy
+--	local fuzzy = t[1] and t[1].fuzzy
 
 	local fuzzy = {}
 	for _, v in ipairs(t) do if v.lev ~= lev then break end if v.fuzzy then table.insert(fuzzy, v) end end
@@ -1254,11 +1248,10 @@ function mp:compl_match(words)
 	local matches = {}
 	local hints = {}
 	local res = {}
-	local dup = {}
 	local multi
 	collectgarbage("stop")
 	for _, v in ipairs(verbs) do
-		local m, h, u, mu = self:match(v, words, true)
+		local m, h, _, mu = self:match(v, words, true)
 		if #m > 0 then
 			table.insert(matches, { verb = v, match = m[1] })
 		end
@@ -1343,7 +1336,6 @@ function mp:match(verb, w, compl)
 			if found then
 				need_required = false
 				if found.ob then
-					local same
 					local exact
 					for _, pp in ipairs(pat) do
 						if pp.ob and pp.ob ~= found.ob and self:eq(found.word, pp.word) then
@@ -1380,15 +1372,15 @@ function mp:match(verb, w, compl)
 					rlev = rlev + 1
 					vargs = false
 				end
-				if false then
-					a = tab_exclude(a, best, best + best_len - 1)
-				else
+--				if false then
+--					a = tab_exclude(a, best, best + best_len - 1)
+--				else
 					for i = 1, best - 1 do
 						table.insert(skip, a[i])
 					end
 					a = tab_sub(a, best + best_len)
 --					table.remove(a, 1)
-				end
+--				end
 				table.insert(match, word)
 				table.insert(match.args, found)
 				rlev = rlev + 1
@@ -1430,7 +1422,7 @@ function mp:match(verb, w, compl)
 				if not compl and mp.errhints then
 					for _, pp in ipairs(pat) do -- single argument
 						if utf_len(pp.word) >= 3 then
-							local k, len = word_search(a, pp.word, self.lev_thresh)
+							local k, _ = word_search(a, pp.word, self.lev_thresh)
 							if k then table.insert(hints, { word = pp.word, lev = rlev, fuzzy = true }) end
 						end
 					end
@@ -1467,7 +1459,7 @@ function mp:match(verb, w, compl)
 	if #matches > 0 and matches[1].extra then
 		local lev = #matches[1]
 		if #unknown > 0 then
-			for k, v in ipairs(unknown) do
+			for _, v in ipairs(unknown) do
 				if v.lev >= lev and not v.skip then
 					matches = {}
 					break
@@ -1475,7 +1467,7 @@ function mp:match(verb, w, compl)
 			end
 		end
 		if #multi > 0 and #matches > 0 then
-			for k, v in ipairs(multi) do
+			for _, v in ipairs(multi) do
 				if v.lev >= lev and not v.skip then
 					matches = {}
 					break
@@ -1494,7 +1486,6 @@ function mp:match(verb, w, compl)
 		matches = nmatches
 	end
 end
-]]--
 if false then
 	print "MATCHES: "
 	for _, v in ipairs(matches) do
@@ -1509,6 +1500,7 @@ if false then
 --		end
 --	end
 end
+]]--
 	hints = lev_sort(hints)
 	unknown = lev_sort(unknown)
 	multi = lev_sort(multi)
@@ -1596,7 +1588,7 @@ function mp:err(err)
 		end
 		local words = {}
 		local dups = {}
-		for kk, v in ipairs(self.hints) do
+		for _, v in ipairs(self.hints) do
 			if v:find("^~?{noun}") or v == '*' then
 				v = mp:err_noun(v)
 				if not dups[v] and not need_noun then
@@ -1605,10 +1597,10 @@ function mp:err(err)
 				end
 			else
 				local pat = self:pattern(v)
-				for _, v in ipairs(pat) do
-					if not v.hidden and not dups[v.word] then
-						table.insert(words, v.word)
-						dups[v.word] = true
+				for _, vv in ipairs(pat) do
+					if not vv.hidden and not dups[vv.word] then
+						table.insert(words, vv.word)
+						dups[vv.word] = true
 					end
 				end
 			end
@@ -1739,8 +1731,8 @@ function mp:call(ob, ev, ...)
 		end
 		pn()
 	end
-	for _, v in ipairs(self.aliases) do
-		std.rawset(v, '__word_alias', nil)
+	for _, a in ipairs(self.aliases) do
+		std.rawset(a, '__word_alias', nil)
 	end
 	return r, v
 end
@@ -1797,7 +1789,7 @@ function mp:__action(events)
 	if not r then
 		r = self:events_call(events, { 'obj', std.here(), game, mp })
 		if not r then
-			r = self:events_call(events, { 'obj', std.here(), game, mp }, 'after')
+			self:events_call(events, { 'obj', std.here(), game, mp }, 'after')
 		end
 	end
 	if not self.redirect then
@@ -1854,7 +1846,6 @@ function mp:action()
 	local parsed = self.parsed
 	local ev = str_split(parsed.ev, "|")
 	local events = get_events(self, ev)
-	local r
 	self:__action(events)
 end
 
@@ -1896,7 +1887,7 @@ function mp:show_prompt(inp)
 	return true
 end
 
-function mp:comment(inp)
+function mp:comment()
 	if self.inp:find("^[ \t]*%*") then return true end
 end
 
@@ -1924,7 +1915,7 @@ function mp:parse(inp)
 			self:err(v)
 			local s = std.game
 			s:reaction(std.pget())
-			local r = s:display()
+			r = s:display()
 			s:lastdisp(r)
 			return r, false
 		end
@@ -2046,10 +2037,9 @@ function mp:key_enter()
 end
 
 function mp:lookup_noun(w, lev)
-	local oo = {}
 	local k, len
 	local res = {}
-	oo = self:nouns()
+	local oo = self:nouns()
 	for _, o in ipairs(oo) do
 		local ww = {}
 		o:noun(ww)
@@ -2076,7 +2066,7 @@ function mp:lookup_noun(w, lev)
 		end
 	end
 	res = {}
-	for k, v in pairs(uniq) do
+	for _, v in pairs(uniq) do
 		table.insert(res, v)
 	end
 	table.sort(res, function(a, b)
@@ -2292,13 +2282,11 @@ function()
 	_'game'.__daemons = std.list {}
 end)
 
-function mp:init(m)
-	mrd = m
-	self.mrd = mrd
+function mp:init(lang)
 	if type(std.SOURCES_DIRS) == 'table' then
 		mrd.dirs = std.SOURCES_DIRS
 	end
-	mrd:init()
+	mrd:init(lang)
 	cutscene = mp.cutscene
 	door = mp.door
 end
@@ -2392,7 +2380,7 @@ function mp.shortcut.word(hint)
 	end
 	local verb = w[1]
 	table.remove(w, 1)
-	local hint = ''
+	hint = ''
 	for _, k in ipairs(w) do
 		if k == '#first' then
 			hint = hint .. mp.first_hint .. ','
@@ -2489,7 +2477,7 @@ function std.obj:persist()
 end
 
 function std.obj:hint(hint)
-	return self:gram()[mp.hint[hint] or hint]
+	return self:gram()[mrd.lang.gram_t[hint] or hint]
 end
 
 function std.obj:it(hint)

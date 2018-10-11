@@ -145,7 +145,7 @@ local function is_cap(str)
 		return false
 	end
 	local s, e
-	for k, v in pairs(toupper) do
+	for _, v in pairs(toupper) do
 		if not s and str:find("^"..v) then
 			s = true
 		end
@@ -301,7 +301,7 @@ local function gram_compat(base, aa, bb)
 	if not gram_eq(base.t, aa.t) then
 		return false
 	end
-	local a, b = aa.t, bb.t
+--	local a, b = aa.t, bb.t
 	local g1, g2 = gram_info(aa), gram_info(bb)
 	if bb.noun then
 		if not base['им'] then
@@ -332,7 +332,7 @@ local function gram_score(an, g)
 	g = gram_norm(g)
 	if an["фам"] then score = score - 0.1 end
 	if an["арх"] then score = score - 0.1 end
-	for kk, vv in ipairs(g or {}) do
+	for _, vv in ipairs(g or {}) do
 		if vv:sub(1, 1) == '~' then
 			vv = vv:sub(2)
 			if an[vv] then
@@ -363,7 +363,18 @@ lang = { yo = false,
 	gram_compat = gram_compat,
 	gram_score = gram_score,
 	gram_t = {
-		noun = 'С';
+		noun = 'С',
+		live = 'од',
+		nonlive = 'но',
+		neuter = 'ср',
+		male = 'мр',
+		female = 'жр',
+		plural = 'мн',
+		proper = 'имя',
+		surname = 'фам',
+		first = '1л',
+		second = '2л',
+		third = '3л',
 	}
 }
 

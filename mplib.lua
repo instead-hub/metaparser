@@ -1,3 +1,5 @@
+--luacheck: globals mp
+--luacheck: no self
 function mp:clear()
 	self.text = ''
 end
@@ -47,7 +49,7 @@ std.class({
 	enter = function(s)
 		s.__num = 1
 	end;
-	ini = function(s, load)
+	ini = function(s)
 		std.rawset(s, 'text', s.text)
 		std.rawset(s.__var, 'text', nil)
 		if not s.__num then
@@ -71,7 +73,7 @@ std.class({
 			end
 		end
 	end;
-	OnError = function(s, err)
+	OnError = function(_, _) -- s, err
 		p(mp.msg.CUTSCENE_HELP)
 	end;
 	Next = function(s, force)
@@ -102,7 +104,7 @@ function std.obj:multi_alias(n)
 	return self.__word_alias
 end
 
-std.room.dsc = function(s)
+std.room.dsc = function(_)
 	p (mp.msg.SCENE);
 end
 
@@ -205,7 +207,7 @@ function mp:light_scope(s)
 	if not s:has 'container' or s:has 'transparent' or s:has 'open' then
 		mp:trace(s, function(v)
 				h = v
-				if v:has 'container' and not s:has'transparent' and not has 'open' then
+				if v:has 'container' and not v:has'transparent' and not v:has 'open' then
 					return nil, false
 				end
 		end)
@@ -248,13 +250,12 @@ local function check_persist(w)
 	if not w.found_in then
 		return true
 	end
-	local r, v = std.call(w, 'found_in')
+	local _, v = std.call(w, 'found_in')
 	return v
 end
 
 function std.obj:access()
 	local plw = {}
-	local ww = {}
 	if std.me():where() == self then
 		return true
 	end
@@ -263,7 +264,7 @@ function std.obj:access()
 		if not self.found_in then
 			return true
 		end
-		local r, v = std.call(self, 'found_in')
+		local _, v = std.call(self, 'found_in')
 		return v
 	end
 	if mp.scope:lookup(self) then
@@ -298,25 +299,27 @@ function mp:distance(v, wh)
 	local plw = {}
 	wh = wh or std.me()
 	local a = 0
-	mp:trace(wh, function(v)
-		plw[v] = a
-		table.insert(plw, v)
+	mp:trace(wh, function(s)
+		plw[s] = a
+		table.insert(plw, s)
 		a = a + 1
-		if v:has 'container' then
+		if s:has 'container' then
 			return nil, false
 		end
 	end)
 
-	local dist = 10000 -- infinity
+	local dist
 	if v:where() ~= wh then
 		dist = 1
-		mp:trace(v, function(o)
+		if not mp:trace(v, function(o)
 			if plw[o] then
 				dist = dist + plw[o]
 				return true
 			end
 			dist = dist + 1
-		end)
+		end) then
+			dist = 10000 -- infinity
+		end
 	else
 		dist = 0
 	end
@@ -332,7 +335,6 @@ end
 
 function std.obj:visible()
 	local plw = { }
-	local ww = {}
 	if std.me():where() == self then
 		return true
 	end
@@ -387,7 +389,7 @@ std.phr.Exam = function(s, ...)
 	return s:act(...)
 end
 
-std.phr.__xref = function(s, str)
+std.phr.__xref = function(_, str)
 	return str
 end
 
@@ -398,12 +400,12 @@ std.dlg.ini = function(s, load)
 end
 std.dlg.scene = std.obj.scene
 std.dlg.title = false
-std.dlg.OnError = function(s, err)
+std.dlg.OnError = function(_, _) -- s, err
 	p(mp.msg.DLG_HELP)
 end;
 
 std.dlg.nouns = function(s)
-	local r, nr
+	local nr
 	local nouns = {}
 	nr = 1
 	local oo = s.current
@@ -440,8 +442,8 @@ local function compass_dir(dir)
 	return obj {
 		nam = '@'..dir;
 		default_Event = 'Walk';
-		before_Any = function(s, ev, ...)
-			return _'@compass':action(dir, ev, ...)
+		before_Any = function(_, ev, ...)
+			return std.object '@compass':action(dir, ev, ...)
 		end
 	}:attr'light,enterable,concealed':persist()
 end
@@ -452,7 +454,8 @@ obj {
 	action = function(s, dir, ev, ...)
 		if ev == 'Exam' then
 			local d = dir
-			local r, v = mp:runorval(std.here(), 'compass_look', d)
+			local r, v, _
+			_, v = mp:runorval(std.here(), 'compass_look', d)
 			if v then
 				return
 			end
@@ -483,9 +486,9 @@ obj {
 			end
 			local r, v = mp:runorval(std.here(), d)
 			if not v then
-				local r, v = mp:runorval(std.here(), 'cant_go', dir)
-				if v then
-					if r then p(r) end
+				local t, vv = mp:runorval(std.here(), 'cant_go', dir)
+				if vv then
+					if t then p(t) end
 					return
 				end
 				p (mp.msg.COMPASS_NOWAY)
@@ -519,17 +522,12 @@ obj {
 }
 
 
-mp.compass_dir = function(self, w, dir)
+mp.compass_dir = function(_, w, dir)
 	if not dir then
 		local nam = tostring(w.nam):gsub("^@", "")
 		return w:where() and w:where() ^ '@compass' and nam
 	end
 	return w ^ '@dir'
-end
-
--- VERBS
-local function if_has(w, a, t, f)
-	return w:has(a) and t or f
 end
 
 function mp:multidsc(oo, inv)
@@ -561,7 +559,7 @@ function mp:multidsc(oo, inv)
 			end
 		end
 		if dup[v] > 1 then
-			pr (vv.ob:noun(mp.hint.plural, 1), " (", dup[v], " ", mp.msg.ENUM, ")")
+			pr (vv.ob:noun(self.mrd.lang.gram_t.plural, 1), " (", dup[v], " ", mp.msg.ENUM, ")")
 		else
 			pr (v)
 			if ob:has'worn' then
@@ -721,7 +719,7 @@ function mp:step()
 	s:reaction(r or false)
 	std.pclr()
 	s:step()
-	local r = s:display(true)
+	r = s:display(true)
 	if std.strip_call and type(r) == 'string' then
 		r = r:gsub("^[%^\n\r\t ]+", "") -- extra heading ^ and spaces
 		r = r:gsub("[%^\n\r\t ]+$", "") -- extra trailing ^ and spaces
@@ -814,7 +812,7 @@ end
 
 function mp:after_Look()
 end
-
+--luacheck: push ignore w wh
 function mp:Exam(w)
 	return false
 end
@@ -834,22 +832,22 @@ function mp:after_Exam(w)
 	else
 		if w:has'openable' then
 			if w:has 'open' then
-				local r = std.call(w, 'when_open')
-				p (r or mp.msg.Exam.OPENED);
+				local t = std.call(w, 'when_open')
+				p (t or mp.msg.Exam.OPENED);
 			else
-				local r = std.call(w, 'when_closed')
-				p (r or mp.msg.Exam.CLOSED);
+				local t = std.call(w, 'when_closed')
+				p (t or mp.msg.Exam.CLOSED);
 			end
 			return
 		end
 		if w:has'switchable' then
-			local r
+			local t
 			if w:has'on' and w.when_on ~= nil then
-				r = std.call(w, 'when_on')
+				t = std.call(w, 'when_on')
 			else
-				r = std.call(w, 'when_off')
+				t = std.call(w, 'when_off')
 			end
-			p (r or mp.msg.Exam.SWITCHSTATE)
+			p (t or mp.msg.Exam.SWITCHSTATE)
 			return
 		end
 		if w == std.here() then
@@ -883,7 +881,7 @@ function mp:Enter(w)
 		return
 	end
 
-	if seen(w, me()) then
+	if seen(w, std.me()) then
 		p (mp.msg.Enter.INV)
 		return
 	end
@@ -921,7 +919,7 @@ function mp:Walk(w)
 		return
 	end
 
-	if seen(w, me()) then
+	if seen(w, std.me()) then
 		p (mp.msg.Walk.INV)
 		return
 	end
@@ -997,7 +995,7 @@ function mp:detailed_Inv(wh, indent)
 	self:objects(wh, oo, false)
 	for _, o in ipairs(oo) do
 		if not o:has'concealed' then
-			for i = 1, indent do pr(iface:nb' ') end
+			for _ = 1, indent do pr(iface:nb' ') end
 			local inv = std.call(o, 'inv') or o:noun(1)
 			pr(inv)
 			if o:has'worn' then
@@ -1166,7 +1164,7 @@ function mp:Lock(w, t)
 	return false
 end
 
-function mp:after_Lock(w, t)
+function mp:after_Lock(w, wh)
 	p(mp.msg.Lock.LOCK)
 end
 
@@ -1196,7 +1194,7 @@ function mp:Unlock(w, t)
 	return false
 end
 
-function mp:after_Unlock(w, t)
+function mp:after_Unlock(w, wh)
 	p(mp.msg.Unlock.UNLOCK)
 end
 
@@ -1225,7 +1223,7 @@ function mp:move(w, wh, force)
 	wh = wh or std.here()
 	wh = std.object(wh)
 	w = std.object(w)
-	local r, v
+	local r
 	local ww = {}
 
 	if not force then
@@ -1245,12 +1243,12 @@ function mp:move(w, wh, force)
 	end
 
 	if w:type'player' then
-		r, v = w:walk(wh)
+		r = w:walk(wh)
 		if r then p(r) end
 	else
 		place(w, wh)
 		if mp:inside(std.me(), w) then
-			r, v = std.me():walk(w)
+			r = std.me():walk(w)
 			if r then p(r) end
 		end
 	end
@@ -1264,7 +1262,7 @@ function mp:move(w, wh, force)
 end
 
 mp.msg.Take = {}
-function mp:Take(w, ww)
+function mp:Take(w, wh)
 	if mp:check_touch() then
 		return
 	end
@@ -2030,7 +2028,7 @@ end
 
 mp.msg.Consult = {}
 
-function mp:Consult(w, a)
+function mp:Consult(w, wh)
 	if mp:check_touch() then
 		return
 	end
@@ -2244,7 +2242,7 @@ function mp:MetaRestart()
 	p (mp.msg.MetaRestart.RESTART)
 	if old_pre_input then return end
 	old_pre_input = mp.pre_input
-	std.rawset(mp, 'pre_input', function(s, str)
+	std.rawset(mp, 'pre_input', function(_, str)
 		std.rawset(mp, 'pre_input', old_pre_input)
 		old_pre_input = false
 		if mp:eq(str, mp.msg.YES) then
@@ -2261,16 +2259,17 @@ end
 function mp:MetaLoad()
 	instead.menu 'load'
 end
+--luacheck: pop
 local function attr_string(o)
 	local a = ''
-	for k, v in pairs(o.__ro) do
+	for k, _ in pairs(o.__ro) do
 		if type(k) == 'string' and k:find("__attr__", 1, true) == 1 then
 			if a ~= '' then a = a .. ', ' end
 			a = a .. k:sub(9)
 		end
 	end
 	local b = ''
-	for k, v in pairs(o) do
+	for k, _ in pairs(o) do
 		if type(k) == 'string' and k:find("__attr__", 1, true) == 1 then
 			if b ~= '' then b = b .. ', ' end
 			b = b .. k:sub(9)
@@ -2299,7 +2298,8 @@ end
 function mp:MetaWord(w)
 	if not w then return end
 	w = w:gsub("_", "/")
-	local w, g = self.mrd:word(w)
+	local g
+	w, g = self.mrd:word(w)
 	pn(w)
 	for _, v in ipairs(g) do
 		pn (_, ":")
@@ -2326,7 +2326,7 @@ local function getobj(w)
 	return std.ref(w)
 end
 
-function mp:MetaNoun(w)
+function mp:MetaNoun(_)
 	local varg = self.vargs
 	local o = getobj(varg[1])
 	if not o then
@@ -2482,11 +2482,11 @@ end
 
 instead.notitle = true
 
-instead.get_title = function(s)
+instead.get_title = function(_)
 	if instead.notitle then
 		return
 	end
-	local w, h = instead.theme_var('win.w'), instead.theme_var('win.h')
+	local w = instead.theme_var('win.w')
 	local title = std.titleof(std.here()) or ''
 	local col = instead.theme_var('win.col.fg')
 	local score = ''
@@ -2495,4 +2495,9 @@ instead.get_title = function(s)
 	end
 	local moves = fmt.tab('100%', 'right')..fmt.nb(mp.msg.TITLE_TURNS .. tostring(game:time() - 1))
 	return iface:left((title.. score .. moves).."\n".. iface:img(string.format("box:%dx1,%s", w, col)))
+end
+
+--luacheck: globals content
+function content(...)
+	return mp:content(...)
 end

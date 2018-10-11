@@ -1,18 +1,18 @@
+--luacheck: no self
 local lang = require "morph/lang-en"
 loadmod "mp"
 loadmod "mplib"
 
 local mp = _'@metaparser'
-
 local mrd = require "morph/mrd"
-mrd.lang = lang
 
-function mrd:init() -- no dictionary!
+function mrd:init(l)  -- no dictionary!
+	self.lang = l
 end
 
 std.mod_init(
 	function()
-	mp:init(mrd)
+	mp:init(lang)
 end)
 game.dsc = function()
 	p ([[METAPARSER3 Version: ]]..mp.version.."^")
@@ -139,11 +139,11 @@ function mp.shortcut.anoun(hint)
 	return ob:a_noun()
 end
 
-function mp.shortcut.thefirst(hint)
+function mp.shortcut.thefirst()
 	return mp.first:the_noun()
 end
 
-function mp.shortcut.thesecond(hint)
+function mp.shortcut.thesecond()
 	return mp.second:the_noun()
 end
 
@@ -325,12 +325,10 @@ mp.msg.LIVE_ACTION = "{#Firstit} would not like it."
 mp.msg.NOTINV = function(t)
 	p (lang.cap(t:the_noun()) .. " must be taken first.")
 end
-mp.msg.WORN = function(w)
-	local hint = w:gram().hint
+mp.msg.WORN = function(_)
 	pr (" (worn)")
 end
-mp.msg.OPEN = function(w)
-	local hint = w:gram().hint
+mp.msg.OPEN = function(_)
 	pr (" (opened)")
 end
 
@@ -573,31 +571,10 @@ mp.msg.Answer.SELF = "Good answer."
 mp.msg.Yes.YES = "That was a rhetorical question."
 mp.msg.Buy.BUY = "Nothing is on sale."
 
-mp.hint.live = 'live'
-mp.hint.nonlive = 'nonlive'
-mp.hint.neuter = 'neutwe'
-mp.hint.male = 'male'
-mp.hint.female = 'female'
-mp.hint.plural = 'plural'
-mp.hint.proper = 'proper'
-mp.hint.surname = 'surname'
-mp.hint.first = 'first'
-mp.hint.second = 'second'
-mp.hint.third = 'third'
-
 mp.keyboard_space = '<space>'
 mp.keyboard_backspace = '<backspace>'
 
-local function dict(t, hint)
-	local g = std.split(hint, ",")
-	for _, v in ipairs(g) do
-		if t[v] then
-			return t[v]
-		end
-	end
-end
-
-function mp:myself(ob, hint)
+function mp:myself(ob)
 	if ob:hint'first' then
 		return { "myself", "me" }
 	end
@@ -616,8 +593,7 @@ function mp:myself(ob, hint)
 	return { "itself" }
 end
 
-function mp:it(w, hint)
-	hint = hint or ''
+function mp:it(w)
 	if w == std.me() then
 		if w:hint'first' then
 			return "me"
@@ -637,7 +613,7 @@ end
 
 function mp:synonyms(w, hint)
 	local t = self:it(w, hint)
-	local w = { t }
+	w = { t }
 	if t == 'he' then
 		w[2] = 'him'
 	elseif t == 'she' then
@@ -653,15 +629,6 @@ mp.keyboard = {
 	'L','M','N','O','P','Q','R','S','T','U','V',
 	'W','X','Y','Z'
 }
-
-local function hints(w)
-	local h = std.split(w, ",")
-	local hints = {}
-	for _, v in ipairs(h) do
-		hints[v] = true
-	end
-	return hints
-end
 
 function mp:err_noun(noun)
 	if noun == '*' then return "{$fmt em|<word>}" end
@@ -698,15 +665,15 @@ You may use the "TAB" key for autocompletion.
 ]])
 end
 
-function mp.token.compass1(w)
+function mp.token.compass1(_)
 	return "{noun_obj}/@n_to,compass|{noun_obj}/@ne_to,compass|{noun_obj}/@e_to,compass|{noun_obj}/@se_to,compass|{noun_obj}/@s_to,compass|{noun_obj}/@sw_to,compass|{noun_obj}/@w_to,compass|{noun_obj}/@nw_to,compass"
 end
 
-function mp.token.compass2(w)
+function mp.token.compass2(_)
 	return "{noun_obj}/@u_to,compass|{noun_obj}/@d_to,compass|{noun_obj}/@in_to,compass|{noun_obj}/@out_to,compass"
 end
 
-std.mod_init(function(s)
+std.mod_init(function(_)
 Verb { "#Walk",
 	"go,walk,run,enter",
 	"{compass1} : Walk",
@@ -1178,7 +1145,4 @@ mp.cutscene.help = fmt.em "<more>";
 
 std.dlg.default_Verb = "examine"
 
-function content(...)
-	return mp:content(...)
-end
 std.player.word = "you/plural,second"

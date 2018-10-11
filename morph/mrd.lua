@@ -1,27 +1,13 @@
-local lang = {
-	norm = function(str)
-		return str
-	end;
-	upper = function(str)
-		return str:upper()
-	end;
-	lower = function(str)
-		return str:lower()
-	end;
-}
+--luacheck: no self
+local lang
 
 local mrd = {
-	lang = lang;
+	lang = false;
 	dirs = {''};
 	words = {};
 }
 
 local msg = print
-
-local function strip(str)
-	str = str:gsub("^[ \t]+", ""):gsub("[ \t]$", "")
-	return str
-end
 
 local function split(str, sep)
 	local words = {}
@@ -56,7 +42,7 @@ function mrd:gramtab(path)
 			else
 				local a = split(w[4], '[^,]+')
 				local an = {}
-				for k, v in ipairs(a) do
+				for _, v in ipairs(a) do
 					an[v] = true
 				end
 				an.t = w[3] -- type
@@ -127,6 +113,7 @@ local function pref_fn(l, pref)
 	table.insert(pref, p)
 end
 
+--[[
 local function dump(vv)
 	local s = ''
 	if type(vv) ~= 'table' then
@@ -147,7 +134,7 @@ local function gram_dump(v)
 		end
 	end
 end
-
+]]--
 local busy_cnt = 0
 
 local function word_fn(l, self, dict)
@@ -191,7 +178,7 @@ local function word_fn(l, self, dict)
 	local t = w[1]
 	local num = 0
 	local used = false
-	for k, v in ipairs(nflex) do
+	for _, v in ipairs(nflex) do
 		if v.filter then
 		for _, pref in ipairs(npref or { '' }) do
 			local tt = norm(pref .. v.pre .. t .. v.post)
@@ -200,15 +187,15 @@ local function word_fn(l, self, dict)
 --			end
 			if not dict or dict[tt] then
 				local a = {}
-				for kk, vv in pairs(an or {}) do
+				for kk, _ in pairs(an or {}) do
 					a[kk] = an[kk]
 				end
-				for kk, vv in pairs(v.an) do
+				for kk, _ in pairs(v.an) do
 					a[kk] = v.an[kk]
 				end
-				local w = { t = t, pref = pref, flex = nflex, an = a }
 				local wds = words[tt] or {}
-				table.insert(wds, w)
+				table.insert(wds,
+					{ t = t, pref = pref, flex = nflex, an = a })
 				nflex.used = true
 				used = true
 				if npref then
@@ -279,17 +266,17 @@ function mrd:dump(path, crc)
 		return false, e
 	end
 	local n = 0
-	for k, v in ipairs(self.flex) do
+	for _, v in ipairs(self.flex) do
 		if v.used then
 			v.norm_no = n
 			n = n + 1
 		end
 	end
 	f:write(string.format("%d\n", n))
-	for k, v in ipairs(self.flex) do
+	for _, v in ipairs(self.flex) do
 		if v.used then
 			local s = ''
-			for kk, vv in ipairs(v) do
+			for _, vv in ipairs(v) do
 				s = s .. '%'
 				if vv.post == '' then
 					s = s..vv.an_name
@@ -306,17 +293,17 @@ function mrd:dump(path, crc)
 	f:write("0\n")
 	f:write("0\n")
 	n = 0
-	for k, v in ipairs(self.pref) do
+	for _, v in ipairs(self.pref) do
 		if v.used then
 			v.norm_no = n
 			n = n + 1
 		end
 	end
 	f:write(string.format("%d\n", n))
-	for k, v in ipairs(self.pref) do
+	for _, v in ipairs(self.pref) do
 		if v.used then
 			local s = ''
-			for kk, vv in ipairs(v) do
+			for _, vv in ipairs(v) do
 				if s ~= '' then s = s .. ',' end
 				s = s .. vv
 			end
@@ -324,8 +311,8 @@ function mrd:dump(path, crc)
 		end
 	end
 	f:write(string.format("%d\n", #self.words_list))
-	for k, v in ipairs(self.words_list) do
-		local s = ''
+	for _, v in ipairs(self.words_list) do
+		local s
 		if v.t == '' then
 			s = '#'
 		else
@@ -393,8 +380,8 @@ end
 function mrd:__lookup(w, g)
 	local ow = w
 	local cap, upper = self.lang.is_cap(w)
-	local t = self.lang.upper(self.lang.norm(w))
-	w = self.words[t]
+	local tt = self.lang.upper(self.lang.norm(w))
+	w = self.words[tt]
 	if not w then
 		return false, "No word in dictionary"
 	end
@@ -403,7 +390,7 @@ function mrd:__lookup(w, g)
 	local gram_compat = self.lang.gram_compat
 	local gram_score = self.lang.gram_score
 
-	for k, v in ipairs(w) do
+	for _, v in ipairs(w) do
 		local flex = v.flex
 		local score = gram_score(v.an, g)
 		local t = v.an.t
@@ -412,7 +399,7 @@ function mrd:__lookup(w, g)
 				local sc = gram_score(f.an, g)
 				if sc >= 0 then
 					if t ~= f.an.t then sc = sc - 1 end -- todo
-if false then
+--[[
 				local tt = v.pref .. f.pre .. v.t .. f.post
 				if tt == 'ЛЕВЫЙ' or tt == 'ЛЕВОГО' or tt == 'ШЛЕМОМ' then
 					print ("======looking for:", g.noun)
@@ -425,7 +412,7 @@ if false then
 						print(_, v)
 					end
 				end
-end
+]]--
 					table.insert(res, { score = score + sc, pos = #res, word = v, flex = f })
 				end
 			end
@@ -440,7 +427,8 @@ end
 		end
 		return a.score > b.score
 	end)
-if false then
+
+--[[
 	for i = 1, #res do
 		local w = res[i]
 		local tt = self.lang.lower(w.word.pref .. w.flex.pre .. w.word.t .. w.flex.post)
@@ -452,7 +440,7 @@ if false then
 		end
 --		print(tt, w.score)
 	end
-end
+]]--
 	w = res[1]
 	local gram = {}
 	for k, v in pairs(w.flex.an) do
@@ -476,7 +464,7 @@ local word_match = "[^ \t,%-!/:%+&]+"
 local missed_words = {}
 function mrd:word(w, ob)
 	local ow = w
-	local s, e = w:find("/[^/]*$")
+	local s, _ = w:find("/[^/]*$")
 	local g = {}
 	local grams = {}
 	local hints = ''
@@ -487,22 +475,23 @@ function mrd:word(w, ob)
 	end
 	local found = true
 	local noun = false
+	local lang = self.lang
 	w = w:gsub(word_match,
-		function(w)
-			if noun then return w end
+		function(t)
+			if noun then return t end
 			local ww, gg
 			if ob then
-				ww, gg = self:dict(ob.__dict, w..'/'..hints)
+				ww, gg = self:dict(ob.__dict, t..'/'..hints)
 			end
 			if not ww then
-				ww, gg = self:dict(game.__dict, w..'/'..hints)
+				ww, gg = self:dict(game.__dict, t..'/'..hints)
 			end
-			noun = gg and gg[mrd.lang.gram_t.noun]
+			noun = gg and gg[lang.gram_t.noun]
 			if not ww then
-				ww, gg = self:lookup(w, g)
-				noun = gg and gg.t == mrd.lang.gram_t.noun
+				ww, gg = self:lookup(t, g)
+				noun = gg and gg.t == lang.gram_t.noun
 			end
-			if gg and (gg[mp.hint.proper] or gg[mp.hint.surname]) then
+			if gg and (gg[lang.gram_t.proper] or gg[lang.gram_t.surname]) then
 				noun = false
 			end
 			if not ww then
@@ -510,7 +499,7 @@ function mrd:word(w, ob)
 			else
 				table.insert(grams, gg)
 			end
-			return ww or w
+			return ww or t
 		end)
 	if not found then
 		if DEBUG and not tonumber(w) and not missed_words[w] then
@@ -550,7 +539,7 @@ end
 
 local function str_hint(str)
 --	str = str:gsub("^%+", "")
-	local s, e = str:find("/[^/]*$")
+	local s, _ = str:find("/[^/]*$")
 	if not s then
 		return str, ""
 	end
@@ -581,18 +570,18 @@ function mrd:dict(dict, word)
 		local ww, hh = str_hint(k)
 		local hints2 = {}
 		hh = str_split(hh, ",")
-		for _, v in ipairs(hh) do
-			hints2[v] = true
+		for _, vv in ipairs(hh) do
+			hints2[vv] = true
 		end
 		if ww == w then
 			local t = { ww, score = 0, pos = #tab, w = v, hints = hh }
-			for _, v in ipairs(hints) do
-				if v:sub(1, 1) ~= '~' then
-					if hints2[v] then
+			for _, hv in ipairs(hints) do
+				if hv:sub(1, 1) ~= '~' then
+					if hints2[hv] then
 						t.score = t.score + 1
 					end
 				else
-					if hints2[str_strip(v:sub(2))] then
+					if hints2[str_strip(hv:sub(2))] then
 						t.score = t.score - 1
 					end
 				end
@@ -615,7 +604,6 @@ function mrd:dict(dict, word)
 end
 
 function mrd.dispof(w)
-	local d
 	if w.raw_word ~= nil then
 		local d = std.call(w, 'raw_word')
 		return d, true
@@ -673,7 +661,6 @@ function mrd:obj(w, n, nn)
 		end
 		obj_cache.hash[disp] = d
 	end
-	
 	if type(n) == 'table' then
 		local ret = n
 		for _, v in ipairs(d) do
@@ -708,13 +695,14 @@ end
 function mrd:noun_hint(ob, ...)
 	local g = ob and ob:gram('noun', ...) or {}
 	local hint = ''
-	for _, v in ipairs { mp.hint.male, mp.hint.female, mp.hint.neuter, mp.hint.plural, mp.hint.live } do
+	local lang = self.lang
+	for _, v in ipairs { lang.gram_t.male, lang.gram_t.female, lang.gram_t.neuter, lang.gram_t.plural, lang.gram_t.live } do
 		if g[v] then
 			hint = hint ..','..v
 		end
 	end
-	if not g[mp.hint.live] then
-		hint = hint .. ',' .. mp.hint.nonlive
+	if not g[self.lang.gram_t.live] then
+		hint = hint .. ',' .. lang.gram_t.nonlive
 	end
 	if ob then
 		hint = hint..",noun"
@@ -723,7 +711,7 @@ function mrd:noun_hint(ob, ...)
 end
 
 function mrd:noun(w, n, nn)
-	local hint, ob, found
+	local hint, ob
 	local rc = ''
 	local tab = false
 	ob, w, hint = self:obj(w, n, nn)
@@ -751,7 +739,8 @@ local function str_hash(str)
 	return sum
 end
 
-function mrd:init()
+function mrd:init(l)
+	self.lang = l
 	self:gramtab("morph/rgramtab.tab")
 	local _, crc = self:load("dict.mrd")
 	self:create("dict.mrd", crc) -- create or update
@@ -795,9 +784,9 @@ std.obj.Noun = function(self, ...)
 end
 
 std.obj.gram = function(self, ...)
-	local hint, ob, w
-	ob, w, hint = mrd:obj(self, ...)
-	local _, gram = mrd:word(w .. '/'..hint)
+	local hint, w, gram,  _
+	_, w, hint = mrd:obj(self, ...)
+	_, gram = mrd:word(w .. '/'..hint)
 	local thint = ''
 	local t = mrd.lang.gram_t.noun
 	hint = str_split(hint, ",")

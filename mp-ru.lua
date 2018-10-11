@@ -1,15 +1,12 @@
+--luacheck: no self
 local lang = require "morph/lang-ru"
 loadmod "mp"
 loadmod "mplib"
-
 local mp = _'@metaparser'
-
-local mrd = require "morph/mrd"
-mrd.lang = lang
 
 std.mod_init(
 	function()
-	mp:init(mrd)
+	mp:init(lang)
 end)
 game.dsc = function()
 	p ([[METAPARSER3 Версия: ]]..mp.version.."^")
@@ -17,7 +14,7 @@ game.dsc = function()
 Если вам необходима справка по игре, наберите "помощь".
 ^]]
 end
-local utf = mp.utf
+-- local utf = mp.utf
 
 _'@darkness'.word = -"тьма,темнота,темень"
 _'@darkness'.before_Any = "Полная, кромешная тьма."
@@ -415,17 +412,6 @@ mp.msg.Answer.SELF = "Хороший ответ."
 mp.msg.Yes.YES = "Вопрос был риторическим."
 --"продаваться"
 mp.msg.Buy.BUY = "{#First} не {#word/продаваться,нст,#first}."
-mp.hint.live = 'од'
-mp.hint.nonlive = 'но'
-mp.hint.neuter = 'ср'
-mp.hint.male = 'мр'
-mp.hint.female = 'жр'
-mp.hint.plural = 'мн'
-mp.hint.proper = 'имя'
-mp.hint.surname = 'фам'
-mp.hint.first = '1л'
-mp.hint.second = '2л'
-mp.hint.third = '3л'
 
 mp.keyboard_space = '<пробел>'
 mp.keyboard_backspace = '<удалить>'
@@ -441,7 +427,7 @@ local function dict(t, hint)
 	end
 end
 
-function mp:myself(w, hint)
+function mp:myself(_, hint)
 	local ww = dict({
 			["вн"] = "себя";
 			["дт"] = "себе";
@@ -466,7 +452,7 @@ end
 
 function mp:synonyms(w, hint)
 	local t = self:it(w, hint)
-	local w = { t }
+	w = { t }
 	if t == 'его' or t == 'её' or t == 'ее' or t == 'ей' or t == 'им' then t = 'н'..t; w[2] = t end
 	return w
 end
@@ -479,11 +465,11 @@ mp.keyboard = {
 
 local function hints(w)
 	local h = std.split(w, ",")
-	local hints = {}
+	local ret = {}
 	for _, v in ipairs(h) do
-		hints[v] = true
+		ret[v] = true
 	end
-	return hints
+	return ret
 end
 
 function mp:err_noun(noun)
@@ -568,15 +554,15 @@ function mp:MetaHelp()
 ]])
 end
 
-function mp.token.compass1(w)
+function mp.token.compass1(_)
 	return "{noun_obj}/@n_to,compass|{noun_obj}/@ne_to,compass|{noun_obj}/@e_to,compass|{noun_obj}/@se_to,compass|{noun_obj}/@s_to,compass|{noun_obj}/@sw_to,compass|{noun_obj}/@w_to,compass|{noun_obj}/@nw_to,compass"
 end
 
-function mp.token.compass2(w)
+function mp.token.compass2(_)
 	return "{noun_obj}/@u_to,compass|{noun_obj}/@d_to,compass|{noun_obj}/@in_to,compass|{noun_obj}/@out_to,compass"
 end
 
-std.mod_init(function(s)
+std.mod_init(function(_)
 Verb { "#Walk",
 	"идти,иду,[по|подо|за|во]йти,[по|подо|за|во]йди,иди,[ |по|под]бежать,бег/и,влез/ть,[ |по]ехать,едь,поеду,сесть,сядь,сяду,лечь,ляг,вста/ть",
 	"на {compass1} : Walk",
@@ -1058,8 +1044,4 @@ mp.cutscene.default_Verb = "дальше"
 mp.cutscene.help = fmt.em "<дальше>";
 
 std.dlg.default_Verb = "осмотреть"
-
-function content(...)
-	return mp:content(...)
-end
 std.player.word = -"ты/мр,2л"

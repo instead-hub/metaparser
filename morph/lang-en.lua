@@ -113,7 +113,18 @@ lang = { yo = false,
 	gram_compat = function() return false end,
 	gram_score = function() return 0 end,
 	gram_t = {
-		noun = '';
+		noun = '',
+		live = 'live',
+		nonlive = 'nonlive',
+		neuter = 'neutwe',
+		male = 'male',
+		female = 'female',
+		plural = 'plural',
+		proper = 'proper',
+		surname = 'surname',
+		first = 'first',
+		second = 'second',
+		third = 'third',
 	}
 }
 
