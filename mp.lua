@@ -657,6 +657,7 @@ function mp:pref_pattern(v)
 	local _, e = v:find("]", 1, true)
 	local pre = v:sub(2, e - 1)
 	local post = v:sub(e + 1)
+	pre = pre:gsub("^|", " |"):gsub("|$", "| "):gsub("||", "| |");
 	pre = str_split(pre, "|")
 	local ret = {}
 	for _, pref in ipairs(pre) do
