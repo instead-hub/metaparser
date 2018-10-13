@@ -85,7 +85,7 @@ function mp.msg.SCORE(d)
 		pn ("{$fmt em|(Score is decreased by ", d, ")}")
 	end
 end
-mp.door.word = -"door";
+mp.door.word = "door"
 mp.msg.TITLE_SCORE = "Score: "
 mp.msg.TITLE_TURNS = "Turns: "
 mp.msg.YES = "Yes"
