@@ -185,7 +185,7 @@ mp = std.obj {
 	detailed_inv = false;
 	daemons = std.list {};
 	{
-		version = "0.9";
+		version = "0.91";
 		cache = { tokens = {} };
 		scope = std.list {};
 		logfile = false;
