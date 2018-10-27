@@ -1,6 +1,4 @@
 --luacheck: no self
-local lang
-
 local mrd = {
 	lang = false;
 	dirs = {''};
@@ -8,6 +6,17 @@ local mrd = {
 }
 
 local msg = print
+
+local function cache_add(cache, key, val)
+	table.insert(cache.list, 1, key)
+	local len = #cache.list
+	if len > (cache.len or 128) then
+		local okey = cache.list[len]
+		table.remove(cache.list, len)
+		cache.hash[okey] = nil
+	end
+	cache.hash[key] = val
+end
 
 local function split(str, sep)
 	local words = {}
@@ -351,9 +360,10 @@ local function gram2an(g)
 	return a
 end
 
-local cache = {
+local lookup_cache = {
 	hash = {};
 	list = {};
+	len = 512;
 }
 
 function mrd:lookup(w, g)
@@ -362,18 +372,12 @@ function mrd:lookup(w, g)
 		key = key ..','.. v
 	end
 	key = w .. '/'..key
-	local cc = cache.hash[key]
+	local cc = lookup_cache.hash[key]
 	if cc then
 		return cc.w, cc.g
 	end
 	w, g = self:__lookup(w, g)
-	cache.hash[key] = { w = w, g = g }
-	table.insert(cache.list, 1, key)
-	if #cache.list > 512 then
-		key = cache.list[#cache.list]
-		cache.hash[key] = nil
-		table.remove(cache.list, #cache.list)
-	end
+	cache_add(lookup_cache, key, { w = w, g = g })
 	return w, g
 end
 
@@ -462,7 +466,26 @@ function mrd:__lookup(w, g)
 end
 local word_match = "[^ \t,%-!/:%+&]+"
 local missed_words = {}
+
+local word_cache = { list = {}, hash = {} }
+
 function mrd:word(w, ob)
+	local cache = word_cache
+	if ob then
+		if not ob.__word_cache then
+			std.rawset(ob, '__word_cache', {
+					list = {},
+					hash = {},
+					len = 32
+				})
+		end
+		cache = ob.__word_cache
+	end
+	local key = w
+	local c = cache.hash[key]
+	if c then
+		return std.clone(c[1]), std.clone(c[2])
+	end
 	local ow = w
 	local s, _ = w:find("/[^/]*$")
 	local g = {}
@@ -507,6 +530,7 @@ function mrd:word(w, ob)
 			msg("Can not find word: '"..ow.."'")
 		end
 	end
+	cache_add(cache, key, { w, grams })
 	return w, grams
 end
 
@@ -615,7 +639,7 @@ function mrd.dispof(w)
 	return std.titleof(w) or std.nameof(w)
 end
 
-local obj_cache = { hash = {}, list = {}}
+local obj_cache = { hash = {}, list = {}, len = 128 }
 
 function mrd:obj(w, n, nn)
 	local hint = ''
@@ -652,14 +676,7 @@ function mrd:obj(w, n, nn)
 			end
 		end
 		d = nd
-		table.insert(obj_cache.list, 1, disp)
-		local len = #obj_cache.list
-		if len > 128 then
-			local key = obj_cache.list[len]
-			table.remove(obj_cache.list, len)
-			obj_cache.hash[key] = nil
-		end
-		obj_cache.hash[disp] = d
+		cache_add(obj_cache, disp, d)
 	end
 	if type(n) == 'table' then
 		local ret = n
@@ -696,7 +713,9 @@ function mrd:noun_hint(ob, ...)
 	local g = ob and ob:gram('noun', ...) or {}
 	local hint = ''
 	local lang = self.lang
-	for _, v in ipairs { lang.gram_t.male, lang.gram_t.female, lang.gram_t.neuter, lang.gram_t.plural, lang.gram_t.live } do
+	for _, v in ipairs { lang.gram_t.male, lang.gram_t.female,
+		lang.gram_t.neuter, lang.gram_t.plural,
+		lang.gram_t.live } do
 		if g[v] then
 			hint = hint ..','..v
 		end
