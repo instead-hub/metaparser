@@ -322,6 +322,7 @@ mp.msg.HINT_AND = "and"
 mp.msg.AND = "and"
 mp.msg.MULTIPLE = "Here are"
 mp.msg.LIVE_ACTION = "{#Firstit} would not like it."
+mp.msg.NO_LIVE_ACTION = "{#Me} can only do that to something animate."
 mp.msg.NOTINV = function(t)
 	p (lang.cap(t:the_noun()) .. " must be taken first.")
 end

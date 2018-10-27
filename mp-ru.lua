@@ -117,6 +117,8 @@ mp.msg.HINT_AND = "и"
 mp.msg.AND = "и"
 mp.msg.MULTIPLE = "Тут есть"
 mp.msg.LIVE_ACTION = "{#Firstit/дт} это не понравится."
+mp.msg.NO_LIVE_ACTION = "Действие применимо только к одушевлённым объектам."
+
 mp.msg.NOTINV = function(t)
 	p (lang.cap(t:noun'вн') .. " сначала нужно взять.")
 end

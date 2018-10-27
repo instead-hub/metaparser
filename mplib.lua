@@ -1089,9 +1089,18 @@ end
 function mp:after_Close(w)
 	p(mp.msg.Close.CLOSE)
 end
+
 function mp:check_live(w)
 	if self:animate(w) then
 		p(mp.msg.LIVE_ACTION)
+		return true
+	end
+	return false
+end
+
+function mp:check_no_live(w)
+	if not self:animate(w) then
+		p(mp.msg.NO_LIVE_ACTION)
 		return true
 	end
 	return false
@@ -1783,6 +1792,9 @@ function mp:Give(w, wh)
 		p (mp.msg.Give.MYSELF)
 		return
 	end
+	if mp:check_no_live(w) then
+		return
+	end
 	if mp:runmethods('life', 'Give', wh, w) then
 		return
 	end
@@ -1800,6 +1812,9 @@ function mp:Show(w, wh)
 	end
 	if wh == std.me() then
 		mp:xaction("Exam", w)
+		return
+	end
+	if mp:check_no_live(w) then
 		return
 	end
 	if mp:runmethods('life', 'Show', wh, w) then
@@ -1827,6 +1842,9 @@ end
 mp.msg.Wake = {}
 
 function mp:Wake()
+	if mp:check_no_live(w) then
+		return
+	end
 	p (mp.msg.Wake.WAKE)
 end
 
