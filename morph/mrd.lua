@@ -476,7 +476,7 @@ function mrd:word(w, ob)
 			std.rawset(ob, '__word_cache', {
 					list = {},
 					hash = {},
-					len = 32
+					len = 32,
 				})
 		end
 		cache = ob.__word_cache
@@ -709,8 +709,23 @@ local function noun_append(rc, tab, w)
 	return rc
 end
 
-function mrd:noun_hint(ob, ...)
-	local g = ob and ob:gram('noun', ...) or {}
+function mrd:noun_hint(ob, n)
+	if not ob then
+		return ''
+	end
+	if not ob.__hint_cache then
+		std.rawset(ob, '__hint_cache', {
+			list = {},
+			hash = {},
+			len = 16,
+		})
+	end
+	local key = n or ob.__word_alias or 1
+	local c = ob.__hint_cache.hash[key]
+	if c then
+		return c
+	end
+	local g = ob and ob:gram('noun', n) or {}
 	local hint = ''
 	local lang = self.lang
 	for _, v in ipairs { lang.gram_t.male, lang.gram_t.female,
@@ -726,6 +741,7 @@ function mrd:noun_hint(ob, ...)
 	if ob then
 		hint = hint..",noun"
 	end
+	cache_add(ob.__hint_cache, key, hint)
 	return hint
 end
 
