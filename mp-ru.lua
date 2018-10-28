@@ -248,7 +248,7 @@ mp.msg.Take.SCENERY = "{#First/вн} невозможно взять."
 
 --"надет"
 mp.msg.Take.WORN = "{#First} {#word/надет,#first} на {#firstwhere/вн}."
-mp.msg.Take.PARTOF = "{#First} является частью {#firstwhere/рд}."
+mp.msg.Take.PARTOF = "{#First} {#if_hint/#first,plural,являются,является} частью {#firstwhere/рд}."
 
 mp.msg.Remove.WHERE = "{#First} не находится {#if_has/#second,supporter,на,в} {#second/пр,2}."
 mp.msg.Remove.REMOVE = "{#First} {#if_has/#second,supporter,поднят,извлечён из} {#second/рд}."

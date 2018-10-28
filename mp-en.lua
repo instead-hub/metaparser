@@ -423,7 +423,7 @@ mp.msg.Take.STATIC = "{#Thats/#first} fixed in place."
 mp.msg.Take.SCENERY = "{#Thats/#first} hardly portable."
 
 mp.msg.Take.WORN = "{#Thefirst} {#is/#first} worn on {#thenoun/#firstwhere}."
-mp.msg.Take.PARTOF = "{#Thefirst} {#is/#first} a part of {#thenoun/#firstwhere}."
+mp.msg.Take.PARTOF = "{#Thefirst} {#is/#first} part of {#thenoun/#firstwhere}."
 
 mp.msg.Remove.WHERE = "But {#firstit} {#is/#first} not there now."
 mp.msg.Remove.REMOVE = "{#Thefirst} {#is/#first} {#if_has/#second,supporter,taken,removed} from {#thesecond}."
