@@ -1,3 +1,10 @@
+0.92
+
+  * PARTOF msg fix;
+  * NO_LIVE_ACTION msg;
+
+ -- Peter Kosyh <p.kosyh@gmail.com>  Fri, 9 Nov 2018 09:11:00 +0300
+
 0.91
 
   * speed up.
