@@ -569,6 +569,7 @@ Verb { "#Walk",
 	"идти,иду,[по|подо|за|во]йти,[по|подо|за|во]йди,иди,[ |по|под]бежать,бег/и,влез/ть,[ |по]ехать,едь,поеду,сесть,сядь,сяду,лечь,ляг,вста/ть",
 	"на {compass1} : Walk",
 	"на|в|во {noun}/вн,scene,enterable : Enter",
+	"внутрь {noun}/рд,scene,enterable : Enter",
 	"к {noun}/дт,scene : Walk",
 	"{compass2}: Walk" }
 
@@ -894,6 +895,7 @@ Verb {
 	"[ |за|по|в]лез/ть,карабк/аться,взбир/ться,взобраться,взбери/сь",
 	"на {noun}/вн,scene : Climb",
 	"по {noun}/дт,scene : Climb",
+	"~ внутрь {noun}/рд,scene : Enter",
 	"~ в|во {noun}/вн,scene : Enter",
 	"{compass2}: Walk",
 }
