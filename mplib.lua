@@ -1,15 +1,18 @@
 --luacheck: globals mp
 --luacheck: no self
+--- Clear the metaparser window
 function mp:clear()
 	self.text = ''
 end
 
+--- Clear the metaparser prompt
 function mp:cls_prompt()
 	if std.call_ctx[1] then
 		std.call_ctx[1].txt = ''
 	end
 end
 
+--- Standard door class
 mp.door = std.class({
 	before_Walk = function(s)
 		return s:before_Enter();
@@ -117,6 +120,8 @@ local function trace_light(v)
 	end
 end
 
+--- Check if the player or the specified object is in darkness
+-- @param what check if this is in darkness; player by default
 function mp:thedark(what)
 	if std.me():has'light' or mp:traceinside(std.me(), trace_light) then
 		return false
@@ -215,6 +220,8 @@ function mp:light_scope(s)
 	return h
 end
 
+--- Find the maximum visible scope for an object
+-- @param s where
 function mp:visible_scope(s)
 	local h = s
 	if s:has 'transparent' or s:has 'supporter' then
@@ -326,6 +333,8 @@ function mp:distance(v, wh)
 	return dist
 end
 
+--- Check if the object is lit
+-- @param what
 function mp:offerslight(what)
 	if what and what:has'light' or what:has'luminous' or mp:inside(what, std.me()) then
 		return true
@@ -438,6 +447,7 @@ std.phrase_prefix = function(n)
 	return (string.format("%d) ", n))
 end
 
+--- Construct a compass direction from action name.
 local function compass_dir(dir)
 	return obj {
 		nam = '@'..dir;
@@ -522,6 +532,8 @@ obj {
 }
 
 
+--- Check if direction is a compass direction.
+-- @param w the word to check
 mp.compass_dir = function(_, w, dir)
 	if not dir then
 		local nam = tostring(w.nam):gsub("^@", "")
@@ -573,6 +585,7 @@ function mp:multidsc(oo, inv)
 end
 
 mp.msg.Exam = {}
+--- Display the object contents
 function mp:content(w)
 	if w:type 'dlg' then
 		return
@@ -764,6 +777,8 @@ function mp:post_action()
 	end
 	mp:step()
 end
+--- Check if mp.first and mp.second objects are in touch zone
+-- Returns true if we have to terminate the sequence.
 function mp:check_touch()
 	if self.first and not self.first:access() and not self.first:type'room' then
 		p (self.msg.ACCESS1 or "{#First} is not accessible.")
@@ -1090,6 +1105,10 @@ function mp:after_Close(w)
 	p(mp.msg.Close.CLOSE)
 end
 
+--- Check if the object is alive.
+-- If yes, return standard message.
+-- Returns true if we have to terminate the sequence.
+-- @param w object to check
 function mp:check_live(w)
 	if self:animate(w) then
 		p(mp.msg.LIVE_ACTION)
@@ -1106,6 +1125,10 @@ function mp:check_no_live(w)
 	return false
 end
 
+--- Check if the object is held by the player.
+-- If not, attempt to take it.
+-- Returns true if we have to terminate the sequence.
+-- @param t object to check
 function mp:check_held(t)
 	if have(t) or std.me() == t then
 --	if (std:me():lookup(t) and t:visible()) or std.me() == t then
@@ -1128,6 +1151,10 @@ function mp:check_inside(w)
 	return false
 end
 
+--- Check if the object is worn by the player.
+-- If yes, attempt to take it off.
+-- Returns true if we have to terminate the sequence.
+-- @param w object to check
 function mp:check_worn(w)
 	if w:has'worn' then
 		mp.msg.DISROBE_BEFORE(w)
@@ -1207,6 +1234,9 @@ function mp:after_Unlock(w, wh)
 	p(mp.msg.Unlock.UNLOCK)
 end
 
+--- Check if the object is inside an object.
+-- @param w what
+-- @param wh where
 function mp:inside(w, wh)
 	wh = std.object(wh)
 	w = std.object(w)
@@ -1214,9 +1244,13 @@ function mp:inside(w, wh)
 			 if v == wh then return true end
 	end)
 end
+--- Check if the object is inside an object.
+-- @see mp:inside
 function inside(w, wh)
 	return mp:inside(w, wh)
 end
+--- Check if the object is inside an object.
+-- @see mp:inside
 std.obj.inside = function(s, wh)
 	return mp:inside(s, wh)
 end
@@ -1225,9 +1259,15 @@ std.obj.move = function(s, wh)
 	return mp:move(s, wh)
 end
 
+--- Move an object
+-- @see mp:move
 function move(w, wh)
 	return mp:move(w, wh, true)
 end
+--- Move an object
+-- @param w what
+-- @param wh where
+-- @param force force if true
 function mp:move(w, wh, force)
 	wh = wh or std.here()
 	wh = std.object(wh)
