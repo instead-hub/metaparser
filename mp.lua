@@ -2084,6 +2084,17 @@ function mp:lookup_noun(w, lev)
 	return res
 end
 
+function mp:pre_input(w)
+	if #w < 1 then
+		return
+	end
+	if #w == 1 and self.shorten1[w[1]] then
+		w[1] = self.shorten1[w[1]]
+	elseif self.shorten[w[1]] then
+		w[1] = self.shorten[w[1]]
+	end
+end
+
 function mp:input(str)
 --	self.cache = { tokens = {} };
 	local hints = {}
@@ -2096,11 +2107,10 @@ function mp:input(str)
 	if (self.default_Verb or std.here().default_Verb) and str == "" then
 		str = std.here().default_Verb or self.default_Verb
 	end
-	if type(mp.pre_input) == 'function' then
-		str = mp:pre_input(str)
-		if not str then return false end
-	end
 	local w = str_split(str, inp_split)
+	if type(mp.pre_input) == 'function' then
+		mp:pre_input(w)
+	end
 	self.words = w
 	if #w == 0 then
 		return false, "EMPTY_INPUT"
