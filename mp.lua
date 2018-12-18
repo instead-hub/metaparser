@@ -2072,7 +2072,8 @@ function mp:key_enter()
 	if self:noparser() then
 		return
 	end
-	if (#self.history == 0 or self.history[1] ~= self.inp) and std.strip(self.inp) ~= '' then
+	if not mp:autoplay_pending() and
+		(#self.history == 0 or self.history[1] ~= self.inp) and std.strip(self.inp) ~= '' then
 		table.insert(self.history, 1, self.inp)
 	end
 	self.history_pos = 0
