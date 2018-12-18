@@ -6,6 +6,7 @@ function mp:clear()
 end
 
 --- Clear the metaparser prompt
+-- @see mp.clear_on_move
 function mp:cls_prompt()
 	if std.call_ctx[1] then
 		std.call_ctx[1].txt = ''
@@ -1265,9 +1266,9 @@ function move(w, wh)
 	return mp:move(w, wh, true)
 end
 --- Move an object
--- @param w what
--- @param wh where
--- @param force force if true
+-- @param w       what
+-- @param wh      where
+-- @param force   ignore capacity flag if true
 function mp:move(w, wh, force)
 	wh = wh or std.here()
 	wh = std.object(wh)

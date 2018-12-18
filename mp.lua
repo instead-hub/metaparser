@@ -2501,7 +2501,8 @@ function std.obj:hint(hint)
 end
 
 --- Return a pronoun for the object.
--- @param hint "plural", "male", "female" or anything else
+-- This is language-dependent.
+-- @param hint pronoun case
 -- @see mp:it
 function std.obj:it(hint)
 	if mp.it then
