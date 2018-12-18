@@ -192,6 +192,8 @@ mp = std.obj {
 		lognum = 0;
 		clear_on_move = true;
 		autoplay = false;
+		pushed = {};
+		autoplay_command = false;
 		inp = '';
 		cur = 1;
 		utf = {
@@ -383,8 +385,13 @@ local function str_split(str, delim)
 	return a
 end
 
+--- Returns true if parser mode is disabled
+function mp:noparser()
+	return std.here().noparser or game.noparser
+end
+
 instead.get_inv = std.cacheable('inv', function(horiz)
-	if std.here().noparser or game.noparser then
+	if mp:noparser() then
 		return
 	end
 	local delim = instead.hinv_delim
@@ -1995,8 +2002,44 @@ function mp:key_history_next()
 	return true
 end
 
+--- Add input string to auto execution mode
+-- @param cmd input string
+function mp:push(cmd)
+	if not cmd then
+		return false
+	end
+	table.insert(self.pushed, cmd)
+end
+
+--- Returns true if some auto command is pending
+function mp:autoplay_pending()
+	return self.autoplay or #self.pushed > 0 or self.autoplay_command
+end
+
+--- Internal function that gets commands from script or pushed commands
+-- @see mp:push
+function mp:autoplay_inp()
+	local auto_inp = false
+	self.autoplay_command = false
+	if #self.pushed > 0 then
+		auto_inp = table.remove(self.pushed, 1)
+	elseif not self.autoplay then
+		return false
+	end
+	self.inp = auto_inp or self.autoplay:read("*line") or false
+	if not self.inp then
+		self.inp = ''
+		self.autoplay:close()
+		self.autoplay = false
+	else
+		dprint("> ", self.inp)
+		self.autoplay_command = true
+	end
+	return true
+end
+
 function mp:key_enter()
-	if std.here().noparser or game.noparser then
+	if self:noparser() then
 		return
 	end
 	if (#self.history == 0 or self.history[1] ~= self.inp) and std.strip(self.inp) ~= '' then
@@ -2017,16 +2060,7 @@ function mp:key_enter()
 		end
 	end
 ]]--
-	if self.autoplay then
-		self.inp = self.autoplay:read("*line") or false
-		if not self.inp then
-			self.inp = ''
-			self.autoplay:close()
-			self.autoplay = false
-		else
-			dprint("> ",self.inp)
-		end
-	end
+	self:autoplay_inp()
 
 	self.cur = self.inp:len() + 1;
 	if self.autohelp then
@@ -2243,7 +2277,7 @@ function(cmd)
 		if not std.game.__started and cmd[1] == 'look' then
 			std.game:__start()
 		end
-		if std.here().noparser or game.noparser then
+		if mp:noparser() then
 			return true, false
 		end
 --		mp.inp = mp:docompl(mp.inp)
@@ -2256,7 +2290,7 @@ function(cmd)
 			end
 			r, v = mp:key_enter(cmd[1] == 'look')
 			n = true
-		until not mp.autoplay or std.here().noparser or game.noparser
+		until not mp:autoplay_pending() or mp:noparser()
 		return r, v
 	end
 	if cmd[1] ~= '@mp_key' then

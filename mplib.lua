@@ -731,7 +731,7 @@ function mp:step()
 end
 
 function mp:post_action()
-	if std.here().noparser or game.noparser or
+	if self:noparser() or
 		(self.event and self.event:find("Meta", 1, true)) or
 		self:comment() then
 		if not std.abort_cmd then
