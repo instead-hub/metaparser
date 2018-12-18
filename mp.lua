@@ -91,9 +91,11 @@ local function utf_chars(b)
 	return res
 end
 
--- Returns the Levenshtein distance between the two given strings
+--- Returns the Levenshtein distance between the two given strings.
 -- https://gist.github.com/Badgerati/3261142
 
+-- @param str1 string1
+-- @param str2 string2
 local function utf_lev(str1, str2)
 	str1 = str1 or ''
 	str2 = str2 or ''
@@ -551,6 +553,15 @@ function mp:norm(t)
 	return t
 end
 
+--- Check if two strings are equal, using two possible check modes.
+-- If lev is set, use it as Levenstein equality threshold.
+-- If not, normalize the strings and check equality.
+--
+-- @see word_search
+-- @see mp:lookup_noun
+-- @param t1 first string
+-- @param t2 second string
+-- @param lev use levenstein or just normalize and compare
 function mp:eq(t1, t2, lev)
 	if t1:find("%*$") then
 		local t = t1:gsub("%*$", "")
@@ -1699,6 +1710,9 @@ local function get_events(self, ev)
 	return events
 end
 
+--- Take a value or run the function
+-- @param wh what
+-- @param fn function
 function mp:runorval(wh, fn, ...)
 	if wh[fn] == nil then
 		return nil, false
@@ -1817,6 +1831,8 @@ function mp:restore_ctx(ctx)
 	self.xevent = ctx.xevent
 end
 
+--- Execute a method
+-- @usage mp:runmethods('before', 'LetGo', wh, w)
 function mp:runmethods(t, verb, ...)
 	local events = { {ev = verb, args = { ... }}}
 	local ctx = self:save_ctx()
@@ -1827,6 +1843,7 @@ function mp:runmethods(t, verb, ...)
 	return r, v
 end
 
+--- Execute a new sequence without terminating the current one
 function mp:subaction(verb, ...)
 	local events = { {ev = verb, args = { ... }}}
 	local ctx = self:save_ctx()
@@ -1837,6 +1854,7 @@ function mp:subaction(verb, ...)
 	return r, v
 end
 
+--- Switch the sequence to a new event
 function mp:xaction(verb, ...)
 	local events = { {ev = verb, args = { ... }}}
 	local r, v = self:__action(events)
@@ -2492,6 +2510,10 @@ function std.obj:hint(hint)
 	return self:gram()[mrd.lang.gram_t[hint] or hint]
 end
 
+--- Return a pronoun for the object.
+-- This is language-dependent.
+-- @param hint pronoun case
+-- @see mp:it
 function std.obj:it(hint)
 	if mp.it then
 		return mp:it(self, hint)
@@ -2527,6 +2549,9 @@ function mp:traceinside(w, fn)
 	end
 end
 
+--- Trace an object upwards (check every parent)
+-- @param w where
+-- @param fn function
 function mp:trace(w, fn)
 	local ww = {}
 	w:where(ww)
