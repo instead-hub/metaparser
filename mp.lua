@@ -176,6 +176,7 @@ end
 mp = std.obj {
 	nam = '@metaparser';
 	score = false;
+	expert_mode = true;
 	autohelp = false;
 	autohelp_limit = 1000;
 	autohelp_noverbs = false;
@@ -1918,8 +1919,19 @@ function mp:comment()
 	if self.inp:find("^[ \t]*%*") then return true end
 end
 
+--- Main parse function. Input goes here
 function mp:parse(inp)
 	inp = std.strip(inp)
+
+	if self.expert_mode then
+		local multi_inp = str_split(inp, ".") or {}
+
+		inp = multi_inp[1] or inp
+
+		for i = 2, #multi_inp do
+			self:push(multi_inp[i])
+		end
+	end
 
 	mp:log("> "..inp)
 
@@ -2142,7 +2154,7 @@ function mp:pre_input(w)
 	end
 	if #w == 1 and self.shorten1[w[1]] then
 		w[1] = self.shorten1[w[1]]
-	elseif self.shorten[w[1]] then
+	elseif self.shorten[w[1]] and self.expert_mode then
 		w[1] = self.shorten[w[1]]
 	end
 end
