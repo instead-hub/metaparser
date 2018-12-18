@@ -59,7 +59,7 @@ _'@d_to'.word = "down";
 _'@out_to'.word = "out,outside";
 _'@in_to'.word = "in,inside"
 
-local shorten = {
+mp.shorten1 = {
 	["n"] = "north";
 	["e"] = "east";
 	["w"] = "west";
@@ -68,13 +68,12 @@ local shorten = {
 	["se"] = "southeast";
 	["sw"] = "southwest";
 	["nw"] = "northwest";
-	["x"] = "examine";
+	["i"] = "inventory";
 }
 
-function mp:pre_input(str)
-	if shorten[str] then return shorten[str] end
-	return str
-end
+mp.shorten = {
+	["x"] = "examine";
+}
 
 _'@compass'.before_Default = 'Try to verb "go".'
 

@@ -33,7 +33,7 @@ _'@d_to'.word = -"вниз,низ";
 _'@out_to'.word = -"наружу,выход,назад";
 _'@in_to'.word = -"внутрь,вход"
 
-local shorten = {
+mp.shorten1 = {
 	["с"] = "север";
 	["в"] = "восток";
 	["з"] = "запад";
@@ -44,12 +44,13 @@ local shorten = {
 	["сз"] = "северо-запад";
 	["вн"] = "вниз";
 	["вв"] = "вверх";
+	["и"] = "инвентарь";
+	["ж"] = "ждать";
 }
 
-function mp:pre_input(str)
-	if shorten[str] then return shorten[str] end
-	return str
-end
+mp.shorten = {
+	["о"] = "осмотреть";
+}
 
 _'@compass'.before_Default = 'Попробуйте глагол "идти".'
 
