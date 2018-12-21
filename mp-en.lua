@@ -59,7 +59,7 @@ _'@d_to'.word = "down";
 _'@out_to'.word = "out,outside";
 _'@in_to'.word = "in,inside"
 
-mp.shorten1 = {
+mp.shorten = {
 	["n"] = "north";
 	["e"] = "east";
 	["w"] = "west";
@@ -68,11 +68,13 @@ mp.shorten1 = {
 	["se"] = "southeast";
 	["sw"] = "southwest";
 	["nw"] = "northwest";
-	["i"] = "inventory";
+
 }
 
-mp.shorten = {
+mp.shorten_expert = {
 	["x"] = "examine";
+	["i"] = "inventory";
+	["z"] = "wait";
 }
 
 _'@compass'.before_Default = 'Try to verb "go".'

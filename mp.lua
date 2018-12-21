@@ -2153,10 +2153,22 @@ function mp:pre_input(w)
 	if #w < 1 then
 		return
 	end
-	if #w == 1 and self.shorten1[w[1]] then
-		w[1] = self.shorten1[w[1]]
-	elseif self.shorten[w[1]] and self.expert_mode then
-		w[1] = self.shorten[w[1]]
+	local str
+	if #w == 1 and self.shorten[w[1]] then
+		str = self.shorten[w[1]]
+	end
+	if self.expert_mode and
+			not str and
+			self.shorten_expert[w[1]] then
+		str = self.shorten_expert[w[1]]
+	end
+	if not str then
+		return
+	end
+	local t = str_split(str, inp_split)
+	table.remove(w, 1)
+	for i, v in ipairs(t) do
+		table.insert(w, i, v)
 	end
 end
 
