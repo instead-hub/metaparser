@@ -1,6 +1,8 @@
 0.93
   * Enter (inside) pattern added;
   * up/down shorten in ru;
+  * @all (DropAll, TakeAll);
+  * mp.expert_mode added (multiple commands, shortens).
 
  -- Peter Kosyh <p.kosyh@gmail.com>  Sat, 8 Dec 2018 10:43:00 +0300
 

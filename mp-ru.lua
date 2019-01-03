@@ -16,6 +16,8 @@ game.dsc = function()
 end
 -- local utf = mp.utf
 
+_'@all'.word = -"всё/~од"
+
 _'@darkness'.word = -"тьма,темнота,темень"
 _'@darkness'.before_Any = "Полная, кромешная тьма."
 _'@darkness':attr 'persist'
@@ -52,6 +54,15 @@ mp.shorten_expert = {
 	["о"] = "осмотреть";
 }
 
+function mp:skip_filter(w)
+	for _, v in ipairs(w) do
+		if v == 'не' then
+			return false
+		end
+	end
+	return true
+end
+
 _'@compass'.before_Default = 'Попробуйте глагол "идти".'
 
 function mp.msg.SCORE(d)
@@ -72,6 +83,13 @@ mp.msg.COMPASS_EXAM_NO = "В этом направлении не видно н�
 mp.msg.ENUM = "шт."
 mp.msg.CUTSCENE_HELP = "Для продолжения нажмите <ввод> или введите {$fmt em|дальше}."
 mp.msg.DLG_HELP = "Для выбора фразы введите цифру."
+mp.msg.NO_ALL = "Это действие нельзя применить на всё."
+mp.msg.DROPPING_ALL = function(w)
+	pn (iface:em("(бросить "..w:noun'вн'..")"))
+end
+mp.msg.TAKING_ALL = function(w)
+	pn (iface:em("(взять "..w:noun'вн'..")"))
+end
 mp.msg.TAKE_BEFORE = function(w)
 	pn (iface:em("(сначала взяв "..w:noun'вн'..")"))
 end
@@ -113,6 +131,7 @@ mp.msg.UNKNOWN_VERB_HINT = "Возможно, вы имели в виду"
 mp.msg.INCOMPLETE = "Нужно дополнить предложение."
 mp.msg.INCOMPLETE_NOUN = "К чему вы хотите применить команду?"
 mp.msg.UNKNOWN_OBJ = "Такого предмета тут нет"
+mp.msg.NOTHING_OBJ = "Ничего нет."
 mp.msg.UNKNOWN_WORD = "Фраза не распознана"
 mp.msg.HINT_WORDS = "Возможно, вы имели в виду"
 mp.msg.HINT_OR = "или"
@@ -585,7 +604,7 @@ Verb { "#Exit",
 Verb { "#Exam",
 	"[о| |по|рас]см/отреть,[раз|по]гляд/еть",
 	"?на {noun}/вн : Exam",
-	"?всё : Look",
+	" : Look",
 	"инвентарь : Inv",
 	"~ под {noun}/тв : LookUnder",
 	"~ под {noun}/вн : LookUnder",

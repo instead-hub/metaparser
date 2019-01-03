@@ -246,6 +246,8 @@ mp = std.obj {
 			female = 'female',
 			plural = 'plural',
 		};
+		shorten = {};
+		shorten_expert = {};
 	};
 	text = '';
 	-- dict = {};
@@ -441,6 +443,10 @@ instead.get_inv = std.cacheable('inv', function(horiz)
 	return ret
 end)
 
+--- Returns (add to) table with scope objects
+-- @param wh where to start scope
+-- @param oo table
+-- @param recurs recursive flag
 function mp:objects(wh, oo, recurs)
 	local scope = self.scope
 	wh:for_each(function(v)
@@ -797,6 +803,12 @@ function mp:lookup_short(words, w)
 	return ret[1].i, 1
 end
 
+--- Return false if unparsed word is critical in parse sense
+-- @param w table with skipped words
+function mp:skip_filter()
+	return true
+end
+
 function mp:lookup_verb(words, lev)
 	local ret = {}
 	local w = self:verbs()
@@ -808,6 +820,9 @@ function mp:lookup_verb(words, lev)
 			i, len, rlev = word_search(words, verb, lev and self.lev_thresh)
 			if not i and not lev and verb ~= vv.word then
 				i, len = self:lookup_short(words, vv.word)
+			end
+			if i and i > 1 and not self:skip_filter({words[i - 1]}) then
+				i = nil
 			end
 			if i then
 				if lev then
@@ -1468,7 +1483,9 @@ function mp:match(verb, w, compl)
 			fixed = fixed.word .. (fixed.morph or '')
 			match.extra = (#a ~= 0)
 			table.insert(match, 1, fixed) -- w[verb.verb_nr])
-			table.insert(matches, match)
+			if self:skip_filter(skip) then
+				table.insert(matches, match)
+			end
 			if #match.vargs == 0 and not vargs then
 				match.vargs = false
 			end
@@ -1558,7 +1575,8 @@ function mp:err(err)
 			end
 		end
 		if not hint then
-			p (self.msg.UNKNOWN_VERB or "Unknown verb:", " ", iface:em(self.words[1]), ".")
+			p (self.msg.UNKNOWN_VERB or "Unknown verb:",
+			   " ", iface:em(self.words[1]), ".")
 		end
 	elseif err == "EMPTY_INPUT" then
 		p (self.msg.EMPTY or "Empty input.")
@@ -1656,6 +1674,8 @@ function mp:err(err)
 			end
 		end
 		pr "."
+	elseif err then
+		pr (err)
 	end
 end
 
@@ -2149,7 +2169,7 @@ function mp:lookup_noun(w, lev)
 	return res
 end
 
-function mp:pre_input(w)
+function mp:shorten_input(w)
 	if #w < 1 then
 		return
 	end
@@ -2157,9 +2177,8 @@ function mp:pre_input(w)
 	if #w == 1 and self.shorten[w[1]] then
 		str = self.shorten[w[1]]
 	end
-	if self.expert_mode and
-			not str and
-			self.shorten_expert[w[1]] then
+	if self.expert_mode and not str and
+		self.shorten_expert[w[1]] then
 		str = self.shorten_expert[w[1]]
 	end
 	if not str then
@@ -2185,9 +2204,7 @@ function mp:input(str)
 		str = std.here().default_Verb or self.default_Verb
 	end
 	local w = str_split(str, inp_split)
-	if type(mp.pre_input) == 'function' then
-		mp:pre_input(w)
-	end
+	mp:shorten_input(w)
 	self.words = w
 	if #w == 0 then
 		return false, "EMPTY_INPUT"

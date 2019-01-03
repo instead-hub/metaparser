@@ -1,5 +1,22 @@
 --luacheck: globals mp
 --luacheck: no self
+
+local everything = std.obj {
+	nam = '@all';
+	before_Any = function(_, ev)
+		if ev == 'Exam' then
+			mp:xaction("Look")
+			return
+		end
+		if not mp.expert_mode or
+			(ev ~= 'Drop' and ev ~= 'Take' and ev ~= 'Remove') then
+			p(mp.msg.NO_ALL)
+			return
+		end
+		return false
+	end;
+}:persist()
+
 --- Clear the metaparser window
 function mp:clear()
 	self.text = ''
@@ -1312,7 +1329,31 @@ function mp:move(w, wh, force)
 end
 
 mp.msg.Take = {}
+
+function mp:TakeAll(wh)
+	local empty = true
+	wh = wh or std.me():where()
+	local oo = {}
+	mp:objects(wh, oo, false)
+	for _, o in ipairs(oo) do
+		if not o:has 'static' and not o:has'scenery' then
+			empty = false
+			mp.msg.TAKING_ALL(o)
+			mp:subaction('Take', o)
+			if not have(o) then
+				break
+			end
+		end
+	end
+	if empty then
+		p(mp.msg.NOTHING_OBJ)
+	end
+end
+
 function mp:Take(w, wh)
+	if w == everything then
+		return mp:TakeAll(wh)
+	end
 	if mp:check_touch() then
 		return
 	end
@@ -1343,7 +1384,7 @@ function mp:Take(w, wh)
 		p (mp.msg.Take.SCENERY)
 		return
 	end
-	if not w:where():type'room' and
+	if w:where() and not w:where():type'room' and
 		not w:where():has'container' and
 		not w:where():has'supporter' then
 		if w:has'worn' and mp:animate(w:where()) then
@@ -1360,16 +1401,18 @@ end
 function mp:after_Take(w)
 	p (mp.msg.Take.TAKE)
 end
+
 mp.msg.Remove = {}
+
 function mp:Remove(w, wh)
 	if mp:check_touch() then
 		return
 	end
-	if w:where() ~= wh then
+	if w:where() ~= wh and w ~= everything then
 		p (mp.msg.Remove.WHERE)
 		return
 	end
-	mp:xaction('Take', w)
+	mp:xaction('Take', w, wh)
 end
 
 function mp:after_Remove(w, wh)
@@ -1377,7 +1420,27 @@ function mp:after_Remove(w, wh)
 end
 
 mp.msg.Drop = {}
+function mp:DropAll(wh)
+	local empty = true
+	local oo = {}
+	mp:objects(std.me(), oo, false)
+	for _, o in ipairs(oo) do
+		empty = false
+		mp.msg.DROPPING_ALL(o)
+		mp:subaction('Drop', o)
+		if have(o) then
+			break
+		end
+	end
+	if empty then
+		p(mp.msg.NOTHING_OBJ)
+	end
+end
+
 function mp:Drop(w)
+	if w == everything then
+		return mp:DropAll()
+	end
 	if mp:check_touch() then
 		return
 	end

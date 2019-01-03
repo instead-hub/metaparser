@@ -42,6 +42,8 @@ std.obj.a_noun = function(s, ...)
 	end
 end
 
+_'@all'.word = -"all"
+
 _'@darkness'.word = "darkness"
 _'@darkness'.before_Any = "Darkness, noun.  An absence of light to see by."
 _'@darkness':attr 'persist'
@@ -77,6 +79,15 @@ mp.shorten_expert = {
 	["z"] = "wait";
 }
 
+function mp:skip_filter(w)
+	for _, v in ipairs(w) do
+		if v == 'no' or v == 'not' then
+			return false
+		end
+	end
+	return true
+end
+
 _'@compass'.before_Default = 'Try to verb "go".'
 
 function mp.msg.SCORE(d)
@@ -97,6 +108,13 @@ mp.msg.COMPASS_EXAM_NO = "Nothing interesting in that direction."
 mp.msg.ENUM = "items."
 mp.msg.CUTSCENE_HELP = "Press <Enter> or enter {$fmt em|next} to continue."
 mp.msg.DLG_HELP = "Enter number to select the phrase."
+mp.msg.NO_ALL = "This verb can not be used with all."
+mp.msg.DROPPING_ALL = function(w)
+	pn (iface:em("(dropping "..w:noun'вн'..")"))
+end
+mp.msg.TAKING_ALL = function(w)
+	pn (iface:em("(taking "..w:noun'вн'..")"))
+end
 mp.msg.TAKE_BEFORE = function(w)
 	pn (iface:em("(taking "..w:the_noun().." before)"))
 end
@@ -316,6 +334,7 @@ mp.msg.UNKNOWN_VERB_HINT = "Maybe you meant"
 mp.msg.INCOMPLETE = "The sentence must be supplemented."
 mp.msg.INCOMPLETE_NOUN = "What do you want to apply the command to?"
 mp.msg.UNKNOWN_OBJ = "Here is no such thing"
+mp.msg.NOTHING_OBJ = "Nothing."
 mp.msg.UNKNOWN_WORD = "Phrase not recognized"
 mp.msg.HINT_WORDS = "Maybe you meant"
 mp.msg.HINT_OR = "or"
@@ -692,7 +711,7 @@ Verb { "#Exit",
 Verb { "#Exam",
 	"examine,exam,check,describe,watch,look",
 	"{noun} : Exam",
-	"?all : Look",
+	" : Look",
 	"inventory : Inv",
 	"~ under {noun} : LookUnder",
 	"~ in|inside|into|through|on {noun} : Search",
