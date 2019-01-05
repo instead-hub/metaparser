@@ -1739,6 +1739,7 @@ local function get_events(self, ev)
 end
 
 --- Take a value or run the function
+--- returns two valuses. retval and true if method was called
 -- @param wh what
 -- @param fn function
 function mp:runorval(wh, fn, ...)

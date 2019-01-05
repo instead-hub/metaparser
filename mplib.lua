@@ -3,6 +3,7 @@
 
 local everything = std.obj {
 	nam = '@all';
+	hint_noun = false;
 	before_Any = function(_, ev)
 		if ev == 'Exam' then
 			mp:xaction("Look")
@@ -1896,7 +1897,7 @@ function mp:Give(w, wh)
 		p (mp.msg.Give.MYSELF)
 		return
 	end
-	if mp:check_no_live(w) then
+	if mp:check_no_live(wh) then
 		return
 	end
 	if mp:runmethods('life', 'Give', wh, w) then
@@ -1918,7 +1919,7 @@ function mp:Show(w, wh)
 		mp:xaction("Exam", w)
 		return
 	end
-	if mp:check_no_live(w) then
+	if mp:check_no_live(wh) then
 		return
 	end
 	if mp:runmethods('life', 'Show', wh, w) then
@@ -1946,9 +1947,6 @@ end
 mp.msg.Wake = {}
 
 function mp:Wake()
-	if mp:check_no_live(w) then
-		return
-	end
 	p (mp.msg.Wake.WAKE)
 end
 
@@ -2215,9 +2213,11 @@ function mp:Talk(w)
 	if mp:check_touch() then
 		return
 	end
-	local r = std.call(w, 'talk_to')
-	if r then
-		walkin(r)
+	local r, v = mp:runorval(w, 'talk_to')
+	if v then
+		if r then
+			walkin(r)
+		end
 		return
 	end
 	if w == std.me() then
