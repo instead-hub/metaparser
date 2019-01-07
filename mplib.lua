@@ -2497,7 +2497,8 @@ local __oini = std.obj.__ini
 local function fn_aliases(wh)
 	local new = {}
 	for k, f in pairs(wh) do -- "before_Take,Drop..."
-		if (type(f) == 'function' or type(f) == 'string') and k:find("[a-zA-Z]+,") then
+		if (type(f) == 'function' or type(f) == 'string') and
+			type(k) == 'string' and k:find("[a-zA-Z]+,") then
 			local ss, ee = k:find("^[a-z]+_")
 			local pref = ''
 			local str = k

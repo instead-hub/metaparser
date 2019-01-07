@@ -584,7 +584,7 @@ function mp:eq(t1, t2, lev)
 	end
 	if lev then
 		local l = utf_lev(t1, t2)
-		if l < lev then
+		if l < lev and l / (utf_len(t1) + utf_len(t2)) <= 0.25 then
 			return l
 		end
 		return false
@@ -1566,7 +1566,7 @@ function mp:err(err)
 		if verbs and #verbs > 0 then
 			for _, verb in ipairs(verbs) do
 				local fixed = verb.verb[verb.word_nr]
-				if verb.lev < self.lev_thresh and verb.verb_nr == 1 then
+				if verb.verb_nr == 1 then
 					hint = true
 					p (self.msg.UNKNOWN_VERB, " ", iface:em(self.words[verb.verb_nr]), ".")
 					p (self.msg.UNKNOWN_VERB_HINT, " ", iface:em(fixed.word .. (fixed.morph or "")), "?")
