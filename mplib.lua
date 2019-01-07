@@ -1337,7 +1337,7 @@ function mp:TakeAll(wh)
 	local oo = {}
 	mp:objects(wh, oo, false)
 	for _, o in ipairs(oo) do
-		if not o:has 'static' and not o:has'scenery' then
+		if not o:has 'static' and not o:has'scenery' and not mp:animate(o) then
 			empty = false
 			mp.msg.TAKING_ALL(o)
 			mp:subaction('Take', o)
