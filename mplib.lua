@@ -488,7 +488,7 @@ obj {
 			if v then
 				return
 			end
-			r, v = mp:runorval(std.here(), d)
+			r, v = mp:runorval(std.here(), d, d)
 			if r then -- somewhat?
 				if std.object(r):type 'room' then
 					p (mp.msg.COMPASS_EXAM_NO)
@@ -513,7 +513,7 @@ obj {
 				mp:xaction("Exit")
 				return
 			end
-			local r, v = mp:runorval(std.here(), d)
+			local r, v = mp:runorval(std.here(), d, d)
 			if not v then
 				local t, vv = mp:runorval(std.here(), 'cant_go', dir)
 				if vv then
