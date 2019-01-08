@@ -2402,7 +2402,15 @@ std.mod_start(function()
 	mp:compl_fill(mp:compl(""))
 end, 2)
 instead.mouse_filter(0)
-
+-- speedup undo
+local obusy = std.busy
+local busy_count = 0
+function std.busy()
+	busy_count = busy_count + 1
+	if (busy_count % 100) == 0 then
+		obusy()
+	end
+end
 function instead.fading()
 	return instead.need_fading() or player_moved()
 end
