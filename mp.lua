@@ -2317,7 +2317,10 @@ end
 std.rawset(_G, 'mp', mp)
 std.mod_cmd(
 function(cmd)
-	if cmd[2] == '@metaparser' then
+	if cmd[1] == '@metaparser' then
+		mp.inp = cmd[2] or ''
+		return mp:key_enter()
+	elseif cmd[2] == '@metaparser' then
 		if cmd[3] == '<clear>' then
 			mp.inp = '';
 			mp.cur = 1;
