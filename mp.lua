@@ -1325,7 +1325,7 @@ function mp:match(verb, w, compl)
 	local multi = {}
 	local vargs
 	for _, d in ipairs(verb.dsc) do -- verb variants
-		local match = { args = {}, vargs = {}, ev = d.ev }
+		local match = { args = {}, vargs = {}, ev = d.ev, wildcards = 0 }
 		local a = {}
 		found = (#d.pat == 0)
 		for k, v in ipairs(w) do
@@ -1348,6 +1348,7 @@ function mp:match(verb, w, compl)
 			local word
 			local required = true
 			found = false
+			local wildcard = false
 			for _, pp in ipairs(pat) do -- single argument
 				if v == '*' then break end
 				required = not pp.optional
@@ -1364,8 +1365,10 @@ function mp:match(verb, w, compl)
 					word = pp.word
 					found = pp
 					best_len = len
+					wildcard = false
 					if word:find("%*$") then -- subst
 						word = found.ob:noun(found.morph, found.alias)
+						wildcard = true
 					end
 				end
 			end
@@ -1419,6 +1422,9 @@ function mp:match(verb, w, compl)
 --				end
 				table.insert(match, word)
 				table.insert(match.args, found)
+				if wildcard then
+					match.wildcards = match.wildcards + 1
+				end
 				rlev = rlev + 1
 			elseif vargs then
 				if lev == #d.pat then -- last?
@@ -1492,7 +1498,13 @@ function mp:match(verb, w, compl)
 		end
 	end
 
-	table.sort(matches, function(a, b) return #a > #b end)
+	table.sort(matches,
+		function(a, b)
+			if #a == #b then
+				return a.wildcards < b.wildcards
+			end
+			return #a > #b
+		end)
 
 	if #matches > 0 and matches[1].extra then
 		local lev = #matches[1]
