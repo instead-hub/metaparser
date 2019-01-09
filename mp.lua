@@ -254,6 +254,10 @@ mp = std.obj {
 }
 
 function mp:trim()
+	if self.winsize == 0 then
+		self.text = ""
+		return
+	end
 	local text = self.text
 	while text:len() > self.winsize do
 		local text2 = text:gsub("^%^?[^%^]*%^%^", "")
@@ -1944,7 +1948,9 @@ function mp:show_prompt(inp)
 	if std.here():has 'cutscene' or std.here():has 'noprompt' or player_moved() or std.abort_cmd then
 		return false
 	end
-	pn(fmt.b(self.prompt .. inp))
+	if self.prompt then
+		pn(fmt.b(self.prompt .. inp))
+	end
 	return true
 end
 
