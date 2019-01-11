@@ -1347,6 +1347,7 @@ function mp:match(verb, w, compl)
 				vargs = true -- found
 				v = '*'
 			end
+			local noun = not not v:find("^~?{noun}")
 			local pat = self:pattern(v) -- pat -- possible words
 			local best = #a + 1
 			local best_len = 1
@@ -1419,9 +1420,11 @@ function mp:match(verb, w, compl)
 --				if false then
 --					a = tab_exclude(a, best, best + best_len - 1)
 --				else
+				if noun then
 					for i = 1, best - 1 do
 						table.insert(skip, a[i])
 					end
+				end
 					a = tab_sub(a, best + best_len)
 --					table.remove(a, 1)
 --				end
@@ -1459,7 +1462,7 @@ function mp:match(verb, w, compl)
 				end
 			elseif required then
 				for i = 1, best - 1 do
-					table.insert(unknown, { word = a[i], lev = rlev })
+					table.insert(unknown, { word = a[i], lev = rlev, noun = noun })
 				end
 				if best <= 1 and #skip > 0 then
 					for i = 1, #skip do
@@ -1515,7 +1518,7 @@ function mp:match(verb, w, compl)
 		local lev = #matches[1]
 		if #unknown > 0 then
 			for _, v in ipairs(unknown) do
-				if v.lev >= lev and not v.skip then
+				if v.lev >= lev and not v.skip and v.noun then
 					matches = {}
 					break
 				end
