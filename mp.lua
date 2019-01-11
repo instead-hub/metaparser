@@ -917,7 +917,7 @@ function mp:docompl(str, maxw)
 				local utf_word = utf_chars(v.word)
 				local utf_maxw = utf_chars(maxw)
 				for k = 1, #utf_maxw do
-					if utf_maxw[k] == utf_word[k] then
+					if mrd.lang.norm(utf_maxw[k]) == mrd.lang.norm(utf_word[k]) then
 						maxw2 = maxw2 .. utf_maxw[k]
 					else
 						full = false
@@ -1153,8 +1153,8 @@ function mp:compl_ctx()
 	if top == 0 then
 		return self.inp, ''
 	end
-	local inp = self:norm(self.inp)
-	local ctx_inp = self:norm(ctx[top].inp)
+	local inp = self.inp
+	local ctx_inp = ctx[top].inp
 	local _, e = inp:find(ctx_inp, 1, true)
 	local pre = ''
 	if e then
@@ -1173,7 +1173,8 @@ function mp:compl_ctx_poss()
 	ctx = ctx[top]
 	local _, pre = self:compl_ctx()
 	for _, v in ipairs(ctx) do
-		if self:startswith(v.word, pre) then
+		if self:__startswith(v.word, pre) or
+			self:__startswith(self:norm(v.word), pre) then
 			table.insert(res, v)
 		end
 	end
