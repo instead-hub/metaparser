@@ -1330,6 +1330,7 @@ function mp:match(verb, w, compl)
 	local multi = {}
 	local vargs
 	for _, d in ipairs(verb.dsc) do -- verb variants
+--		local was_noun = false
 		local match = { args = {}, vargs = {}, ev = d.ev, wildcards = 0 }
 		local a = {}
 		found = (#d.pat == 0)
@@ -1420,11 +1421,11 @@ function mp:match(verb, w, compl)
 --				if false then
 --					a = tab_exclude(a, best, best + best_len - 1)
 --				else
-				if noun then
+--				if not was_noun then
 					for i = 1, best - 1 do
 						table.insert(skip, a[i])
 					end
-				end
+--				end
 					a = tab_sub(a, best + best_len)
 --					table.remove(a, 1)
 --				end
@@ -1434,6 +1435,7 @@ function mp:match(verb, w, compl)
 					match.wildcards = match.wildcards + 1
 				end
 				rlev = rlev + 1
+--				was_noun = not not found.ob
 			elseif vargs then
 				if lev == #d.pat then -- last?
 					if #a == 0 then
@@ -1518,7 +1520,7 @@ function mp:match(verb, w, compl)
 		local lev = #matches[1]
 		if #unknown > 0 then
 			for _, v in ipairs(unknown) do
-				if v.lev >= lev and not v.skip and v.noun then
+				if v.lev >= lev and not v.skip then -- and v.noun then
 					matches = {}
 					break
 				end
