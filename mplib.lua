@@ -551,14 +551,15 @@ obj {
 }
 
 
---- Check if direction is a compass direction.
--- @param w the word to check
+--- Check if object is a compass direction.
+-- @param w the object to check
+-- @param dir optional arg to check againist selected dir
 mp.compass_dir = function(_, w, dir)
 	if not dir then
 		local nam = tostring(w.nam):gsub("^@", "")
 		return w:where() and w:where() ^ '@compass' and nam
 	end
-	return w ^ '@dir'
+	return w ^ ('@'..dir)
 end
 
 function mp:multidsc(oo, inv)
@@ -1409,7 +1410,7 @@ function mp:Remove(w, wh)
 	if mp:check_touch() then
 		return
 	end
-	if w:where() ~= wh and w ~= everything then
+	if w:where() ~= wh and w:inroom() ~= wh and w ~= everything then
 		p (mp.msg.Remove.WHERE)
 		return
 	end
@@ -1586,6 +1587,10 @@ mp.msg.ThrowAt = {}
 
 function mp:ThrowAt(w, wh)
 	if mp:check_touch() then
+		return
+	end
+	if wh == std.me():where() or mp:compass_dir(wh, 'd_to') then
+		mp:xaction('Drop', w)
 		return
 	end
 	if mp:check_held(w) then
