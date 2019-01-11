@@ -5,7 +5,7 @@ local mrd = {
 	words = {};
 }
 
-local msg = print
+local msg = dprint or print
 
 local function cache_add(cache, key, val)
 	table.insert(cache.list, 1, key)
@@ -540,7 +540,7 @@ function mrd:file(f, dict)
 	if not ff then
 		return false, e
 	end
-	print("Added file: ", f)
+	msg("Added file: ", f)
 	for l in ff:lines() do
 		for w in l:gmatch('%-"[^"]+"') do
 			w = w:gsub('^%-"', ""):gsub('"$', "")
@@ -551,7 +551,7 @@ function mrd:file(f, dict)
 					local t = self.lang.upper(self.lang.norm(ww))
 					if not dict[t] and not t:find("%*$") then
 						dict[t] = true;
-						dprint("mrd: Added word: ", ww)
+						msg("mrd: Added word: ", ww)
 					end
 				end
 			end
@@ -803,14 +803,14 @@ function mrd:create(fname, crc)
 		sum = sum % 4294967291;
 	end
 	if crc ~= sum then
-		dprint("Generating dict.mrd with sum: ", sum)
+		msg("Generating dict.mrd with sum: ", sum)
 		if mrd:load("morph/morphs.mrd", dict) then
 			mrd:dump(fname or 'dict.mrd', sum)
 		else
-			dprint("Can not find morph/morphs.mrd")
+			msg("Can not find morph/morphs.mrd")
 		end
 	else
-		dprint("Using dict.mrd")
+		msg("Using dict.mrd")
 	end
 end
 if std then
