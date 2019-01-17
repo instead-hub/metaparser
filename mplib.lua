@@ -725,13 +725,10 @@ std.room:attr 'enterable,light'
 function mp:step()
 	game.__daemons:for_each(function(o)
 		if o:disabled() then
-			return nil, false
+			return
 		end
-		local r = mp:runorval(o, 'daemon')
-		if r == true then return true end
-		if o:closed() then
-			return nil, false
-		end
+		local r, v = mp:runorval(o, 'daemon')
+		if r == true and v == true then return true end
 	end)
 	local oo = mp:nouns()
 	std.here():attr 'visited'
