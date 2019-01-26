@@ -2228,6 +2228,10 @@ function mp:input(str)
 	if (self.default_Verb or std.here().default_Verb) and str == "" then
 		str = std.here().default_Verb or self.default_Verb
 	end
+	if type(mp.pre_input) == 'function' then
+		str = mp:pre_input(str)
+		if not str then return false end
+	end
 	local w = str_split(str, inp_split)
 	mp:shorten_input(w)
 	self.words = w
