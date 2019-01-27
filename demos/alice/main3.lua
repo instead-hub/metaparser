@@ -96,7 +96,7 @@ room {
 }
 
 obj {
-	-"Чёрная Королева,королева/жр|ферзь";
+	-"Чёрная Королева,королева,чёрная/жр|ферзь";
 	nam = 'red_queen';
 	dsc = function(s)
 		if _'white_kitten'.state == QUEEN_STATE or
@@ -551,7 +551,7 @@ Kitten = Class {
 
 Kitten  {
 	state = CHAIR_STATE;
-	-"белый котенок,котенок";
+	-"белый котенок,котенок,белый";
 	nam = 'white_kitten';
 	seen = false;
 	found_in = 'Drawing_Room';
@@ -561,7 +561,7 @@ Kitten  {
 
 Kitten  {
 	state = CHAIR_STATE;
-	-"черный котенок,котенок";
+	-"чёрный котенок,котенок,чёрный";
 	seen = false;
 	nam = 'black_kitten';
 	found_in = 'Drawing_Room';
