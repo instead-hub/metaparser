@@ -1990,7 +1990,7 @@ function mp:parse(inp)
 	inp = std.strip(inp)
 
 	if self.expert_mode then
-		local multi_inp = str_split(inp, ".") or {}
+		local multi_inp = str_split(inp, ".\r\n") or {}
 
 		inp = multi_inp[1] or inp
 
