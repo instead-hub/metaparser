@@ -1388,7 +1388,7 @@ function mp:match(verb, w, compl)
 					new_wildcard = false
 				end
 				if k and ((k < best or len > best_len) or
-					(not new_wildcard and wildcard and k <= best)) then
+					(not new_wildcard and wildcard and k <= best and len >= best_len)) then
 					wildcard = new_wildcard
 					best = k
 					word = pp.word
