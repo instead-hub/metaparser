@@ -2043,7 +2043,7 @@ std.world.display = function(s, state)
 	if mp.clear_on_move then
 		if player_moved() then mp:clear() end
 	end
-	mp:trim()
+--	mp:trim()
 	local reaction = s:reaction() or nil
 	if state then
 --		reaction = iface:em(reaction)
@@ -2128,7 +2128,7 @@ function mp:autoplay_inp()
 		self.autoplay:close()
 		self.autoplay = false
 	else
-		dprint("> ", self.inp)
+--		dprint("> ", self.inp)
 		self.autoplay_command = true
 	end
 	return true
@@ -2368,8 +2368,10 @@ std.mod_cmd(
 function(cmd)
 	if cmd[1] == '@metaparser' then
 		mp.inp = cmd[2] or ''
-		return mp:key_enter()
-	elseif cmd[2] == '@metaparser' then
+		cmd[1] = '@mp_key'
+		cmd[2] = 'enter'
+	end
+	if cmd[2] == '@metaparser' then
 		if cmd[3] == '<clear>' then
 			mp.inp = '';
 			mp.cur = 1;
@@ -2397,6 +2399,7 @@ function(cmd)
 		return true, false
 	end
 	if (cmd[1] == '@mp_key' and cmd[2] == 'enter') or cmd[1] == 'look' then
+		mp:trim()
 		if not std.game.__started and cmd[1] == 'look' then
 			std.game:__start()
 		end
