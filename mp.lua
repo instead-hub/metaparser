@@ -185,6 +185,7 @@ mp = std.obj {
 	autocompl = true;
 	undo = 0;
 	compl_thresh = 0;
+	compare_len = 3;
 	detailed_inv = false;
 	daemons = std.list {};
 	{
@@ -596,6 +597,18 @@ function mp:eq(t1, t2, lev)
 	return self:norm(t1) == self:norm(t2)
 end
 
+--- Check if t1 starts with t2
+-- Or fallback to mp:eq
+--
+-- @see mp:eq
+function mp:starteq(t1, t2, lev)
+	if lev or t2:len() >= t1:len() or utf_len(t2) < mp.compare_len then
+		return self:eq(t1, t2, lev)
+	end
+	t1 = t1:sub(1, t2:len())
+	return self:norm(t1) == self:norm(t2)
+end
+
 function mp:pattern(t, delim)
 	local words = {}
 	local pat = str_split(self:norm(t), delim or "|")
@@ -775,7 +788,7 @@ local function word_search(t, w, lev)
 		for i = 1, #w do
 			local found2 = false
 			for ii = k, k + #w - 1 do
-				rlev = mp:eq(w[i], t[ii], lev)
+				rlev = mp:starteq(w[i], t[ii], lev)
 				if rlev then
 					found2 = true
 					break
