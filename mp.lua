@@ -597,16 +597,12 @@ function mp:eq(t1, t2, lev)
 	return self:norm(t1) == self:norm(t2)
 end
 
---- Check if t1 starts with t2
--- Or fallback to mp:eq
---
--- @see mp:eq
-function mp:starteq(t1, t2, lev)
-	if lev or t2:len() >= t1:len() or utf_len(t2) < mp.compare_len then
-		return self:eq(t1, t2, lev)
+local function starteq(t1, t2)
+	if t2:len() >= t1:len() or utf_len(t2) < mp.compare_len then
+		return mp:eq(t1, t2)
 	end
 	t1 = t1:sub(1, t2:len())
-	return self:norm(t1) == self:norm(t2)
+	return mp:norm(t1) == mp:norm(t2)
 end
 
 function mp:pattern(t, delim)
@@ -788,7 +784,11 @@ local function word_search(t, w, lev)
 		for i = 1, #w do
 			local found2 = false
 			for ii = k, k + #w - 1 do
-				rlev = mp:starteq(w[i], t[ii], lev)
+				if type(lev) == 'function' then
+					rlev = lev(w[i], t[ii])
+				else
+					rlev = mp:eq(w[i], t[ii], lev)
+				end
 				if rlev then
 					found2 = true
 					break
@@ -1379,13 +1379,21 @@ function mp:match(verb, w, compl)
 				if pp.default then
 					word = pp.word
 				end
+				local new_wildcard = false
 				local k, len = word_search(a, pp.word)
-				if k and (k < best or len > best_len) then
+				if not k and mp.compare_len > 0 then
+					k, len = word_search(a, pp.word, starteq)
+					new_wildcard = true
+				else
+					new_wildcard = false
+				end
+				if k and ((k < best or len > best_len) or
+					(not new_wildcard and wildcard and k <= best)) then
+					wildcard = new_wildcard
 					best = k
 					word = pp.word
 					found = pp
 					best_len = len
-					wildcard = false
 					if word:find("%*$") then -- subst
 						word = found.ob:noun(found.morph, found.alias)
 						wildcard = true
