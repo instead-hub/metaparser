@@ -318,7 +318,10 @@ obj {
 	nam = 'worsted';
 	found_in = 'Drawing_Room';
 	sputan = false;
-        dsc = function(s)
+	dsc = function(s)
+		if s:where() ~= std.here() then
+			return false
+		end
 		if _'white_kitten'.state ~= WOOL_STATE and
 			_'black_kitten'.state ~= WOOL_STATE then
 				p "На полу лежит клубок шерсти.";
