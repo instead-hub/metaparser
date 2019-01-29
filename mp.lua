@@ -2020,7 +2020,7 @@ function mp:parse(inp)
 			self:err(v)
 			local s = std.game
 			s:reaction(std.pget())
-			r = s:display()
+			r = s:display(false)
 			s:lastdisp(r)
 			return r, false
 		end
@@ -2036,7 +2036,7 @@ end
 
 std.world.display = function(s, state)
 	local l, av, pv
-	if mp.text == '' and game:time() == 1 then
+	if mp.text == '' and game:time() == 1 and state ~= false then
 		local r = std.call(game, 'dsc')
 		mp.text = r .. '^^'
 	end
