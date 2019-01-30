@@ -1604,6 +1604,10 @@ function mp:ThrowAt(w, wh)
 			mp:xaction("Insert", w, wh)
 			return
 		end
+		if wh:has'supporter' then
+			mp:xaction("PutOn", w, wh)
+			return
+		end
 		p(mp.msg.ThrowAt.NOTLIFE)
 		return
 	end
