@@ -178,9 +178,8 @@ function std.player:walk(w, doexit, doenter, dofrom)
 			self:need_scene(true)
 			return nil, true
 		end
-		local ohere = std.here()
 		local r, v = owalk(self, w, doexit, doenter, dofrom)
-		if mp.clear_on_move and std.here() ~= ohere then
+		if mp.clear_on_move and player_moved() then
 			mp:cls_prompt()
 		end
 		self.__room_where = false
@@ -195,9 +194,8 @@ function std.player:walk(w, doexit, doenter, dofrom)
 			self:need_scene(true)
 			return nil, true
 		end
-		local owhere = std.me():where()
 		local r, v = owalk(self, w:inroom(), doexit, doenter, dofrom)
-		if mp.clear_on_move and std.me():where() ~= owhere then
+		if mp.clear_on_move and player_moved() then
 			mp:cls_prompt()
 		end
 		self.__room_where = w
