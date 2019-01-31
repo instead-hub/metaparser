@@ -94,6 +94,9 @@ std.class({
 				p (s.text[s.__num])
 			end
 		end
+		if mp.msg.CUTSCENE_MORE then
+			p("^", mp.msg.CUTSCENE_MORE)
+		end
 	end;
 	OnError = function(_, _) -- s, err
 		p(mp.msg.CUTSCENE_HELP)
