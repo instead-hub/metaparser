@@ -1599,6 +1599,9 @@ function mp:ThrowAt(w, wh)
 	if mp:runmethods('before', 'ThrownAt', wh, w) then
 		return
 	end
+	if mp:runmethods('life', 'ThrowAt', wh, w) then
+		return
+	end
 	if not self:animate(wh) then
 		if wh:has'container' then
 			mp:xaction("Insert", w, wh)
@@ -1609,9 +1612,6 @@ function mp:ThrowAt(w, wh)
 			return
 		end
 		p(mp.msg.ThrowAt.NOTLIFE)
-		return
-	end
-	if mp:runmethods('life', 'ThrowAt', wh, w) then
 		return
 	end
 	p(mp.msg.ThrowAt.THROW)
@@ -1903,10 +1903,10 @@ function mp:Give(w, wh)
 		p (mp.msg.Give.MYSELF)
 		return
 	end
-	if mp:check_no_live(wh) then
+	if mp:runmethods('life', 'Give', wh, w) then
 		return
 	end
-	if mp:runmethods('life', 'Give', wh, w) then
+	if mp:check_no_live(wh) then
 		return
 	end
 	p (mp.msg.Give.GIVE)
@@ -1925,10 +1925,10 @@ function mp:Show(w, wh)
 		mp:xaction("Exam", w)
 		return
 	end
-	if mp:check_no_live(wh) then
+	if mp:runmethods('life', 'Show', wh, w) then
 		return
 	end
-	if mp:runmethods('life', 'Show', wh, w) then
+	if mp:check_no_live(wh) then
 		return
 	end
 	p (mp.msg.Show.SHOW)
@@ -1966,11 +1966,11 @@ function mp:WakeOther(w)
 		mp:xaction('Wake')
 		return
 	end
-	if not mp:animate(w) then
-		p (mp.msg.WakeOther.NOTLIVE)
+	if mp:runmethods('life', 'WakeOther', w) then
 		return
 	end
-	if mp:runmethods('life', 'WakeOther', w) then
+	if not mp:animate(w) then
+		p (mp.msg.WakeOther.NOTLIVE)
 		return
 	end
 	p (mp.msg.WakeOther.WAKE)
@@ -1992,11 +1992,11 @@ function mp:Kiss(w)
 	if mp:check_touch() then
 		return
 	end
-	if not mp:animate(w) then
-		p (mp.msg.Kiss.NOTLIVE)
+	if mp:runmethods('life', 'Kiss', w) then
 		return
 	end
-	if mp:runmethods('life', 'Kiss', w) then
+	if not mp:animate(w) then
+		p (mp.msg.Kiss.NOTLIVE)
 		return
 	end
 	if w == std.me() then
@@ -2130,7 +2130,7 @@ function mp:Attack(w)
 	if mp:check_touch() then
 		return
 	end
-	if mp:animate(w) and mp:runmethods('life', 'Attack', w) then
+	if mp:runmethods('life', 'Attack', w) then
 		return
 	end
 	if mp:animate(w) then
@@ -2230,11 +2230,11 @@ function mp:Talk(w)
 		p (mp.msg.Talk.SELF)
 		return
 	end
-	if not mp:animate(w) then
-		p (mp.msg.Talk.NOTLIVE)
+	if mp:runmethods('life', 'Talk', w) then
 		return
 	end
-	if mp:runmethods('life', 'Talk', w) then
+	if not mp:animate(w) then
+		p (mp.msg.Talk.NOTLIVE)
 		return
 	end
 	p (mp.msg.Talk.LIVE)
@@ -2253,11 +2253,11 @@ function mp:Tell(w, t)
 		p (mp.msg.Tell.SELF)
 		return
 	end
-	if not mp:animate(w) then
-		p (mp.msg.Tell.NOTLIVE)
+	if mp:runmethods('life', 'Tell', w, t) then
 		return
 	end
-	if mp:runmethods('life', 'Tell', w, t) then
+	if not mp:animate(w) then
+		p (mp.msg.Tell.NOTLIVE)
 		return
 	end
 	p (mp.msg.Tell.LIVE)
@@ -2276,11 +2276,11 @@ function mp:Ask(w, t)
 		p (mp.msg.Ask.SELF)
 		return
 	end
-	if not mp:animate(w) then
-		p (mp.msg.Ask.NOTLIVE)
+	if mp:runmethods('life', 'Ask', w, t) then
 		return
 	end
-	if mp:runmethods('life', 'Ask', w, t) then
+	if not mp:animate(w) then
+		p (mp.msg.Ask.NOTLIVE)
 		return
 	end
 	p (mp.msg.Ask.LIVE)
@@ -2312,11 +2312,11 @@ function mp:Answer(w, t)
 		p (mp.msg.Answer.SELF)
 		return
 	end
-	if not mp:animate(w) then
-		p (mp.msg.Answer.NOTLIVE)
+	if mp:runmethods('life', 'Answer', w, t) then
 		return
 	end
-	if mp:runmethods('life', 'Answer', w, t) then
+	if not mp:animate(w) then
+		p (mp.msg.Answer.NOTLIVE)
 		return
 	end
 	p (mp.msg.Answer.LIVE)

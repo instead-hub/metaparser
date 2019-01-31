@@ -4,6 +4,7 @@
   * @all (DropAll, TakeAll);
   * mp.expert_mode added (multiple commands, shortens);
   * mp.compare_len (short objects words);
+  * life methods called on non-animated objects too;
   * daemon fix.
 
  -- Peter Kosyh <p.kosyh@gmail.com>  Sat, 8 Dec 2018 10:43:00 +0300
