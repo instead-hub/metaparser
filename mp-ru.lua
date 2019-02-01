@@ -599,7 +599,7 @@ Verb { "#Walk",
 Verb { "#Exit",
 	"выйти,выйд/и,уйти,уйд/и,вылез/ти,выхо/ди,обратно,назад,выбраться,выберись,выберусь,выбираться",
 	"из|с|со {noun}/рд,scene : Exit",
-	"в {noun}/вн,scene,enterable : Enter",
+	"в|через {noun}/вн,scene,enterable : Enter",
 	"?наружу : Exit" }
 
 Verb { "#Exam",
