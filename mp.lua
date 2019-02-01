@@ -195,6 +195,7 @@ mp = std.obj {
 		logfile = false;
 		lognum = 0;
 		clear_on_move = true;
+		auto_animate = true;
 		autoplay = false;
 		pushed = {};
 		autoplay_command = false;
@@ -1017,7 +1018,7 @@ function mp:animate(w)
 	if w:has'animate' == false then
 		return false
 	end
-	return w:has'animate' or w:hint'live'
+	return w:has'animate' or (self.auto_animate and w:hint'live')
 end
 
 local function holded_by(ob, holder)
@@ -2128,7 +2129,9 @@ function mp:autoplay_inp()
 		self.autoplay:close()
 		self.autoplay = false
 	else
---		dprint("> ", self.inp)
+		if not auto_inp then
+			dprint("> ", self.inp)
+		end
 		self.autoplay_command = true
 	end
 	return true
