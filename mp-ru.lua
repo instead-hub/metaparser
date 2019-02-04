@@ -180,7 +180,7 @@ end
 --"включён"
 --"выключен"
 mp.msg.Exam.SWITCHSTATE = "{#First} сейчас {#if_has/#first,on,{#word/включён,#first},{#word/выключен,#first}}."
-mp.msg.Exam.NOTHING = "ничего нет."
+mp.msg.Exam.NOTHING = "нет ничего интересного."
 mp.msg.Exam.IS = "находится"
 mp.msg.Exam.ARE = "находятся"
 mp.msg.Exam.IN = "В {#first/пр,2}"

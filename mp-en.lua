@@ -378,7 +378,7 @@ mp.msg.NOROOM = function(w)
 end
 
 mp.msg.Exam.SWITCHSTATE = "{#Thefirst} {#is/#first} switched {#if_has/#first,on,on,off}."
-mp.msg.Exam.NOTHING = "nothing."
+mp.msg.Exam.NOTHING = "nothing interesting."
 mp.msg.Exam.IS = "there is"
 mp.msg.Exam.ARE = "there are"
 mp.msg.Exam.IN = "In {#thefirst}"
