@@ -682,14 +682,14 @@ function mp:content(w)
 --	end
 	oo = ooo
 	if #oo == 0 then
-		if not inside and mp.first == w and not something then
-			if w:has 'supporter' then
-				pnoun (w, mp.msg.Exam.ON)
-			else
-				pnoun (w, mp.msg.Exam.IN)
-			end
-			p (mp.msg.Exam.NOTHING)
-		end
+--		if not inside and mp.first == w and not something then
+--			if w:has 'supporter' then
+--				pnoun (w, mp.msg.Exam.ON)
+--			else
+--				pnoun (w, mp.msg.Exam.IN)
+--			end
+--			p (mp.msg.Exam.NOTHING)
+--		end
 	elseif #oo == 1 and not oo[1]:hint 'plural' then
 		if std.me():where() == w or std.here() == w then
 			p (mp.msg.Look.HEREIS)
