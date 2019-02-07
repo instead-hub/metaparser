@@ -2219,7 +2219,7 @@ function mp:lookup_noun(w, lev)
 end
 
 function mp:shorten_input(w)
-	if #w < 1 then
+	if #w < 1 or std.here():type 'dlg' then
 		return
 	end
 	local str
