@@ -1990,7 +1990,7 @@ end
 function mp:parse(inp)
 	inp = std.strip(inp)
 
-	if self.expert_mode and not self:comment() then
+	if self.expert_mode and not self:comment() and not std.here():type'dlg' then
 		local multi_inp = str_split(inp, ".\r\n") or {}
 
 		inp = multi_inp[1] or inp
