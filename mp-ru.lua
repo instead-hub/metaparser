@@ -903,6 +903,7 @@ Verb {
 	"[ |по]прыг/ать,скак/ать,[ |пере|под]прыг/нуть,переска/чить",
 	"Jump",
 	"через {noun}/вн,scene : JumpOver",
+	"~ в {noun}/вн,scene : Enter",
 	"~ {noun}/вн,scene : JumpOver",
 }
 
