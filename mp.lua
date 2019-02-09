@@ -2364,6 +2364,10 @@ end
 
 function VerbHint(t, fn, w)
 	local v = mp:verb_find(t, w)
+	if not v then
+		dprint("Unknown verb: " .. tostring(t))
+		return
+	end
 	if v then v.hint = fn end
 end
 std.rawset(_G, 'mp', mp)
