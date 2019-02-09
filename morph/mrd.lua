@@ -6,7 +6,11 @@ local mrd = {
 }
 
 local msg = dprint or print
-
+local function debug(...)
+	if DEBUG then
+		dprint(...)
+	end
+end
 local function cache_add(cache, key, val)
 	table.insert(cache.list, 1, key)
 	local len = #cache.list
@@ -527,7 +531,7 @@ function mrd:word(w, ob)
 	if not found then
 		if DEBUG and not tonumber(w) and not missed_words[w] then
 			missed_words[w] = true
-			msg("Can not find word: '"..ow.."'")
+			debug("Can not find word: '"..ow.."'")
 		end
 	end
 	cache_add(cache, key, { w, grams })
@@ -540,7 +544,7 @@ function mrd:file(f, dict)
 	if not ff then
 		return false, e
 	end
-	msg("Added file: ", f)
+	debug("Added file: ", f)
 	for l in ff:lines() do
 		for w in l:gmatch('%-"[^"]+"') do
 			w = w:gsub('^%-"', ""):gsub('"$', "")
@@ -551,7 +555,7 @@ function mrd:file(f, dict)
 					local t = self.lang.upper(self.lang.norm(ww))
 					if not dict[t] and not t:find("%*$") then
 						dict[t] = true;
-						msg("mrd: Added word: ", ww)
+						debug("mrd: Added word: ", ww)
 					end
 				end
 			end
