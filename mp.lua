@@ -2657,6 +2657,13 @@ function std.obj:hint(hint)
 	return self:gram()[mrd.lang.gram_t[hint] or hint]
 end
 
+--- Return a pronoun for the object (capitalized).
+-- @see mp:it
+function mp:It(w, hint)
+	local t = self:it(w, hint)
+	return mp.mrd.lang.cap(t)
+end
+
 --- Return a pronoun for the object.
 -- This is language-dependent.
 -- @param hint pronoun case
@@ -2675,6 +2682,11 @@ function std.obj:it(hint)
 			return "it"
 		end
 	end
+end
+
+function std.obj:It(hint)
+	local t = self:it(hint)
+	return mp.mrd.lang.cap(t)
 end
 
 function mp:traceinside(w, fn)

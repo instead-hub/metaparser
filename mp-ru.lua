@@ -138,7 +138,9 @@ mp.msg.HINT_OR = "или"
 mp.msg.HINT_AND = "и"
 mp.msg.AND = "и"
 mp.msg.MULTIPLE = "Тут есть"
-mp.msg.LIVE_ACTION = "{#Firstit/дт} это не понравится."
+mp.msg.LIVE_ACTION = function(w)
+	p (w:It'дт'," это не понравится.")
+end
 mp.msg.NO_LIVE_ACTION = "Действие применимо только к одушевлённым объектам."
 
 mp.msg.NOTINV = function(t)

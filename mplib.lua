@@ -1125,13 +1125,22 @@ function mp:after_Close(w)
 	p(mp.msg.Close.CLOSE)
 end
 
+--- Show mp message using mp.msg constant
+-- args uses only for functions
+function mp:message(m, ...)
+	if type(mp.msg[m]) ~= 'function' then
+		p(mp.msg[m])
+	else
+		mp.msg[m](...)
+	end
+end
 --- Check if the object is alive.
 -- If yes, return standard message.
 -- Returns true if we have to terminate the sequence.
 -- @param w object to check
 function mp:check_live(w)
 	if self:animate(w) then
-		p(mp.msg.LIVE_ACTION)
+		mp:message('LIVE_ACTION', w)
 		return true
 	end
 	return false
@@ -1139,7 +1148,7 @@ end
 
 function mp:check_no_live(w)
 	if not self:animate(w) then
-		p(mp.msg.NO_LIVE_ACTION)
+		mp:message('NO_LIVE_ACTION', w)
 		return true
 	end
 	return false
@@ -1154,7 +1163,7 @@ function mp:check_held(t)
 --	if (std:me():lookup(t) and t:visible()) or std.me() == t then
 		return false
 	end
-	mp.msg.TAKE_BEFORE(t)
+	mp:message('TAKE_BEFORE', t)
 	mp:subaction('Take', t)
 	if not have(t) then
 --		mp.msg.NOTINV(t)
@@ -1177,7 +1186,7 @@ end
 -- @param w object to check
 function mp:check_worn(w)
 	if w:has'worn' then
-		mp.msg.DISROBE_BEFORE(w)
+		mp:message('DISROBE_BEFORE', w)
 		mp:subaction('Disrobe', w)
 		if w:has'worn' then
 --			p (mp.msg.Drop.WORN)
@@ -1205,7 +1214,7 @@ function mp:Lock(w, t)
 		return
 	end
 	if w:has 'open' then
-		mp.msg.CLOSE_BEFORE(w)
+		mp:message('CLOSE_BEFORE', w)
 		mp:subaction('Close', w)
 		if w:has 'open' then
 			p(mp.msg.Lock.OPEN)
@@ -1299,7 +1308,7 @@ function mp:move(w, wh, force)
 		local n = self:runorval(wh, 'capacity')
 		local capacity = n and tonumber(n)
 		if capacity and #wh.obj >= capacity then
-			mp.msg.NOROOM(wh)
+			mp:message('NOROOM', wh)
 			return false
 		end
 		w:where(ww)
@@ -1340,7 +1349,7 @@ function mp:TakeAll(wh)
 	for _, o in ipairs(oo) do
 		if not o:has 'static' and not o:has'scenery' and not mp:animate(o) then
 			empty = false
-			mp.msg.TAKING_ALL(o)
+			mp:message('TAKING_ALL', o)
 			mp:subaction('Take', o)
 			if not have(o) then
 				break
