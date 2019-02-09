@@ -725,7 +725,10 @@ function mrd:noun_hint(ob, n)
 		})
 	end
 	local key = n or ob.__word_alias or 1
-	local c = ob.__hint_cache.hash[key]
+	local c
+	if type(ob.word) == 'string' then -- do not use caching if function
+		c = ob.__hint_cache.hash[key]
+	end
 	if c then
 		return c
 	end
