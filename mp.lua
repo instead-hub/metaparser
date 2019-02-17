@@ -41,7 +41,7 @@ local function utf_ff(b, pos)
 	end
 	i = i + 1
 	l = l + 1
-	while b:byte(i) >= 0x80 and b:byte(i) <= 0xbf do
+	while b:byte(i) and b:byte(i) >= 0x80 and b:byte(i) <= 0xbf do
 		i = i + 1
 		l = l + 1
 		if i > b:len() then
