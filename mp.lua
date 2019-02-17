@@ -1380,7 +1380,7 @@ function mp:match(verb, w, compl)
 				if pp.default then
 					word = pp.word
 				end
-				local new_wildcard = false
+				local new_wildcard
 				local k, len = word_search(a, pp.word)
 				if not k and mp.compare_len > 0 then
 					k, len = word_search(a, pp.word, starteq)
