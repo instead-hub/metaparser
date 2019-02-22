@@ -600,45 +600,51 @@ function mrd:dict(dict, word)
 	local tab = {}
 	local w, hints = str_hint(word)
 	hints = str_split(hints, ",")
-	for k, v in pairs(dict) do
-		local ww, hh = str_hint(k)
-		local hints2 = {}
-		hh = str_split(hh, ",")
-		for _, vv in ipairs(hh) do
-			hints2[vv] = true
+	local t = dict[w]
+
+	if not t then
+		return
+	end
+
+	for k, v in pairs(t) do
+		local whints = {}
+		local h = hint_append(k, t[1])
+		h = str_split(h, ",")
+		for _, vv in ipairs(h) do
+			whints[vv] = true
 		end
-		if ww == w then
-			local t = { ww, score = 0, pos = #tab, w = v, hints = hh }
-			for _, hv in ipairs(hints) do
-				if hv:sub(1, 1) ~= '~' then
-					t.nom = (hv == mrd.lang.gram_t.nom)
-					if hints2[hv] then
-						t.score = t.score + 1
-					end
-				else
-					if hints2[str_strip(hv:sub(2))] then
-						t.score = t.score - 1
-					end
+		local t = { w, score = 0, pos = #tab, w = v, hints = h, nom = whints[mrd.lang.gram_t.nom or false] }
+		for _, hv in ipairs(hints) do
+			if hv:sub(1, 1) ~= '~' then
+				if whints[hv] then
+					t.score = t.score + 1
+				end
+			else
+				if whints[str_strip(hv:sub(2))] then
+					t.score = t.score - 1
 				end
 			end
-			table.insert(tab, t)
 		end
+		if t.nom then
+			t.score = t.score + 0.5
+		end
+		table.insert(tab, t)
 	end
-	if #tab > 0 then
-		table.sort(tab,
-			   function(a, b)
-				   if a.score == b.score then
-					   if #a.hints == #b.hints then
-						   return a.pos < b.pos
-					   end
-					   return #a.hints < #b.hints
-				   end
-				   return a.score > b.score
+	if #tab == 0 then
+		return
+	end
+	table.sort(tab,
+		function(a, b)
+			if a.score == b.score then
+				if #a.hints == #b.hints then
+					return a.pos < b.pos
+				end
+				return #a.hints < #b.hints
+			end
+			return a.score > b.score
 		end)
-		if tab[1].score > 0 or (tab[1].score == 0 and
-			(#tab[1].hints == 0 or tab[1].nom)) then
-			return tab[1].w, gram2an(tab[1].hints)
-		end
+	if tab[1].score > 0 then
+		return tab[1].w, gram2an(tab[1].hints)
 	end
 end
 
@@ -867,8 +873,21 @@ std.obj.gram = function(self, ...)
 	return gg
 end
 
-std.obj.dict = function(self, v)
-	std.rawset(self, '__dict', v)
+std.obj.dict = function(self, t)
+	local idx = {}
+	for word, v in pairs(t) do
+		local w, hints = str_hint(word)
+		if type(v) == 'table' then
+			idx[w] = v
+			v[1] = hints or ""
+		else
+			if not idx[w] then
+				idx[w] = { "", }
+			end
+			idx[w][hints] = v
+		end
+	end
+	std.rawset(self, '__dict', idx)
 	return self
 end
 
