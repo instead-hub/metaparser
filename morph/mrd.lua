@@ -627,11 +627,14 @@ function mrd:dict(dict, word)
 		table.sort(tab,
 			   function(a, b)
 				   if a.score == b.score then
-					   return a.pos < b.pos
+					   if #a.hints == #b.hints then
+						   return a.pos < b.pos
+					   end
+					   return #a.hints < #b.hints
 				   end
 				   return a.score > b.score
 		end)
-		if tab[1].score > 0 then
+		if tab[1].score > 0 or (tab[1].score == 0 and #tab[1].hints == 0) then
 			return tab[1].w, gram2an(tab[1].hints)
 		end
 	end
