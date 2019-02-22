@@ -370,10 +370,16 @@ local lookup_cache = {
 	len = 512;
 }
 
+local function hint_append(hint, h)
+	if h == "" or not h then return hint end
+	if hint == "" or not hint then return h end
+	return hint .. ',' .. h
+end
+
 function mrd:lookup(w, g)
 	local key  = ""
 	for _, v in ipairs(g or {}) do
-		key = key ..','.. v
+		key = hint_append(key, v)
 	end
 	key = w .. '/'..key
 	local cc = lookup_cache.hash[key]
@@ -685,7 +691,7 @@ function mrd:obj(w, n, nn)
 	if type(n) == 'table' then
 		local ret = n
 		for _, v in ipairs(d) do
-			table.insert(ret, { word = v.word, hint = hint ..','..v.hint, alias = v.alias, idx = v.idx });
+			table.insert(ret, { word = v.word, hint = hint_append(hint, v.hint), alias = v.alias, idx = v.idx });
 		end
 		return ob, ret
 	end
@@ -699,7 +705,7 @@ function mrd:obj(w, n, nn)
 	if not d[n] then n = 1  end
 	w = d[n].word
 	hint2 = d[n].hint
-	return ob, w, hint .. ',' .. hint2
+	return ob, w, hint_append(hint, hint2)
 end
 
 local function noun_append(rc, tab, w)
@@ -739,14 +745,14 @@ function mrd:noun_hint(ob, n)
 		lang.gram_t.neuter, lang.gram_t.plural,
 		lang.gram_t.live } do
 		if g[v] then
-			hint = hint ..','..v
+			hint = hint_append(hint, v)
 		end
 	end
 	if not g[self.lang.gram_t.live] then
-		hint = hint .. ',' .. lang.gram_t.nonlive
+		hint = hint_append(hint, lang.gram_t.nonlive)
 	end
 	if ob then
-		hint = hint..",noun"
+		hint = hint_append(hint, "noun")
 	end
 	cache_add(ob.__hint_cache, key, hint)
 	return hint
@@ -767,7 +773,7 @@ function mrd:noun(w, n, nn)
 	end
 	for _, v in ipairs(w) do
 		local hint2 = self:noun_hint(ob, v.alias)
-		local m = self:word(v.word .. '/'.. v.hint .. hint2, ob)
+		local m = self:word(v.word .. '/'.. hint_append(v.hint, hint2), ob)
 		rc = noun_append(rc, tab, m)
 	end
 	return tab and tab or rc
@@ -849,7 +855,7 @@ std.obj.gram = function(self, ...)
 	end
 	for k, v in pairs(gg) do
 		if v then
-			thint = thint .. k .. ','
+			thint = hint_append(thint, k)
 		end
 	end
 	gg.hint = thint

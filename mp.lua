@@ -189,7 +189,7 @@ mp = std.obj {
 	detailed_inv = false;
 	daemons = std.list {};
 	{
-		version = "0.93";
+		version = "1.0";
 		cache = { tokens = {} };
 		scope = std.list {};
 		logfile = false;
@@ -2550,6 +2550,12 @@ function mp:shortcut_obj(ob)
 	return ob
 end
 
+local function hint_append(hint, h)
+	if h == "" or not h then return hint end
+	if hint == "" or not hint then return h end
+	return hint .. ',' .. h
+end
+
 function mp.shortcut.word(hint)
 	local w = str_split(hint, ",")
 	if #w == 0 then
@@ -2560,17 +2566,17 @@ function mp.shortcut.word(hint)
 	hint = ''
 	for _, k in ipairs(w) do
 		if k == '#first' then
-			hint = hint .. mp.first_hint .. ','
+			hint = hint_append(hint, mp.first_hint)
 		elseif k == '#second' then
-			hint = hint .. mp.second_hint .. ','
+			hint = hint_append(hint, mp.second_hint)
 		elseif k:find("#", 1, true) == 1 then
 			local ob = mp:shortcut_obj(k)
 			if not ob then
 				std.err("Wrong shortcut word: "..k, 2)
 			end
-			hint = hint .. 	ob:gram().hint .. ','
+			hint = hint_append(hint, ob:gram().hint)
 		else
-			hint = hint .. k .. ','
+			hint = hint_append(hint, k)
 		end
 	end
 	local t = mp.mrd:noun(verb .. '/' .. hint)

@@ -1,3 +1,7 @@
+1.0
+  * cleanup of code;
+  * fixes in :dict logic.
+
 0.93
   * Enter (inside) pattern added;
   * up/down shorten in ru;
