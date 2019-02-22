@@ -364,6 +364,7 @@ lang = { yo = false,
 	gram_score = gram_score,
 	gram_t = {
 		noun = 'С',
+		nom = 'им',
 		live = 'од',
 		nonlive = 'но',
 		neuter = 'ср',

@@ -611,6 +611,7 @@ function mrd:dict(dict, word)
 			local t = { ww, score = 0, pos = #tab, w = v, hints = hh }
 			for _, hv in ipairs(hints) do
 				if hv:sub(1, 1) ~= '~' then
+					t.nom = (hv == mrd.lang.gram_t.nom)
 					if hints2[hv] then
 						t.score = t.score + 1
 					end
@@ -634,7 +635,8 @@ function mrd:dict(dict, word)
 				   end
 				   return a.score > b.score
 		end)
-		if tab[1].score > 0 or (tab[1].score == 0 and #tab[1].hints == 0) then
+		if tab[1].score > 0 or (tab[1].score == 0 and
+			(#tab[1].hints == 0 or tab[1].nom)) then
 			return tab[1].w, gram2an(tab[1].hints)
 		end
 	end
@@ -847,7 +849,7 @@ std.obj.gram = function(self, ...)
 	hint = str_split(hint, ",")
 	local g = gram and gram[1] or {}
 	for _, v in ipairs(gram or {}) do
-		if v.t == t then
+		if v.t == t or v[t] then
 			g = v
 			break
 		end
