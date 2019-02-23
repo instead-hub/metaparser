@@ -600,13 +600,13 @@ function mrd:dict(dict, word)
 	local tab = {}
 	local w, hints = str_hint(word)
 	hints = str_split(hints, ",")
-	local t = dict[w]
+	local tt = dict[w]
 
-	if not t then
+	if not tt then
 		return
 	end
 
-	for _, v in ipairs(t) do
+	for _, v in ipairs(tt) do
 		local whints = {}
 		local w, h = str_hint(v)
 		local hh = str_split(h, ",")
@@ -625,7 +625,7 @@ function mrd:dict(dict, word)
 				end
 			end
 		end
-		t.hints = str_split(hint_append(h, t.hints), ",")
+		t.hints = str_split(hint_append(tt.hints, h), ",")
 		if mrd.lang.gram_t.nom and whints[mrd.lang.gram_t.nom] then
 			t.score = t.score + 0.5
 		end
