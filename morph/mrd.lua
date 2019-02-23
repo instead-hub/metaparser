@@ -609,12 +609,11 @@ function mrd:dict(dict, word)
 	for _, v in ipairs(t) do
 		local whints = {}
 		local w, h = str_hint(v)
-		h = hint_append(h, t.hints)
-		h = str_split(h, ",")
-		for _, vv in ipairs(h) do
+		local hh = str_split(h, ",")
+		for _, vv in ipairs(hh) do
 			whints[vv] = true
 		end
-		local t = { w, score = 0, pos = #tab, w = w, hints = h }
+		local t = { w, score = 0, pos = #tab, w = w }
 		for _, hv in ipairs(hints) do
 			if hv:sub(1, 1) ~= '~' then
 				if whints[hv] then
@@ -626,6 +625,7 @@ function mrd:dict(dict, word)
 				end
 			end
 		end
+		t.hints = str_split(hint_append(h, t.hints), ",")
 		if mrd.lang.gram_t.nom and whints[mrd.lang.gram_t.nom] then
 			t.score = t.score + 0.5
 		end
