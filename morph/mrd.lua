@@ -606,14 +606,15 @@ function mrd:dict(dict, word)
 		return
 	end
 
-	for k, v in pairs(t) do
+	for _, v in ipairs(t) do
 		local whints = {}
-		local h = hint_append(k, t[1])
+		local w, h = str_hint(v)
+		h = hint_append(h, t.hints)
 		h = str_split(h, ",")
 		for _, vv in ipairs(h) do
 			whints[vv] = true
 		end
-		local t = { w, score = 0, pos = #tab, w = v, hints = h, nom = whints[mrd.lang.gram_t.nom or false] }
+		local t = { w, score = 0, pos = #tab, w = w, hints = h }
 		for _, hv in ipairs(hints) do
 			if hv:sub(1, 1) ~= '~' then
 				if whints[hv] then
@@ -625,7 +626,7 @@ function mrd:dict(dict, word)
 				end
 			end
 		end
-		if t.nom then
+		if mrd.lang.gram_t.nom and whints[mrd.lang.gram_t.nom] then
 			t.score = t.score + 0.5
 		end
 		table.insert(tab, t)
@@ -636,10 +637,7 @@ function mrd:dict(dict, word)
 	table.sort(tab,
 		function(a, b)
 			if a.score == b.score then
-				if #a.hints == #b.hints then
-					return a.pos < b.pos
-				end
-				return #a.hints < #b.hints
+				return a.pos < b.pos
 			end
 			return a.score > b.score
 		end)
@@ -879,12 +877,12 @@ std.obj.dict = function(self, t)
 		local w, hints = str_hint(word)
 		if type(v) == 'table' then
 			idx[w] = v
-			v[1] = hints or ""
+			v.hints = hints or ""
 		else
 			if not idx[w] then
-				idx[w] = { "", }
+				idx[w] = { hints = "", }
 			end
-			idx[w][hints] = v
+			table.insert(idx[w], v .. '/' .. hints)
 		end
 	end
 	std.rawset(self, '__dict', idx)
