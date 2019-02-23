@@ -1426,7 +1426,7 @@ function mp:match(verb, w, compl)
 						found.ob = exact
 						multi = {}
 					end
-					if #multi > 0 then
+					if #multi > 0 and found.multi then
 						table.insert(multi, 1, { word = found.ob:noun(found.alias), lev = rlev })
 						found = false
 						break
