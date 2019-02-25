@@ -1279,6 +1279,7 @@ local function lev_sort(t)
 			break
 		end
 		res.lev = lev
+		res.match = v.match
 		if v.word then
 			if not dup[v.word] then
 				table.insert(res, v.word)
@@ -1343,9 +1344,15 @@ function mp:match(verb, w, compl)
 	local unknown = {}
 	local multi = {}
 	local vargs
+	local parsed_verb = {}
+	for k, v in ipairs(w) do
+		if k >= verb.verb_nr and k < verb.verb_nr + verb.verb_len then
+			table.insert(parsed_verb, v)
+		end
+	end
 	for _, d in ipairs(verb.dsc) do -- verb variants
 --		local was_noun = false
-		local match = { args = {}, vargs = {}, ev = d.ev, wildcards = 0 }
+		local match = { args = {}, vargs = {}, ev = d.ev, wildcards = 0, verb = parsed_verb }
 		local a = {}
 		found = (#d.pat == 0)
 		for k, v in ipairs(w) do
@@ -1501,7 +1508,7 @@ function mp:match(verb, w, compl)
 						end
 					end
 				end
-				table.insert(hints, { word = v, lev = rlev })
+				table.insert(hints, { word = v, lev = rlev, match = match })
 				break
 			else
 				if word then
@@ -1626,7 +1633,20 @@ function mp:err(err)
 		p (self.msg.EMPTY or "Empty input.")
 	elseif err == "INCOMPLETE" or err == "UNKNOWN_WORD" then
 		local need_noun
+		local second_noun
 		for _, v in ipairs(self.hints) do
+			local verb = ''
+			for kk, vv in pairs(self.hints.match.verb) do
+				verb = verb .. vv .. ' '
+			end
+			verb = verb:gsub(" $", "")
+			for kk, vv in pairs(self.hints.match.args) do
+				verb = verb .. ' '.. vv.word
+				if vv.ob then
+					second_noun = true
+				end
+			end
+			if second_noun then second_noun = verb end
 			if v:find("^~?{noun}") then need_noun = true break end
 		end
 		if #self.unknown > 0 then
@@ -1661,7 +1681,11 @@ function mp:err(err)
 			p (self.msg.UNKNOWN_WORD, ".")
 		else
 			if need_noun then
-				p (self.msg.INCOMPLETE_NOUN)
+				if second_noun then
+					p (self.msg.INCOMPLETE_NOUN, " \"", second_noun, "\"?")
+				else
+					p (self.msg.INCOMPLETE_NOUN, "?")
+				end
 			else
 				p (self.msg.INCOMPLETE)
 			end
