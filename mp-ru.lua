@@ -483,7 +483,7 @@ end
 function mp:synonyms(w, hint)
 	local t = self:it(w, hint)
 	w = { t }
-	if t == 'его' or t == 'её' or t == 'ее' or t == 'ей' or t == 'им' then t = 'н'..t; w[2] = t end
+	if t == 'его' or t == 'её' or t == 'ее' or t == 'ей' or t == 'им' or t == 'ему' then t = 'н'..t; w[2] = t end
 	return w
 end
 
