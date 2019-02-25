@@ -1635,20 +1635,22 @@ function mp:err(err)
 		local need_noun
 		local second_noun
 		for _, v in ipairs(self.hints) do
-			local verb = ''
-			for kk, vv in pairs(self.hints.match.verb) do
-				verb = verb .. vv .. ' '
-			end
-			verb = verb:gsub(" $", "")
-			for kk, vv in pairs(self.hints.match.args) do
-				if vv.word then
-					verb = verb .. ' '.. vv.word
+			if self.hints.match then
+				local verb = ''
+				for kk, vv in pairs(self.hints.match.verb) do
+					verb = verb .. vv .. ' '
 				end
-				if vv.ob then
-					second_noun = true
+				verb = verb:gsub(" $", "")
+				for kk, vv in pairs(self.hints.match.args) do
+					if vv.word then
+						verb = verb .. ' '.. vv.word
+					end
+					if vv.ob then
+						second_noun = true
+					end
 				end
+				if second_noun then second_noun = verb end
 			end
-			if second_noun then second_noun = verb end
 			if v:find("^~?{noun}") then need_noun = true break end
 		end
 		if #self.unknown > 0 then
