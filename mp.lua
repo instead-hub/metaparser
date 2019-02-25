@@ -1272,14 +1272,14 @@ local function lev_sort(t)
 		t.fuzzy = true
 	end
 
-	local res = { lev = 0 }
+	local res = { lev = 0, match = #t > 0 and t[1].match }
 	local dup = {}
+
 	for _, v in ipairs(t) do
 		if v.lev ~= lev then
 			break
 		end
 		res.lev = lev
-		res.match = v.match
 		if v.word then
 			if not dup[v.word] then
 				table.insert(res, v.word)
