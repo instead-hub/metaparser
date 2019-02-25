@@ -1641,7 +1641,9 @@ function mp:err(err)
 			end
 			verb = verb:gsub(" $", "")
 			for kk, vv in pairs(self.hints.match.args) do
-				verb = verb .. ' '.. vv.word
+				if vv.word then
+					verb = verb .. ' '.. vv.word
+				end
 				if vv.ob then
 					second_noun = true
 				end
