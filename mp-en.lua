@@ -1118,6 +1118,13 @@ MetaVerb {
 	"~save",
 	"MetaSave"
 }
+
+MetaVerb {
+	"#MetaExpert",
+	"~expert mode",
+	"MetaExpert",
+}
+
 MetaVerb {
 	"#MetaLoad",
 	"~load",
