@@ -1032,6 +1032,12 @@ MetaVerb {
 }
 
 MetaVerb {
+	"#MetaExpert",
+	"~экспертный режим",
+	"MetaExpert",
+}
+
+MetaVerb {
 	"#MetaSave",
 	"~сохрани/ть",
 	"MetaSave"
