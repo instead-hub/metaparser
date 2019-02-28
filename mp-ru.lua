@@ -1033,8 +1033,9 @@ MetaVerb {
 
 MetaVerb {
 	"#MetaExpert",
-	"~экспертный режим",
-	"MetaExpert",
+	"~парсер",
+	"эксперт да : MetaExpertOn",
+	"эксперт нет : MetaExpertOff",
 }
 
 MetaVerb {

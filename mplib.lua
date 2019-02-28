@@ -2396,11 +2396,16 @@ function mp:MetaSave()
 	instead.menu 'save'
 end
 
-function mp:MetaExpert()
+function mp:MetaExpertOn()
 	mp.autocompl = false
 	mp.autohelp = false
-	mp.expert_mode = true
-	p [[Expert mode on. :)]]
+	p [[Expert mode on.]]
+end
+
+function mp:MetaExpertOff()
+	mp.autocompl = true
+	mp.autohelp = true
+	p [[Expert mode off.]]
 end
 
 function mp:MetaLoad()

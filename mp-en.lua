@@ -1121,8 +1121,9 @@ MetaVerb {
 
 MetaVerb {
 	"#MetaExpert",
-	"~expert mode",
-	"MetaExpert",
+	"~parser",
+	"expert on : MetaExpertOn",
+	"expert off : MetaExpertOff",
 }
 
 MetaVerb {
