@@ -143,6 +143,26 @@ end
 local okey = input.key
 local mp
 
+local use_text_event = false
+
+local function post_inp()
+	if mp.autohelp then
+		mp:compl_fill(mp:compl(mp.inp))
+	elseif mp.autocompl then
+		mp:compl(mp.inp)
+	end
+end
+
+function input:text(sym)
+	if not use_text_event then
+		mp.inp = ''
+		use_text_event = true
+	end
+	mp:inp_insert(sym)
+	post_inp()
+	return '@mp_key '..tostring(sym)
+end
+
 function input:key(press, key)
 	local mod
 	if key:find("alt") then
@@ -159,11 +179,7 @@ function input:key(press, key)
 
 	if press and not mod and not (mp.ctrl or mp.alt) then
 		if mp:key(key) then
-			if mp.autohelp then
-				mp:compl_fill(mp:compl(mp.inp))
-			elseif mp.autocompl then
-				mp:compl(mp.inp)
-			end
+			post_inp()
 			if key == 'f6' and mp.autoplay then key = 'enter' end
 			return '@mp_key '..tostring(key)
 		end
@@ -316,6 +332,9 @@ function mp:key(key)
 	end
 	if key == 'enter' then
 		return true
+	end
+	if use_text_event then
+		return false
 	end
 	if key:len() > 1 then
 		return false
@@ -2191,11 +2210,7 @@ function mp:key_enter()
 	self:autoplay_inp()
 
 	self.cur = self.inp:len() + 1;
-	if self.autohelp then
-		self:compl_fill(self:compl(self.inp))
-	elseif self.autocompl then
-		self:compl(self.inp)
-	end
+	post_inp()
 --	self:completion()
 	return r, v
 end
@@ -2491,6 +2506,9 @@ end
 std.mod_start(function()
 	mp:compl_reset()
 	mp:compl_fill(mp:compl(""))
+--	if instead.text_input and instead.text_input(true) then
+--		use_text_event = true
+--	end
 end, 2)
 instead.mouse_filter(0)
 -- speedup undo
