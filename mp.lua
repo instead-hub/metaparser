@@ -2326,6 +2326,7 @@ function mp:input(str)
 			w = self.default_Event or "Exam"
 		end
 --		pn()
+		mp.first_it = ob[1].ob
 		self:xaction(w, ob[1].ob)
 --		verbs = self:lookup_verb(w)
 --		if #verbs == 0 then
