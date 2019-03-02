@@ -74,7 +74,7 @@ room {
 		end
 		return false
 	end;
-	['before_Examine,Search,Enter,ThrowAt,ThrownAt,Reflect,Touch'] = function(s, w, wh)
+	['before_Exam,Search,Enter,ThrowAt,ThrownAt,Reflect,Touch'] = function(s, w, wh)
 		return false
 	end;
 	before_Default = function(s, ev, w, wh)
