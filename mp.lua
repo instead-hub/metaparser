@@ -155,6 +155,30 @@ local function post_inp()
 	end
 end
 
+if PLATFORM == "ANDROID" or PLATFORM == "IOS" or PLATFORM == "SFOS" then
+function input:click(press, mb, x, y)
+	if not instead.text_input then
+		return false
+	end
+	if not press or mb ~= 1 then
+		return false
+	end
+	local theme = std.ref'@theme'
+	if not theme then
+		return false
+	end
+	local xx = std.tonum(theme.get 'inv.x')
+	local yy = std.tonum(theme.get 'inv.y')
+	local ww = std.tonum(theme.get 'inv.w')
+	local hh = std.tonum(theme.get 'inv.h')
+	if x >= xx and y >= yy and x < xx + ww and y < yy + hh then
+		instead.text_input(not instead.text_input())
+		return false
+	end
+	return false
+end
+end
+
 function input:text(sym)
 	mp:inp_insert(sym)
 	post_inp()
