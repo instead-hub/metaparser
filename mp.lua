@@ -143,7 +143,9 @@ end
 local okey = input.key
 local mp
 
-local use_text_event = false
+local function use_text_event()
+	return instead.text_input and instead.text_input()
+end
 
 local function post_inp()
 	if mp.autohelp then
@@ -154,10 +156,6 @@ local function post_inp()
 end
 
 function input:text(sym)
-	if not use_text_event then
-		mp.inp = ''
-		use_text_event = true
-	end
 	mp:inp_insert(sym)
 	post_inp()
 	return '@mp_key '..tostring(sym)
@@ -333,7 +331,7 @@ function mp:key(key)
 	if key == 'enter' then
 		return true
 	end
-	if use_text_event then
+	if use_text_event() then
 		return false
 	end
 	if key:len() > 1 then
@@ -2506,9 +2504,7 @@ end
 std.mod_start(function()
 	mp:compl_reset()
 	mp:compl_fill(mp:compl(""))
---	if instead.text_input and instead.text_input(true) then
---		use_text_event = true
---	end
+--	if instead.text_input then instead.text_input(true) end
 end, 2)
 instead.mouse_filter(0)
 -- speedup undo
