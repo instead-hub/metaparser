@@ -183,6 +183,9 @@ end
 end
 
 function input:text(sym)
+	if iface:raw_mode() then
+		return false
+	end
 	mp:inp_insert(sym)
 	post_inp()
 	return '@mp_key '..tostring(sym)
