@@ -1,6 +1,11 @@
+1.2
+  * some verb synonims;
+  * parser expert on/off mode;
+  * unicode input (INSTEAD >= 3.3 only).
+
 1.1
-  * Better hint message (unknown noun).
-  * Fixes in mp:synonyms
+  * Better hint message (unknown noun);
+  * Fixes in mp:synonyms.
 
 1.0
   * cleanup of code;
