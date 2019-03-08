@@ -161,7 +161,7 @@ local oclick = input.click
 function input:click(press, mb, x, y, ...)
 	local theme = std.ref'@theme'
 
-	if not instead.text_input or not press or mb ~= 1 or not theme then
+	if not instead.text_input or not press or mb ~= 1 or not theme or mp.autohelp then
 		if oclick then
 			return oclick(self, press, mb, x, y, ...)
 		end
