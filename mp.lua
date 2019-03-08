@@ -230,7 +230,7 @@ mp = std.obj {
 	detailed_inv = false;
 	daemons = std.list {};
 	{
-		version = "1.1";
+		version = "1.2";
 		cache = { tokens = {} };
 		scope = std.list {};
 		logfile = false;
