@@ -1,19 +1,35 @@
 --$Name:Другой Марс$
 --$Author:Пётр Косых$
 --$Info:июль 2018$
---$Version:1.5$
+--$Version:1.7$
+
+local gfx_mode = std.ref'@sprite'.scr()
 
 require "mp-ru"
 require "fmt"
-require "decor"
-require "fading"
+
+if gfx_mode then
+	require "decor"
+	require "fading"
+else
+	declare 'fading' ({
+		set = function() end;
+	})
+	function D()
+	end
+end
+
 require "snd"
 include "gfx"
 game.dsc = [[]]
 
 local FADE_LONG = 64
 
+
 function dark_theme()
+	if not gfx_mode then
+		return
+	end
 	T('scr.col.bg', '#151515')
 	T('win.col.fg', '#dddddd')
 	T('inv.col.fg', '#dddddd')
@@ -28,6 +44,9 @@ local mars_col2 = '#f4efc9'
 local mars_col3 = '#e9b664'
 
 function light_theme()
+	if not gfx_mode then
+		return
+	end
 	T('scr.col.bg', mars_col) -- '#eadaca')
 	T('win.col.fg', '#000000')
 	T('inv.col.fg', '#151515')
@@ -38,6 +57,9 @@ function light_theme()
 end
 
 function light_theme2()
+	if not gfx_mode then
+		return
+	end
 	T('scr.col.bg', mars_col2)
 	T('win.col.fg', '#000000')
 	T('inv.col.fg', '#000000')
@@ -48,6 +70,9 @@ function light_theme2()
 end
 
 function light_theme3()
+	if not gfx_mode then
+		return
+	end
 	T('scr.col.bg', mars_col3)
 	T('win.col.fg', '#000000')
 	T('inv.col.fg', '#000000')
@@ -142,6 +167,9 @@ declare 'anim_coast' (function()
 end)
 
 function anim(name)
+	if not gfx_mode then
+		return
+	end
 	anim_fn = name
 	if not name then D(); timer:stop(); return; end
 	_G['anim_'..name]()
@@ -1894,10 +1922,19 @@ local titles = {
 	{ };
 	{"КОНЕЦ", style = 1};
 }
+
 room {
 	nam = 'titles';
 	title = false;
-	dsc = false;
+	dsc = function(s)
+		if gfx_mode then
+			return true
+		end
+		for _, v in ipairs(titles) do
+			pn(v[1])
+		end
+		pn ("^Полную версию игры ищите на https://instead.itch.io/mars")
+	end;
 	noparser = true;
 	{
 		finish = false;
@@ -1917,6 +1954,9 @@ room {
 		end
 	end;
 	enter = function(s)
+		if not gfx_mode then
+			return
+		end
 		snd.music 'mus/sunflower.ogg'
 		s.font_height = 16
 		s.w, s.h = std.tonum(theme.get 'scr.w'), std.tonum(theme.get 'scr.h')
@@ -1956,6 +1996,7 @@ room {
 }
 
 function init()
+	if gfx_mode then
 	snd.music_fading(2000, 2000)
 	if theme.name() == '.mobile' then
 		mp.togglehelp = true
@@ -1968,12 +2009,16 @@ function init()
 		mp.autohelp_limit = 8
 		mp.compl_thresh = 1
 	end
+	end
 	take 'скафандр'
 	take 'шлем'
 	dark_theme()
 end
 
 function autodetect_theme()
+	if not gfx_mode then
+		return
+	end
 	local f = io.open(instead.savepath().."/config.ini")
 	if f then
 		f:close()
