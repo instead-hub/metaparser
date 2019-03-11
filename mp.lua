@@ -183,6 +183,9 @@ end
 end
 
 function input:text(sym)
+	if sym == " " then -- in old key logic
+		return false
+	end
 	if iface:raw_mode() then
 		return false
 	end
