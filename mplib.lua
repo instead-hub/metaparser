@@ -41,7 +41,8 @@ mp.door = std.class({
 			return
 		end
 		if not s:has 'open' then
-			p (mp.msg.Enter.DOOR_CLOSED)
+			local t = std.call(s, 'when_closed')
+			p (t or mp.msg.Enter.DOOR_CLOSED)
 			return
 		end
 		local r, v = mp:runorval(s, 'door_to')
