@@ -9,7 +9,7 @@ std.mod_init(
 	mp:init(lang)
 end)
 game.dsc = function()
-	p ([[METAPARSER3 Версия: ]]..mp.version.."^")
+	p ([[МЕТАПАРСЕР3 Версия: ]]..mp.version.."^")
 	p [[http://instead-hub.github.io^^
 Если вам необходима справка по игре, наберите "помощь".
 ^]]
