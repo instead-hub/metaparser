@@ -969,14 +969,15 @@ Verb {
 Verb {
 	"#Ask",
 	"спросит/ь,расспросит/ь",
-	"?у {noun}/вн,live о|об|обо|про * : Ask",
+	"{noun}/вн,live о|об|обо|про * : Ask",
+	"~ у {noun}/рд,live о|об|обо|про * : Ask",
 	"~ о|об|обо|про * ?у {noun}/вн,live : Ask reverse",
 }
 
 Verb {
 	"#AskFor",
 	"попроси/ть,выпроси/ть,уговори/ть,проси/ть,попрош/у,выпрош/у",
-	"у {noun}/вн,live * : AskFor",
+	"у {noun}/рд,live * : AskFor",
 	"~ * у {noun}/вн,live : AskFor reverse",
 	"~ {noun}/вн,live * : AskTo",
 }
