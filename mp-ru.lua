@@ -978,7 +978,7 @@ Verb {
 	"#AskFor",
 	"попроси/ть,выпроси/ть,уговори/ть,проси/ть,попрош/у,выпрош/у",
 	"у {noun}/рд,live * : AskFor",
-	"~ * у {noun}/вн,live : AskFor reverse",
+	"~ * у {noun}/рд,live : AskFor reverse",
 	"~ {noun}/вн,live * : AskTo",
 }
 
