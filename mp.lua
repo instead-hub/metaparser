@@ -1424,7 +1424,7 @@ function mp:match(verb, w, compl)
 			local best = #a + 1
 			local best_len = 1
 			local word
-			local required = true
+			local required = false
 			found = false
 			local wildcard = false
 			for _, pp in ipairs(pat) do -- single argument

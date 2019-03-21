@@ -971,14 +971,14 @@ Verb {
 	"спросит/ь,расспросит/ь",
 	"{noun}/вн,live о|об|обо|про * : Ask",
 	"~ у {noun}/рд,live о|об|обо|про * : Ask",
-	"~ о|об|обо|про * ?у {noun}/вн,live : Ask reverse",
+	"~ о|об|обо|про * у {noun}/рд,live : Ask reverse",
 }
 
 Verb {
 	"#AskFor",
 	"попроси/ть,выпроси/ть,уговори/ть,проси/ть,попрош/у,выпрош/у",
 	"у {noun}/рд,live * : AskFor",
-	"~ * у {noun}/рд,live : AskFor reverse",
+	"* у {noun}/рд,live : AskFor reverse",
 	"~ {noun}/вн,live * : AskTo",
 }
 
