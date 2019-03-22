@@ -1,5 +1,6 @@
 globals = {
 	'DEBUG',
+	'PLATFORM',
 	'dprint',
 	'Class',
 	'fmt',
@@ -25,6 +26,7 @@ globals = {
 	'VerbExtend',
 	'DaemonStart',
 	'DaemonStop',
+	'isDaemon',
 	'place',
 	'remove',
 	'walkin',

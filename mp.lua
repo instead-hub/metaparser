@@ -1687,11 +1687,11 @@ function mp:err(err)
 		for _, v in ipairs(self.hints) do
 			if self.hints.match then
 				local verb = ''
-				for kk, vv in pairs(self.hints.match.verb) do
+				for _, vv in pairs(self.hints.match.verb) do
 					verb = verb .. vv .. ' '
 				end
 				verb = verb:gsub(" $", "")
-				for kk, vv in pairs(self.hints.match.args) do
+				for _, vv in pairs(self.hints.match.args) do
 					if vv.word then
 						verb = verb .. ' '.. vv.word
 					end
