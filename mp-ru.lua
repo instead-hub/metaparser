@@ -733,6 +733,7 @@ Verb {
 	"толк/ать,пих/ать,нажим/ать,нажм/и,нажать,сдвин/уть,подвин/уть,двига/ть,задви/нуть,запих/нуть,затолк/ать,[ |на]давить",
 	"?на {noun}/вн : Push",
 	"{noun}/вн на|в|во {noun}/вн : Transfer",
+	"~ {noun}/вн к {noun}/дт : Transfer",
 	"{noun}/вн {compass2} : Transfer",
 	"~ на|в|во {noun}/вн {noun}/вн : Transfer reverse",
 	"~ {compass2} {noun}/вн : Transfer reverse"
@@ -743,6 +744,7 @@ Verb {
 	"[ |вы|по]тян/уть,[ |вы|по]тащ/ить,тягать,[ |по]волоч/ь,[ |по]волок/ти,дёрн/уть,дёрг/ать",
 	"?за {noun}/вн : Pull",
 	"{noun}/вн на|в|во {noun}/вн : Transfer",
+	"~ {noun}/вн к {noun}/дт : Transfer",
 	"{noun}/вн {compass2} : Transfer",
 	"~ на|в|во {noun}/вн {noun}/вн : Transfer reverse",
 	"~ {compass2} {noun}/вн : Transfer reverse"
