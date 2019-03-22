@@ -2738,12 +2738,20 @@ std.obj.daemonStop = function(s)
 	game.__daemons:del(s)
 end
 
+std.obj.isDaemon = function(s)
+	return game.__daemons:lookup(s)
+end
+
 function DaemonStart(w)
 	std.object(w):daemonStart()
 end
 
 function DaemonStop(w)
 	std.object(w):daemonStop()
+end
+
+function isDaemon(w)
+	return std.object(w):isDaemon()
 end
 
 instead.notitle = true
