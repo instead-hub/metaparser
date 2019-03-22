@@ -1,6 +1,7 @@
 1.3
   * some verbes fixed in mplib;
   * varg fix;
+  * most verbs are splitted with main and after_ event.
 
 1.2
   * some verb synonims;

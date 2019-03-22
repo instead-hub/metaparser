@@ -1823,6 +1823,10 @@ function mp:Push(w)
 	if mp:check_live(w) then
 		return
 	end
+	return false
+end
+
+function mp:after_Push()
 	p (mp.msg.Push.PUSH)
 end
 
@@ -1843,6 +1847,10 @@ function mp:Pull(w)
 	if mp:check_live(w) then
 		return
 	end
+	return false
+end
+
+function mp:after_Pull()
 	p (mp.msg.Pull.PULL)
 end
 
@@ -1863,6 +1871,10 @@ function mp:Turn(w)
 	if mp:check_live(w) then
 		return
 	end
+	return false
+end
+
+function mp:after_Turn()
 	p (mp.msg.Turn.TURN)
 end
 
@@ -1877,12 +1889,16 @@ function mp:Rub(w)
 	if mp:check_touch() then
 		return
 	end
+	return false
+end
+
+function mp:after_Rub()
 	p (mp.msg.Rub.RUB)
 end
 
 mp.msg.Sing = {}
 
-function mp:Sing(w)
+function mp:after_Sing(w)
 	p (mp.msg.Sing.SING)
 end
 
@@ -1900,6 +1916,10 @@ function mp:Touch(w)
 		p (mp.msg.Touch.LIVE)
 		return
 	end
+	return false
+end
+
+function mp:after_Touch()
 	p (mp.msg.Touch.TOUCH)
 end
 
@@ -1922,6 +1942,10 @@ function mp:Give(w, wh)
 	if mp:check_no_live(wh) then
 		return
 	end
+	return false
+end
+
+function mp:after_Give()
 	p (mp.msg.Give.GIVE)
 end
 
@@ -1944,6 +1968,10 @@ function mp:Show(w, wh)
 	if mp:check_no_live(wh) then
 		return
 	end
+	return false
+end
+
+function mp:after_Show()
 	p (mp.msg.Show.SHOW)
 end
 
@@ -1956,6 +1984,9 @@ function mp:Burn(w, wh)
 	if wh and mp:check_held(wh) then
 		return
 	end
+end
+
+function mp:after_Burn(w, wh)
 	if wh then
 		p (mp.msg.Burn.BURN2)
 	else
@@ -1965,7 +1996,7 @@ end
 
 mp.msg.Wake = {}
 
-function mp:Wake()
+function mp:after_Wake()
 	p (mp.msg.Wake.WAKE)
 end
 
@@ -1986,6 +2017,10 @@ function mp:WakeOther(w)
 		p (mp.msg.WakeOther.NOTLIVE)
 		return
 	end
+	return false
+end
+
+function mp:after_WakeOther()
 	p (mp.msg.WakeOther.WAKE)
 end
 
@@ -1997,6 +2032,10 @@ function mp:PushDir(w, wh)
 	if mp:check_live(w) then
 		return
 	end
+	return false
+end
+
+function mp:after_PushDir()
 	p (mp.msg.PushDir.PUSH)
 end
 
@@ -2016,11 +2055,15 @@ function mp:Kiss(w)
 		p (mp.msg.Kiss.MYSELF)
 		return
 	end
+	return false
+end
+
+function mp:after_Kiss()
 	p (mp.msg.Kiss.KISS)
 end
 
 mp.msg.Think = {}
-function mp:Think()
+function mp:after_Think()
 	p (mp.msg.Think.THINK)
 end
 
@@ -2029,6 +2072,10 @@ function mp:Smell(w)
 	if mp:check_touch() then
 		return
 	end
+	return false
+end
+
+function mp:after_Smell(w)
 	if w then
 		p (mp.msg.Smell.SMELL2)
 		return
@@ -2041,6 +2088,10 @@ function mp:Listen(w)
 	if mp:check_touch() then
 		return
 	end
+	return false
+end
+
+function mp:after_Listen(w)
 	if w then
 		p (mp.msg.Listen.LISTEN2)
 		return
@@ -2060,6 +2111,12 @@ function mp:Dig(w, wh)
 		if mp:check_held(wh) then
 			return
 		end
+	end
+	return false
+end
+
+function mp:after_Dig(w, wh)
+	if wh then
 		p (mp.msg.Dig.DIG3)
 		return
 	end
@@ -2085,12 +2142,16 @@ function mp:Cut(w, wh)
 		if mp:check_held(wh) then
 			return
 		end
-		p (mp.msg.Cut.CUT2)
 		return
 	end
-	if w then
+	return false
+end
+
+function mp:after_Cut(w, wh)
+	if wh then
+		p (mp.msg.Cut.CUT2)
+	else
 		p (mp.msg.Cut.CUT)
-		return
 	end
 end
 
@@ -2102,8 +2163,11 @@ function mp:Tear(w)
 	if mp:check_live(w) then
 		return
 	end
+	return false
+end
+
+function mp:after_Tear()
 	p (mp.msg.Tear.TEAR)
-	return
 end
 
 mp.msg.Tie = {}
@@ -2118,6 +2182,10 @@ function mp:Tie(w, wh)
 	if wh and mp:check_live(wh) then
 		return
 	end
+	return false
+end
+
+function mp:after_Tie(w, wh)
 	if wh then
 		p (mp.msg.Tie.TIE2)
 		return
@@ -2134,6 +2202,10 @@ function mp:Blow(w)
 	if mp:check_live(w) then
 		return
 	end
+	return false
+end
+
+function mp:after_Blow()
 	p (mp.msg.Blow.BLOW)
 end
 
@@ -2146,6 +2218,10 @@ function mp:Attack(w)
 	if mp:runmethods('life', 'Attack', w) then
 		return
 	end
+	return false
+end
+
+function mp:after_Attack(w)
 	if mp:animate(w) then
 		p (mp.msg.Attack.LIFE)
 		return
@@ -2155,13 +2231,13 @@ end
 
 mp.msg.Sleep = {}
 
-function mp:Sleep()
+function mp:after_Sleep()
 	p (mp.msg.Sleep.SLEEP)
 end
 
 mp.msg.Swim = {}
 
-function mp:Swim()
+function mp:after_Swim()
 	p (mp.msg.Swim.SWIM)
 end
 
@@ -2171,6 +2247,10 @@ function mp:Consult(w, wh)
 	if mp:check_touch() then
 		return
 	end
+	return false
+end
+
+function mp:after_Consult()
 	p (mp.msg.Consult.CONSULT)
 end
 
@@ -2179,11 +2259,15 @@ function mp:Fill(w)
 	if mp:check_touch() then
 		return
 	end
+	return false
+end
+
+function mp:after_Fill()
 	p (mp.msg.Fill.FILL)
 end
 
 mp.msg.Jump = {}
-function mp:Jump()
+function mp:after_Jump()
 	p (mp.msg.Jump.JUMP)
 end
 
@@ -2192,11 +2276,15 @@ function mp:JumpOver(w)
 	if mp:check_touch() then
 		return
 	end
+	return false
+end
+
+function mp:after_JumpOver()
 	p (mp.msg.JumpOver.JUMPOVER)
 end
 
 mp.msg.WaveHands = {}
-function mp:WaveHands()
+function mp:after_WaveHands()
 	p (mp.msg.WaveHands.WAVE)
 end
 
@@ -2208,6 +2296,10 @@ function mp:Wave(w)
 	if mp:check_held(w) then
 		return
 	end
+	return false
+end
+
+function mp:after_Wave()
 	p (mp.msg.Wave.WAVE)
 end
 
@@ -2224,6 +2316,10 @@ function mp:Buy(w)
 	if mp:check_touch() then
 		return
 	end
+	return
+end
+
+function mp:after_Buy()
 	p (mp.msg.Buy.BUY)
 end
 
@@ -2246,6 +2342,10 @@ function mp:Talk(w)
 	if mp:runmethods('life', 'Talk', w) then
 		return
 	end
+	return false
+end
+
+function mp:after_Talk(w)
 	if not mp:animate(w) then
 		p (mp.msg.Talk.NOTLIVE)
 		return
@@ -2269,6 +2369,10 @@ function mp:Tell(w, t)
 	if mp:runmethods('life', 'Tell', w, t) then
 		return
 	end
+	return false
+end
+
+function mp:after_Tell(w)
 	if not mp:animate(w) then
 		p (mp.msg.Tell.NOTLIVE)
 		return
@@ -2292,6 +2396,10 @@ function mp:Ask(w, t)
 	if mp:runmethods('life', 'Ask', w, t) then
 		return
 	end
+	return false
+end
+
+function mp:after_Ask(w)
 	if not mp:animate(w) then
 		p (mp.msg.Ask.NOTLIVE)
 		return
@@ -2328,6 +2436,10 @@ function mp:Answer(w, t)
 	if mp:runmethods('life', 'Answer', w, t) then
 		return
 	end
+	return false
+end
+
+function mp:after_Answer(w)
 	if not mp:animate(w) then
 		p (mp.msg.Answer.NOTLIVE)
 		return
@@ -2337,11 +2449,11 @@ end
 
 mp.msg.Yes = {}
 
-function mp:Yes()
+function mp:after_Yes()
 	p (mp.msg.Yes.YES)
 end
 
-function mp:No()
+function mp:after_No()
 	p (mp.msg.Yes.YES)
 end
 
