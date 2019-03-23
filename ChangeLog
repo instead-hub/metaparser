@@ -2,7 +2,8 @@
   * some verbes fixed in mplib;
   * varg fix;
   * most verbs are splitted with main and after_ event;
-  * isDaemon and ob:isDaemon() functions.
+  * isDaemon and ob:isDaemon() functions;
+  * mp:err refactoring.
 
 1.2
   * some verb synonims;
