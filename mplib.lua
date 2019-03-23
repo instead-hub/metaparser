@@ -1,6 +1,168 @@
 --luacheck: globals mp
 --luacheck: no self
 
+--- Error handler
+-- @param err error code
+function mp:err(err)
+	local parsed = false
+	if self:comment() then
+		return
+	end
+	if std.here().OnError then
+		std.here():OnError(err)
+		return
+	end
+	if err == "UNKNOWN_VERB" then
+		local verbs = self:lookup_verb(self.words, true)
+		local hint = false
+		if verbs and #verbs > 0 then
+			for _, verb in ipairs(verbs) do
+				local fixed = verb.verb[verb.word_nr]
+				if verb.verb_nr == 1 then
+					hint = true
+					p (self.msg.UNKNOWN_VERB, " ", iface:em(self.words[verb.verb_nr]), ".")
+					p (self.msg.UNKNOWN_VERB_HINT, " ", iface:em(fixed.word .. (fixed.morph or "")), "?")
+					break
+				end
+			end
+		end
+		if not hint then
+			p (self.msg.UNKNOWN_VERB or "Unknown verb:",
+			   " ", iface:em(self.words[1]), ".")
+		end
+	elseif err == "EMPTY_INPUT" then
+		p (self.msg.EMPTY or "Empty input.")
+	elseif err == "INCOMPLETE" or err == "UNKNOWN_WORD" then
+		local need_noun
+		local second_noun
+		for _, v in ipairs(self.hints) do
+			local verb = ''
+			if self.hints.match then
+				for _, vv in pairs(self.hints.match.verb) do
+					verb = verb .. vv .. ' '
+				end
+				verb = verb:gsub(" $", "")
+				for _, vv in pairs(self.hints.match.args) do
+					if vv.word then
+						verb = verb .. ' '.. vv.word
+					end
+					if vv.ob or true then
+						second_noun = true
+					end
+				end
+				if not parsed then
+					parsed = verb
+				end
+				if second_noun then second_noun = verb end
+			end
+			if v:find("^~?{noun}") then need_noun = true break end
+		end
+		if #self.unknown > 0 then
+			local unk = ''
+			for _, v in ipairs(self.unknown) do
+				if unk ~= '' then unk = unk .. ' ' end
+				unk = unk .. v
+			end
+			if need_noun then
+				if mp.errhints then
+					mp:message('UNKNOWN_OBJ', unk);
+				else
+					mp:message('UNKNOWN_OBJ');
+				end
+			else
+				if mp.errhints then
+					mp:message('UNKNOWN_WORD', unk);
+				else
+					mp:message('UNKNOWN_WORD');
+				end
+			end
+			if mp:thedark() and need_noun then
+				p (self.msg.UNKNOWN_THEDARK)
+				return
+			end
+			if need_noun then
+				if #self.hints == 0 or not self.hints.fuzzy then
+					return
+				end
+			end
+		elseif err == "UNKNOWN_WORD" then
+			mp:message('UNKNOWN_WORD')
+		else
+			if need_noun then
+				if second_noun then
+					p (self.msg.INCOMPLETE_NOUN, " \"", second_noun, "\"?")
+				else
+					p (self.msg.INCOMPLETE_NOUN, "?")
+				end
+			else
+				p (self.msg.INCOMPLETE)
+			end
+		end
+		if not mp.errhints then
+			return
+		end
+		local words = {}
+		local dups = {}
+		for _, v in ipairs(self.hints) do
+			if v:find("^~?{noun}") or v == '*' then
+				v = mp:err_noun(v)
+				if not dups[v] and not need_noun then
+					table.insert(words, v)
+					dups[v] = true
+				end
+			else
+				local pat = self:pattern(v)
+				for _, vv in ipairs(pat) do
+					if not vv.hidden and not dups[vv.word] then
+						table.insert(words, vv.word)
+						dups[vv.word] = true
+					end
+				end
+			end
+--			if need_noun then
+--				break
+--			end
+		end
+		if #words > 0 then
+			if err == 'INCOMPLETE' then
+				if #words > 2 and parsed then
+					parsed = parsed .. ': '
+				end
+				p (self.msg.HINT_WORDS, ", ", parsed or '')
+			else
+				p (self.msg.HINT_WORDS, " ")
+			end
+		end
+
+		for k, v in ipairs(words) do
+			if k ~= 1 then
+				if k == #words then
+					pr (" ", mp.msg.HINT_OR, " ")
+				else
+					pr (", ")
+				end
+			end
+			pr(iface:em(v))
+		end
+		if #words > 0 then
+			p "?"
+		end
+	elseif err == "MULTIPLE" then
+		pr (self.msg.MULTIPLE, " ", self.multi[1])
+		for k = 2, #self.multi do
+			if k == #self.multi then
+				pr (" ", mp.msg.HINT_AND, " ", self.multi[k])
+			else
+				pr (", ", self.multi[k])
+			end
+		end
+		pr "."
+	elseif err then
+		pr (err)
+	end
+end
+
+
 local everything = std.obj {
 	nam = '@all';
 	hint_noun = false;

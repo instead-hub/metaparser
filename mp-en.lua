@@ -334,8 +334,23 @@ mp.msg.UNKNOWN_VERB_HINT = "Maybe you meant"
 mp.msg.INCOMPLETE = "The sentence must be supplemented."
 mp.msg.INCOMPLETE_NOUN = "What do you want to apply the command to"
 mp.msg.UNKNOWN_OBJ = "Here is no such thing"
+mp.msg.UNKNOWN_OBJ = function(w)
+	if not w then
+		p "No information about this object."
+	else
+		p "No information about this object "
+		p ("(", w, ").")
+	end
+end
+mp.msg.UNKNOWN_WORD = function(w)
+	if not w then
+		p "Phrase not recognized."
+	else
+		p "Phrase not recognized "
+		p ("(",w,").")
+	end
+end
 mp.msg.NOTHING_OBJ = "Nothing."
-mp.msg.UNKNOWN_WORD = "Phrase not recognized"
 mp.msg.HINT_WORDS = "Maybe you meant"
 mp.msg.HINT_OR = "or"
 mp.msg.HINT_AND = "and"

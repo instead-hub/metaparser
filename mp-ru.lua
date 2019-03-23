@@ -134,9 +134,23 @@ mp.msg.UNKNOWN_VERB = "Непонятный глагол"
 mp.msg.UNKNOWN_VERB_HINT = "Возможно, вы имели в виду"
 mp.msg.INCOMPLETE = "Нужно дополнить предложение."
 mp.msg.INCOMPLETE_NOUN = "К чему вы хотите применить команду"
-mp.msg.UNKNOWN_OBJ = "Такого предмета тут нет"
+mp.msg.UNKNOWN_OBJ = function(w)
+	if not w then
+		p "Об этом предмете ничего не известно."
+	else
+		p "Об этом предмете ничего не известно "
+		p ("(",w,").")
+	end
+end
 mp.msg.NOTHING_OBJ = "Ничего подходящего нет."
-mp.msg.UNKNOWN_WORD = "Фраза не распознана"
+mp.msg.UNKNOWN_WORD = function(w)
+	if not w then
+		p "Фраза не распознана."
+	else
+		p "Фраза не распознана "
+		p ("(",w,").")
+	end
+end
 mp.msg.HINT_WORDS = "Может быть"
 mp.msg.HINT_OR = "или"
 mp.msg.HINT_AND = "и"
