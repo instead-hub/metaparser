@@ -1494,6 +1494,10 @@ function mp:match(verb, w, compl)
 						table.insert(match.vargs, a[i])
 						table.insert(match, a[i])
 					end
+					if #match.vargs == 0 then -- * in the pattern center
+						found = false
+						break
+					end
 					rlev = rlev + 1
 					vargs = false
 				end
