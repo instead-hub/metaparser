@@ -3,6 +3,7 @@
   * varg fix;
   * most verbs are splitted with main and after_ event;
   * isDaemon and ob:isDaemon() functions;
+  * daemon for_each loop fix;
   * mp:err refactoring.
 
 1.2

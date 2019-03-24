@@ -889,13 +889,17 @@ end
 std.room:attr 'enterable,light'
 
 function mp:step()
+	local old_daemons = {}
 	game.__daemons:for_each(function(o)
+		table.insert(old_daemons, o)
+	end)
+	for _, o in ipairs(old_daemons) do
 		if o:disabled() then
 			return
 		end
 		local r, v = mp:runorval(o, 'daemon')
 		if r == true and v == true then return true end
-	end)
+	end
 	local oo = mp:nouns()
 	std.here():attr 'visited'
 	for _, v in ipairs(oo) do
