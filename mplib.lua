@@ -894,11 +894,10 @@ function mp:step()
 		table.insert(old_daemons, o)
 	end)
 	for _, o in ipairs(old_daemons) do
-		if o:disabled() then
-			return
+		if not o:disabled() then
+			local r, v = mp:runorval(o, 'daemon')
+			if r == true and v == true then break end
 		end
-		local r, v = mp:runorval(o, 'daemon')
-		if r == true and v == true then return true end
 	end
 	local oo = mp:nouns()
 	std.here():attr 'visited'
