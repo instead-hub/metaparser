@@ -409,7 +409,7 @@ mp.msg.Exam.CLOSED = "{#Thefirst} {#is/#first} closed."
 mp.msg.LookUnder.NOTHING = "{#Me} find nothing of interest under {#thefirst}."
 
 mp.msg.Enter.ALREADY = "{#Me} {#is/#me} already {#if_has/#first,supporter,on,in} {#thefirst}."
-mp.msg.Enter.INV = "{#Me} {#is/#me} unable to enter the thing {#me} {#is} holding."
+mp.msg.Enter.INV = "{#Me} {#is/#me} unable to enter the thing {#me} {#is/#me} holding."
 mp.msg.Enter.IMPOSSIBLE = "But {#me} {#is/#me} unable to enter in/on {#thefirst}."
 mp.msg.Enter.CLOSED = "{#Thefirst} {#is/#first} closed and {#me} can't enter there."
 mp.msg.Enter.ENTERED = "{#Me} {#word/залезать,нст,#me} {#if_has/#first,supporter,на,в} {#first/вн}."
@@ -418,6 +418,7 @@ mp.msg.Enter.DOOR_CLOSED = "{#Thefirst} {#is/#first} closed."
 
 mp.msg.Walk.ALREADY = mp.msg.Enter.ALREADY
 mp.msg.Walk.WALK = "But {#thefirst} {#is/#first} already here."
+mp.msg.Walk.INV = "{#Me} {#is/#me} holding this."
 
 mp.msg.Enter.EXITBEFORE = "{#Me} {#present/#me,need} to {#if_has/#where,supporter,get off from,leave} {#thefirst} first."
 
