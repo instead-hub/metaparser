@@ -21,7 +21,7 @@ function game:before_Any(ev, ...)
 	return false
 end
 
-function game:after_Any(ev, ...)
+function game:post_Any(ev, ...)
 	for _, v in ipairs(game.react_list) do
 		if v:inroom() == here() then
 			local r = mp:runmethods('post', ev, v, ...)
