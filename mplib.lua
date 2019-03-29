@@ -53,7 +53,7 @@ function mp:err(err)
 				if not parsed then
 					parsed = verb
 				end
-				if second_noun then second_noun = verb; break end
+				if second_noun then second_noun = verb end
 			end
 			if v:find("^~?{noun}") then need_noun = true break end
 		end
