@@ -2149,6 +2149,7 @@ function mp:Burn(w, wh)
 	if wh and mp:check_held(wh) then
 		return
 	end
+	return false
 end
 
 function mp:after_Burn(w, wh)
