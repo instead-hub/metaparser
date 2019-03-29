@@ -2481,7 +2481,7 @@ function mp:Buy(w)
 	if mp:check_touch() then
 		return
 	end
-	return
+	return false
 end
 
 function mp:after_Buy()
