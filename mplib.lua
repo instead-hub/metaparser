@@ -46,14 +46,14 @@ function mp:err(err)
 					if vv.word then
 						verb = verb .. ' '.. vv.word
 					end
-					if vv.ob or true then
+					if vv.ob then
 						second_noun = true
 					end
 				end
 				if not parsed then
 					parsed = verb
 				end
-				if second_noun then second_noun = verb end
+				if second_noun then second_noun = verb; break end
 			end
 			if v:find("^~?{noun}") then need_noun = true break end
 		end
@@ -91,6 +91,8 @@ function mp:err(err)
 			if need_noun then
 				if second_noun then
 					p (self.msg.INCOMPLETE_NOUN, " \"", second_noun, "\"?")
+				elseif parsed then
+					p (self.msg.INCOMPLETE_NOUN, " \"", parsed, "\"?")
 				else
 					p (self.msg.INCOMPLETE_NOUN, "?")
 				end

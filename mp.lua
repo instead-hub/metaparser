@@ -255,6 +255,7 @@ mp = std.obj {
 			char = utf_char;
 		};
 		lev_thresh = 3;
+		lev_ratio = 0.20;
 		history = {};
 		persistent = std.list {};
 		winsize = 16 * 1024;
@@ -640,7 +641,7 @@ function mp:eq(t1, t2, lev)
 	end
 	if lev then
 		local l = utf_lev(t1, t2)
-		if l < lev and l / (utf_len(t1) + utf_len(t2)) <= 0.25 then
+		if l < lev and l / (utf_len(t1) + utf_len(t2)) <= self.lev_ratio then
 			return l
 		end
 		return false
@@ -1395,11 +1396,9 @@ function mp:match(verb, w, compl)
 	local multi = {}
 	local vargs
 	local parsed_verb = {}
-	for k, v in ipairs(w) do
-		if k >= verb.verb_nr and k < verb.verb_nr + verb.verb_len then
-			table.insert(parsed_verb, v)
-		end
-	end
+	local fixed_verb = verb.verb[verb.word_nr]
+	fixed_verb = fixed_verb.word .. (fixed_verb.morph or '')
+	table.insert(parsed_verb, fixed_verb)
 	for _, d in ipairs(verb.dsc) do -- verb variants
 --		local was_noun = false
 		local match = { args = {}, vargs = {}, ev = d.ev, wildcards = 0, verb = parsed_verb }
@@ -1578,10 +1577,8 @@ function mp:match(verb, w, compl)
 --			break
 --		end
 		if found or all_optional then
-			local fixed = verb.verb[verb.word_nr]
-			fixed = fixed.word .. (fixed.morph or '')
 			match.extra = (#a ~= 0)
-			table.insert(match, 1, fixed) -- w[verb.verb_nr])
+			table.insert(match, 1, fixed_verb) -- w[verb.verb_nr])
 			if self:skip_filter(skip) then
 				table.insert(matches, match)
 			end
