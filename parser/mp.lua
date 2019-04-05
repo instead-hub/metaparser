@@ -1,5 +1,8 @@
+local curdir = std.getinfo(1).short_src:gsub("^(.+[\\/])[^\\/]+$", "%1");
+
 require "fmt"
 require "snapshots"
+
 --luacheck: no self
 if std.ref'@theme' then
 	std.ref'@theme'.set ('win.scroll.mode', 3)
@@ -2408,6 +2411,7 @@ function mp:init(lang)
 	if type(std.SOURCES_DIRS) == 'table' then
 		mrd.dirs = std.SOURCES_DIRS
 	end
+	table.insert(mrd.dirs, curdir)
 	mrd:init(lang)
 	cutscene = mp.cutscene
 	gameover = mp.gameover

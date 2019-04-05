@@ -1,4 +1,6 @@
 --luacheck: no self
+
+local curdir = std.getinfo(1).short_src:gsub("^(.+[\\/])[^\\/]+$", "%1");
 local mrd = {
 	lang = false;
 	dirs = {''};
@@ -798,7 +800,10 @@ end
 
 function mrd:init(l)
 	self.lang = l
-	self:gramtab("morph/rgramtab.tab")
+	if self:gramtab(curdir .. "rgramtab.tab") == false then
+		dprint("Error while opening gramtab.")
+		return
+	end
 	local _, crc = self:load("dict.mrd")
 	self:create("dict.mrd", crc) -- create or update
 end
@@ -809,7 +814,8 @@ function mrd:create(fname, crc)
 		return
 	end
 	for _, d in ipairs(self.dirs) do
-		for f in std.readdir(instead.gamepath() .. '/'..d) do
+		if d == '' then d = instead.gamepath() end
+		for f in std.readdir(d) do
 			if f:find("%.lua$") or f:find("%.LUA$") then
 				local path = f
 				if d ~= '' then
@@ -826,7 +832,7 @@ function mrd:create(fname, crc)
 	end
 	if crc ~= sum then
 		msg("Generating dict.mrd with sum: ", sum)
-		if mrd:load("morph/morphs.mrd", dict) then
+		if mrd:load(curdir .. "morphs.mrd", dict) then
 			mrd:dump(fname or 'dict.mrd', sum)
 		else
 			msg("Can not find morph/morphs.mrd")
