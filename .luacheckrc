@@ -18,6 +18,7 @@ globals = {
 	'loadmod',
 	'include',
 	'cutscene',
+	'gameover',
 	'door',
 	'Verb',
 	'MetaVerb',

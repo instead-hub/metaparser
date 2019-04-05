@@ -577,6 +577,10 @@ function mp.token.noun(w)
 	else
 		oo = mp:nouns()
 	end
+
+	local sm_dup = {
+	}
+	local syms = {}
 	for _, o in ipairs(oo) do
 		local d = {}
 		local r = o:noun(attr, d)
@@ -594,12 +598,28 @@ function mp.token.noun(w)
 				table.insert(ww, { optional = w.optional, word = r[k], ob = o, morph = attr, alias = v.alias, hidden = hidden })
 			end
 		end
-		if o == mp.first_it or o == mp.second_it then
-			for _, v in ipairs(mp:synonyms(o, w.morph)) do
-				table.insert(ww, { optional = w.optional, word = v, ob = o, morph = attr, alias = o.alias, hidden = true })
+		if o == mp.first_it then
+			table.insert(syms, 1, o)
+		elseif o == mp.second_it then
+			table.insert(syms, o)
+		end
+	end
+
+--	for k = 1, #syms do
+--		table.insert(oo, k, syms[k])
+--	end
+
+	oo = syms
+
+	for _, o in ipairs(oo) do
+		for _, v in ipairs(mp:synonyms(o, w.morph)) do
+			if not sm_dup[v] then
+				table.insert(ww, { optional = w.optional, word = v, ob = o, morph = attr, alias = o.alias, hidden = true, synonym = true })
+				sm_dup[v] = true
 			end
 		end
 	end
+
 	return ww
 end
 
@@ -1452,7 +1472,7 @@ function mp:match(verb, w, compl)
 					word = pp.word
 					found = pp
 					best_len = len
-					if word:find("%*$") then -- subst
+					if pp.synonym or word:find("%*$") then -- subst
 						word = found.ob:noun(found.morph, found.alias)
 						wildcard = true
 					end
@@ -1658,8 +1678,8 @@ end
 local function get_events(self, ev)
 	local events = {}
 	self.aliases = {}
-	self.first_it = false
-	self.second_it = false
+--	self.first_it = false
+--	self.second_it = false
 	self.multi = {}
 	for _, v in ipairs(ev) do
 		local ea = str_split(v)
@@ -1707,11 +1727,11 @@ local function get_events(self, ev)
 			end
 			table.insert(args, varg)
 		end
-		if not self.first_it then
-			self.first_it = std.is_obj(args[1]) and args[1]
+		if std.is_obj(args[1]) then
+			self.first_it = args[1]
 		end
-		if not self.second_it then
-			self.second_it = std.is_obj(args[2]) and args[2]
+		if std.is_obj(args[2]) then
+			self.second_it = args[2]
 		end
 		table.insert(events, { ev = e, args = args })
 	end

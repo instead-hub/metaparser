@@ -286,12 +286,12 @@ std.class({
 
 mp.gameover =
 std.class({
-	before_Default = function(s)
+	before_Default = function()
 		p(mp.msg.GAMEOVER_HELP);
-		me():need_scene(true)
+		std.me():need_scene(true)
 	end;
 	before_Look = function() return false end;
-	OnError = function(s)
+	OnError = function()
 		p(mp.msg.GAMEOVER_HELP);
 	end;
 }, std.room)
