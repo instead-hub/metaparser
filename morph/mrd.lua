@@ -801,7 +801,7 @@ end
 function mrd:init(l)
 	self.lang = l
 	if self:gramtab(curdir .. "rgramtab.tab") == false then
-		dprint("Error while opening gramtab.")
+		msg("Error while opening gramtab.")
 		return
 	end
 	local _, crc = self:load("dict.mrd")

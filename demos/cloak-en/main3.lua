@@ -1,5 +1,5 @@
 --$Name:Cloak of Darkness
-require "mp-en"
+require "parser/mp-en"
 require "fmt"
 
 game.dsc = [[^{$fmt b|Cloak of Darkness}^^Cloak of Darkness -- a simple demonstration of Interactive Fiction.

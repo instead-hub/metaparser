@@ -1,5 +1,5 @@
 --$Name:Хейди$
-require "mp-ru"
+require "parser/mp-ru"
 require "fmt"
 -- mp.errhints = false
 game.dsc = [[^Пример простой игры на Inform.

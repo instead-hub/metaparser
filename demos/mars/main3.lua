@@ -5,7 +5,7 @@
 
 local gfx_mode = std.ref'@sprite'.scr()
 
-require "mp-ru"
+require "parser/mp-ru"
 require "fmt"
 
 if gfx_mode then

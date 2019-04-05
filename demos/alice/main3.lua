@@ -1,6 +1,6 @@
 --$Name:СКВОЗЬ ЗЕРКАЛО$
 
-require "mp-ru"
+require "parser/mp-ru"
 require "fmt"
 
 game.dsc = [[^Маленькая интерактивная Информ-обучалка^

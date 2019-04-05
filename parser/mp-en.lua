@@ -1,7 +1,7 @@
 --luacheck: no self
 local lang = require "morph/lang-en"
-loadmod "mp"
-loadmod "mplib"
+require "parser/mp"
+require "parser/mplib"
 
 local mp = _'@metaparser'
 local mrd = require "morph/mrd"

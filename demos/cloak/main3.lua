@@ -1,5 +1,5 @@
 --$Name:Плащ Тьмы
-require "mp-ru"
+require "parser/mp-ru"
 require "fmt"
 
 game.dsc = [[^{$fmt b|ПЛАЩ ТЬМЫ}^^Тривиальная Информ-демонстрация.

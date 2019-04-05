@@ -1,5 +1,5 @@
 --$Name:Вильгельм Телль$
-require "mp-ru"
+require "parser/mp-ru"
 require "fmt"
 mp.undo = 5
 mp.score = 0 -- enable scoring
