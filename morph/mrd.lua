@@ -815,14 +815,16 @@ function mrd:create(fname, crc)
 	end
 	for _, d in ipairs(self.dirs) do
 		if d == '' then d = instead.gamepath() end
+		local list = {}
 		for f in std.readdir(d) do
 			if f:find("%.lua$") or f:find("%.LUA$") then
-				local path = f
-				if d ~= '' then
-					path = d .. "/" .. f
-				end
-				mrd:file(path, dict)
+				table.insert(list, f)
 			end
+		end
+		table.sort(list)
+		for _, f in ipairs(list) do
+			local path = d .. "/" .. f
+			mrd:file(path, dict)
 		end
 	end
 	local sum = 0
