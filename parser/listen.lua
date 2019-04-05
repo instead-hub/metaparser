@@ -1,4 +1,4 @@
--- react_ and post_ event module for reactions near the object
+-- react_ and postreact_ event module for reactions near the object
 
 --[[ include 'listen'
 obj {
@@ -24,7 +24,7 @@ end
 function game:post_Any(ev, ...)
 	for _, v in ipairs(game.react_list) do
 		if v:inroom() == here() then
-			local r = mp:runmethods('reactafter', ev, v, ...)
+			local r = mp:runmethods('postreact', ev, v, ...)
 			if r ~= false then
 				return
 			end
