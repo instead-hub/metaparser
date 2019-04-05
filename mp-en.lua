@@ -427,6 +427,8 @@ mp.msg.Exit.NOWHERE = "But {#me} {#have/#me} no way to exit."
 mp.msg.Exit.CLOSED = "But {#thefirst} {#is/#first} closed."
 mp.msg.Exit.EXITED = "{#Me} {#if_has/#first,supporter,{#present/#me,get} off,{#present/#me,leave}} {#thefirst}."
 
+mp.msg.GetOff.NOWHERE = "But there is nothing to get off from."
+
 mp.msg.Inv.NOTHING = "{#Me} {#have/#me} nothing."
 mp.msg.Inv.INV = "{#Me} {#have/#me}"
 

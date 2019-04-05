@@ -2475,7 +2475,13 @@ function mp:Climb(w)
 	mp:xaction('Enter', w)
 end
 
+mp.msg.GetOff = {}
+
 function mp:GetOff(w)
+	if not w and std.me():where() == std.here() then
+		p (mp.msg.GetOff.NOWHERE)
+		return
+	end
 	mp:xaction('Exit', w)
 end
 

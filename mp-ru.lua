@@ -238,10 +238,11 @@ mp.msg.Exit.NOTHERE = "Но {#me} сейчас не {#if_has/#first,supporter,н
 mp.msg.Exit.NOWHERE = "Но {#me/дт} некуда выходить."
 mp.msg.Exit.CLOSED = "Но {#first} {#word/закрыт,#first}."
 
-
 --"покидать"
 --"слезать"
 mp.msg.Exit.EXITED = "{#Me} {#if_has/#first,supporter,{#word/слезать с,#me,нст} {#first/рд},{#word/покидать,#me,нст} {#first/вн}}."
+
+mp.msg.GetOff.NOWHERE = "Но {#me/дт} не с чего слезать."
 
 mp.msg.Inv.NOTHING = "У {#me/рд} с собой ничего нет."
 mp.msg.Inv.INV = "У {#me/рд} с собой"
@@ -959,7 +960,7 @@ Verb {
 Verb {
 	"#GetOff",
 	"слез/ть,спусти/ться,встать,встан/ь",
-	"Exit",
+	"GetOff",
 	"{compass2}: Walk",
 	"с|со {noun}/рд,scene : GetOff",
 }
