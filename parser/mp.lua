@@ -1,4 +1,4 @@
-local curdir = std.getinfo(1).short_src:gsub("^(.+[\\/])[^\\/]+$", "%1");
+local curdir = std.getinfo(1).source:gsub("^(.+[\\/])[^\\/]+$", "%1"):gsub("^@", "");
 
 require "fmt"
 require "snapshots"

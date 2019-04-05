@@ -1,6 +1,6 @@
 --luacheck: no self
 
-local curdir = std.getinfo(1).short_src:gsub("^(.+[\\/])[^\\/]+$", "%1");
+local curdir = std.getinfo(1).source:gsub("^(.+[\\/])[^\\/]+$", "%1"):gsub("^@", "");
 local mrd = {
 	lang = false;
 	dirs = {''};
