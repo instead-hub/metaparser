@@ -284,6 +284,18 @@ std.class({
 	end;
 }, std.room):attr'cutscene'
 
+mp.gameover =
+std.class({
+	before_Default = function(s)
+		p(mp.msg.GAMEOVER_HELP);
+		me():need_scene(true)
+	end;
+	before_Look = function() return false end;
+	OnError = function(s)
+		p(mp.msg.GAMEOVER_HELP);
+	end;
+}, std.room)
+
 -- player
 mp.msg.Look = {}
 

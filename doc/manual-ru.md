@@ -1892,6 +1892,51 @@ obj {
 } : attr 'container,transparent,open'
 ```
 
+Еще один пример. Тумбочка, которую можно открывать и закрывать.
+
+```
+obj {
+	-"тумбочка",
+	nam = 'тумбочка',
+	before_Receive = function(s, w)
+		if mp.xevent == 'Insert' then
+			if s:hasnt'open' then
+				p "Тумбочка закрыта."
+				return
+			end
+			move(w, '#тумбочка_конт')
+			p ("Ты кладешь ", w:noun'вн', " в тумбочку.")
+		else
+			return false
+		end
+	end;
+	description = function(s)
+		p [[Красивая тумбочка из красного дерева.]]
+		return false
+	end;
+	obj = {
+		obj {
+			-"тумбочка";
+			nam = '#тумбочка_конт';
+			before_LetGo = function(s)
+				if parent(s):hasnt'open' then
+					p [[Но тумбочка закрыта.]]
+					return
+				end
+				return false
+			end;
+			dsc = function(s)
+				if parent(s):has'open' then
+					mp:content(s);
+				end
+			end;
+		}:attr 'container,open';
+	};
+	found_in = { 'forest' };
+} : attr 'supporter,openable'
+
+```
+
 ## Псевдо-событие ThrownAt
 
 Когда мы бросаем предмет в персонажа или объект, кроме события ThrowAt

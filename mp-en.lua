@@ -615,6 +615,8 @@ mp.msg.Buy.BUY = "Nothing is on sale."
 mp.keyboard_space = '<space>'
 mp.keyboard_backspace = '<backspace>'
 
+mp.msg.GAMEOVER_HELP = [[Use restart to restart game.]];
+
 function mp:myself(ob)
 	if ob:hint'first' then
 		return { "myself", "me" }

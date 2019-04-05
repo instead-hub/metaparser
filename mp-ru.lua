@@ -464,6 +464,8 @@ mp.keyboard_backspace = '<удалить>'
 
 mp.msg.verbs.take = -"брать,#me,нст"
 
+mp.msg.GAMEOVER_HELP = [[Чтобы начать заново, введите рестарт.]];
+
 local function dict(t, hint)
 	local g = std.split(hint, ",")
 	for _, v in ipairs(g) do

@@ -2390,6 +2390,7 @@ function mp:init(lang)
 	end
 	mrd:init(lang)
 	cutscene = mp.cutscene
+	gameover = mp.gameover
 	door = mp.door
 end
 std.mod_start(function()
