@@ -1,6 +1,7 @@
 1.4
   * mp:GetOff fix;
-  * module moved into parser/ subdir.
+  * module moved into parser/ subdir;
+  * snapshot and undo fix.
 
 1.3
   * some verbes fixed in mplib;

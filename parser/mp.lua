@@ -276,6 +276,7 @@ mp = std.obj {
 		multi = {};
 		token = {};
 		shortcut = {};
+		snapshot = false;
 		reaction = false;
 		redirect = false;
 		msg = {};
@@ -2329,6 +2330,10 @@ end
 std.rawset(_G, 'mp', mp)
 std.mod_cmd(
 function(cmd)
+	if mp.snapshot then
+		snapshots:write(mp.snapshot)
+		mp.snapshot = false
+	end
 	if cmd[1] == '@metaparser' then
 		mp.inp = cmd[2] or ''
 		cmd[1] = '@mp_key'

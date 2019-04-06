@@ -958,7 +958,7 @@ function mp:post_action()
 			table.remove(snapshots.data, 1)
 			nr = nr - 1
 		end
-		snapshots:make(nr + 1)
+		mp.snapshot = nr + 1
 	end
 	if self.score and (self.score ~= (self.__old_score or 0)) then
 		mp.msg.SCORE(self.score - (self.__old_score or 0))
