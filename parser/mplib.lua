@@ -968,15 +968,15 @@ function mp:post_action()
 	if game.player:need_scene() then
 --		pn(iface:nb'')
 		local l = game.player:look() -- objects [and scene]
-		local p
+		local gfx
 		if std.here().gfx ~= nil then
-			p = std.call(std.here(), 'gfx')
+			gfx = std.call(std.here(), 'gfx')
 		end
-		if not p and std.game.gfx ~= nil then
-			p = std.call(std.game, 'gfx')
+		if not gfx and std.game.gfx ~= nil then
+			gfx = std.call(std.game, 'gfx')
 		end
-		if p then
-			pn(fmt.c(fmt.img(p)))
+		if gfx then
+			pn(fmt.c(fmt.img(gfx)))
 		end
 		p(l, std.scene_delim)
 		game.player:need_scene(false)
