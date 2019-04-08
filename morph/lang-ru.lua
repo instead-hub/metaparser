@@ -124,6 +124,7 @@ local function lower(str)
 	if type(str) ~= 'string' then
 		return str
 	end
+	str = str:lower()
 	for k, v in pairs(toupper) do
 		str = str:gsub(v, k)
 	end
@@ -134,6 +135,7 @@ local function upper(str)
 	if type(str) ~= 'string' then
 		return str
 	end
+	str = str:upper();
 	for k, v in pairs(toupper) do
 		str = str:gsub(k, v)
 	end
@@ -164,6 +166,10 @@ end
 
 local function cap(str)
 	if type(str) ~= 'string' then
+		return str
+	end
+	if str:find("^[a-z]") then
+		str = str:gsub("^.", function(v) return v:upper() end)
 		return str
 	end
 	for k, v in pairs(toupper) do
