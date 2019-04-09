@@ -1527,19 +1527,30 @@ end
 
 mp.msg.Take = {}
 
+local function cont_taken(ob, taken)
+	for _, o in ipairs(taken) do
+		if ob:inside(o) then
+			return true
+		end
+	end
+end
+
 function mp:TakeAll(wh)
 	local empty = true
 	wh = wh or std.me():where()
 	local oo = {}
-	mp:objects(wh, oo, false)
+	mp:objects(wh, oo)
+	local taken = {}
 	for _, o in ipairs(oo) do
-		if not o:has 'static' and not o:has'scenery' and not mp:animate(o) then
+		if not o:has 'static' and not o:has'scenery' and not mp:animate(o)
+			and not cont_taken(o, taken) then
 			empty = false
 			mp:message('TAKING_ALL', o)
 			mp:subaction('Take', o)
 			if not have(o) then
 				break
 			end
+			table.insert(taken, o)
 		end
 	end
 	if empty then
