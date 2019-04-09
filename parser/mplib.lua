@@ -1616,6 +1616,10 @@ function mp:Remove(w, wh)
 	if mp:check_touch() then
 		return
 	end
+	if w == std.me() then
+		mp:xaction("Exit", wh)
+		return
+	end
 	if w:where() ~= wh and w:inroom() ~= wh and w ~= everything then
 		p (mp.msg.Remove.WHERE)
 		return
