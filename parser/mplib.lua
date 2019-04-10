@@ -1542,7 +1542,8 @@ function mp:TakeAll(wh)
 	mp:objects(wh, oo)
 	local taken = {}
 	for _, o in ipairs(oo) do
-		if not o:has 'static' and not o:has'scenery' and not mp:animate(o)
+		if o:hasnt 'static' and o:hasnt'scenery' and o:hasnt 'concealed'
+			and not mp:animate(o)
 			and not cont_taken(o, taken) then
 			empty = false
 			mp:message('TAKING_ALL', o)
@@ -1637,11 +1638,13 @@ function mp:DropAll(wh)
 	local oo = {}
 	mp:objects(std.me(), oo, false)
 	for _, o in ipairs(oo) do
-		empty = false
-		mp.msg.DROPPING_ALL(o)
-		mp:subaction('Drop', o)
-		if have(o) then
-			break
+		if o:hasnt 'concealed' then
+			empty = false
+			mp.msg.DROPPING_ALL(o)
+			mp:subaction('Drop', o)
+			if have(o) then
+				break
+			end
 		end
 	end
 	if empty then
