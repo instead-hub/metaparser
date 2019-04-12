@@ -2,7 +2,7 @@
 -- $Version: 0.2$
 -- $Author: Dwarf Vader$
 -- $Info: Игра написанная за два с половиной часа специально для Спринт ИЛ$
-require "mp-ru"
+require "parser/mp-ru"
 require "fmt"
 
 obj {
@@ -55,7 +55,7 @@ obj {
 }
 
 obj {
-	-"участковый пункт полиции/но";
+	-"участковый пункт полиции|полицай";
 	nam = "o11";
 }
 game:dict {
@@ -76,6 +76,13 @@ function init()
 			print("["..o.word.."]")
 			print(v, ":", o:noun(v))
 			print(v, "(мн):", o:noun(v..",мн"))
+		end
+	end
+	local t = {}
+	local r = _'o11':noun('вн', t)
+	for k, v in ipairs(t) do
+		for kk, vv in pairs(v) do 
+			print(k, kk, vv)
 		end
 	end
 	os.exit(1)

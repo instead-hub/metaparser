@@ -1153,7 +1153,11 @@ function mp:Walk(w)
 end
 
 function mp:after_Walk(w)
-	p (mp.msg.Walk.WALK)
+	if not w then
+		p (mp.msg.Walk.NOWHERE)
+	else
+		p (mp.msg.Walk.WALK)
+	end
 end
 
 mp.msg.Exit = {}
