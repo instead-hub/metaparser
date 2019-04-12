@@ -1983,7 +1983,8 @@ function mp:parse(inp)
 			s:reaction(std.pget())
 			r = s:display(false)
 			s:lastdisp(r)
-			return r, false
+			std.abort_cmd = true
+			return r
 		end
 	else
 		if std.cmd[1] ~= 'look' and not noprompt then
