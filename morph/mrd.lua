@@ -521,6 +521,9 @@ function mrd:word(w, ob)
 			if not ww then
 				ww, gg = self:dict(game.__dict, t..'/'..hints)
 			end
+			if not ww then
+				ww, gg = self:dict(self.__dict, t..'/'..hints)
+			end
 			noun = gg and gg[lang.gram_t.noun]
 			if not ww then
 				ww, gg = self:lookup(t, g)
@@ -800,6 +803,9 @@ end
 
 function mrd:init(l)
 	self.lang = l
+	if type(l.dict) == 'table' then
+		std.obj.dict(self, l.dict)
+	end
 	if self:gramtab(curdir .. "rgramtab.tab") == false then
 		msg("Error while opening gramtab.")
 		return
@@ -880,7 +886,7 @@ std.obj.gram = function(self, ...)
 end
 
 std.obj.dict = function(self, t)
-	local idx = {}
+	local idx = std.rawget(self, '__dict') or {}
 	for word, v in pairs(t) do
 		local w, hints = str_hint(word)
 		if type(v) == 'table' then
