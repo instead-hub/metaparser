@@ -792,6 +792,7 @@ function mp:content(w)
 	end
 	local oo = {}
 	local ooo = {}
+	local expand = {}
 	local inside
 	if (w == std.me():where() or std.here() == w) and
 		(mp.event == 'Look' or mp.event == 'Exam' or std.me():need_scene()) then
@@ -820,19 +821,19 @@ function mp:content(w)
 	self:objects(w, oo, false)
 	local something
 	for _, v in ipairs(oo) do
-		local r, rc
+		local r, rc, desc
 		if not v:has'scenery' and not v:has'concealed' then
 			if std.me():where() == v then
 				r, rc = std.call(v, 'inside_dsc')
-				if r then p(r); something = true; end
+				if r then p(r); desc = true; end
 			end
 			if not rc and not v:has 'moved' then
 				r, rc = std.call(v, 'init_dsc')
-				if r then p(r); something = true; end
+				if r then p(r); desc = true; end
 			end
 			if not rc then
 				r, rc = std.call(v, 'dsc')
-				if r then p(r); something = true; end
+				if r then p(r); desc = true; end
 			end
 			if not rc and (v:has'openable') then
 				if v.when_open ~= nil and v:has'open' then
@@ -840,17 +841,21 @@ function mp:content(w)
 				elseif v.when_closed ~= nil and not v:has'open' then
 					r, rc = std.call(v, 'when_closed')
 				end
-				if r then p(r); something = true; end
+				if r then p(r); desc = true; end
 			elseif not rc and (v:has'switchable') then
 				if v.when_on ~= nil and v:has'on' then
 					r, rc = std.call(v, 'when_on')
 				elseif v.when_off ~= nil and not v:has'on' then
 					r, rc = std.call(v, 'when_off')
 				end
-				if r then p(r); something = true; end
+				if r then p(r); desc = true; end
 			end
-			if not rc and not v:has'scenery' then
-				table.insert(ooo, v)
+			something = something or desc
+			if not rc then
+				table.insert(expand, v)
+				if not desc then
+					table.insert(ooo, v)
+				end
 			end
 		end
 	end
@@ -893,7 +898,7 @@ function mp:content(w)
 		mp:multidsc(oo)
 	end
 -- expand?
-	for _, o in ipairs(oo) do
+	for _, o in ipairs(expand) do
 		if (o:has'supporter' or o:has'transparent' or (o:has'container' and o:has'open')) and not o:closed() then
 			self:content(o)
 		end

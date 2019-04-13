@@ -5,6 +5,7 @@
   * TakeAll and DropAll ignores concealed;
   * TakeAll and DropAll ignores concealed;
   * morph now includes patches on dict;
+  * fix in mp:content() and dsc returning false;
   * fixes in mplib.
 
 1.4
