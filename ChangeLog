@@ -1,3 +1,12 @@
+1.5
+  * fixed error while enter wrong cmd and mouse over menu;
+  * Walk crash with disabled compass fix;
+  * TakeAll and DropAll are recursive;
+  * TakeAll and DropAll ignores concealed;
+  * TakeAll and DropAll ignores concealed;
+  * morph now includes patches on dict;
+  * fixes in mplib.
+
 1.4
   * mp:GetOff fix;
   * module moved into parser/ subdir;
