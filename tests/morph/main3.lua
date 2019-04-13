@@ -64,8 +64,34 @@ obj {
 	nam = "o12";
 }
 
+obj {
+	-"огонь";
+	nam = "o13";
+}
+
+
+obj {
+	-"цветы/мн,мр";
+	nam = "o14";
+}
+
+obj {
+	-"песок";
+	nam = "o15";
+}
+
+obj {
+	-"клевер";
+	nam = "o16";
+}
+
+obj {
+	-"хлам";
+	nam = "o17";
+}
+
 function init()
-	for i = 1, 12 do
+	for i = 1, 17 do
 		local o =  _("o"..tostring(i))
 		for k, v in ipairs({"вн", "рд", "дт", "тв", "пр", "им"}) do
 			print("["..o.word.."]")
