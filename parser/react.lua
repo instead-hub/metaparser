@@ -7,11 +7,13 @@ obj {
 }:listen();
 ]]--
 
+--luacheck: globals mp
+--luacheck: no self
 game.react_list = std.list {}
 
 function game:before_Any(ev, ...)
 	for _, v in ipairs(game.react_list) do
-		if v:inroom() == here() then
+		if v:inroom() == std.here() then
 			local r = mp:runmethods('react', ev, v, ...)
 			if r ~= false then
 				return
@@ -23,7 +25,7 @@ end
 
 function game:post_Any(ev, ...)
 	for _, v in ipairs(game.react_list) do
-		if v:inroom() == here() then
+		if v:inroom() == std.here() then
 			local r = mp:runmethods('postreact', ev, v, ...)
 			if r ~= false then
 				return
