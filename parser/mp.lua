@@ -2417,6 +2417,9 @@ function mp:init(lang)
 	if type(std.SOURCES_DIRS) == 'table' then
 		mrd.dirs = std.SOURCES_DIRS
 	end
+	if type(std.DICT_FILE) == 'string' then
+		mrd.dict_file = std.DICT_FILE
+	end
 	table.insert(mrd.dirs, curdir)
 	mrd:init(lang)
 	cutscene = mp.cutscene

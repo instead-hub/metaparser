@@ -1,10 +1,12 @@
 --luacheck: no self
 
 local curdir = std.getinfo(1).source:gsub("^(.+[\\/])[^\\/]+$", "%1"):gsub("^@", "");
+
 local mrd = {
 	lang = false;
-	dirs = {''};
 	words = {};
+	dirs = {''};
+	dict_file = 'dict.mrd';
 }
 
 local msg = dprint or print
@@ -810,8 +812,8 @@ function mrd:init(l)
 		msg("Error while opening gramtab.")
 		return
 	end
-	local _, crc = self:load("dict.mrd")
-	self:create("dict.mrd", crc) -- create or update
+	local _, crc = self:load(mrd.dict_file)
+	self:create(mrd.dict_file, crc) -- create or update
 end
 
 function mrd:create(fname, crc)
