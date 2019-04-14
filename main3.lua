@@ -14,7 +14,7 @@ end
 obj {
 	nam = '@select';
 	act = function(s, t)
-		gamefile("demos/"..t.."/main3.lua", true)
+		gamefile("games/"..t.."/main3.lua", true)
 	end;
 }
 local function get_name(f)
@@ -35,9 +35,9 @@ room {
 	nam = 'main';
 	dsc = function(s)
 		local games = {}
-		for d in std.readdir("demos") do
+		for d in std.readdir("games") do
 			if d ~= '.' and d ~= '..' then
-				local f = io.open("demos/"..d.."/main3.lua", "r")
+				local f = io.open("games/"..d.."/main3.lua", "r")
 				if f then
 					local name = get_name(f) or d
 					table.insert(games, {d, name})
