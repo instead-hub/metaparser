@@ -6,6 +6,7 @@
   * morph now includes patches on dict;
   * fix in mp:content() and dsc returning false;
   * main3.lua launcher;
+  * onexit/exit calls when walk from object;
   * fixes in mplib.
 
 1.4
