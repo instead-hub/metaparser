@@ -17,7 +17,7 @@ const 'WOOL_STATE' (2)     -- (играет с клубком шерсти)
 const 'CHAIR_STATE' (3)    -- (на пути к стулу)
 
 function init()
-	pl.room = 'Drawing_Room'
+	move(pl, 'Drawing_Room')
 	pl.word = -"ты/жр,2л"
 	DaemonStart 'white_kitten'
 	DaemonStart 'black_kitten'

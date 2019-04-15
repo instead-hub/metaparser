@@ -2000,13 +2000,16 @@ std.world.display = function(s, state)
 	local l, av, pv
 	if mp.text == '' and game:time() == 1 and state ~= false then
 		local r = std.call(game, 'dsc')
-		mp.text = r .. '^^'
+		if type(r) == 'string' then
+			mp.text = r .. '^^'
+		end
 	end
-	if mp.clear_on_move then
+	if mp.clear_on_move and game:time() ~= 1 then
 		if player_moved() then mp:clear() end
 	end
 --	mp:trim()
 	local reaction = s:reaction() or nil
+	if reaction == "" then reaction = nil end
 	if state then
 --		reaction = iface:em(reaction)
 		av, pv = s:events()
