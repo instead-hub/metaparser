@@ -359,6 +359,7 @@ function init()
 	pl.room = 'before_cottage'
 	-- то же самое можно было бы записать так:
 	-- me().room = 'before_cottage'
+	-- или move(pl, 'before_cottage')
 end
 
 ```
