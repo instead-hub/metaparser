@@ -336,7 +336,7 @@ function std.obj:scene()
 	local sc = mp:visible_scope(s)
 	local title = iface:title(std.titleof(sc))
 	if s ~= sc then
-		title = title .. ' '..(mp.msg.TITLE_INSIDE)
+		title = title .. ' '..mp.fmt(mp.msg.TITLE_INSIDE)
 	end
 	return title
 end

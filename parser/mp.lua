@@ -2585,12 +2585,8 @@ function mp.shortcut.if_has(hint)
 	return w[3] or ''
 end
 
-function std.pr(...)
+function mp.fmt(...)
 	local args = {}
-	local ctx = std.cctx()
-	if not ctx or not ctx.self then
-		return opr(...)
-	end
 	for _, v in ipairs({...}) do
 		local finish
 		if type(v) == 'string' then
@@ -2618,7 +2614,19 @@ function std.pr(...)
 		end
 		table.insert(args, v)
 	end
-	return opr(std.unpack(args))
+	local ret
+	for i = 1, #args do
+		ret = std.par('', ret or false, std.tostr(args[i]));
+	end
+	return ret
+end
+
+function std.pr(...)
+	local ctx = std.cctx()
+	if not ctx or not ctx.self then
+		return opr(...)
+	end
+	return opr(mp.fmt(...))
 end
 
 function std.obj:persist()
