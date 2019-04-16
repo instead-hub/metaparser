@@ -7,6 +7,7 @@
   * fix in mp:content() and dsc returning false;
   * main3.lua launcher;
   * onexit/exit calls when walk from object;
+  * internal cleanups;
   * fixes in mplib.
 
 1.4
