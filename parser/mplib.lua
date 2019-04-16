@@ -799,8 +799,8 @@ function mp:content(w)
 	if (w == std.me():where() or std.here() == w) and
 		(mp.event == 'Look' or mp.event == 'Exam' or std.me():need_scene()) then
 		inside = true
-		pn()
 		local dsc, v
+		-- pn()
 		if mp:thedark(w) then
 			dsc, v = std.call(w, 'dark_dsc')
 			if dsc then p(dsc) end
@@ -866,6 +866,7 @@ function mp:content(w)
 --	end
 	oo = ooo
 	if #oo == 0 then
+--[[
 		if not inside and mp.first == w and not something then
 			if w:has 'supporter' then
 				pnoun (w, mp.msg.Exam.ON)
@@ -874,6 +875,7 @@ function mp:content(w)
 			end
 			p (mp.msg.Exam.NOTHING)
 		end
+]]--
 	elseif #oo == 1 and not oo[1]:hint 'plural' then
 		if std.me():where() == w or std.here() == w then
 			p (mp.msg.Look.HEREIS)
