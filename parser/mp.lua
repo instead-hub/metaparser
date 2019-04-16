@@ -810,7 +810,7 @@ function mp:verb(t, w, extend)
 		if type(t[n]) ~= 'string' then
 			std.err("Wrong verb pattern in mp:verb()", 2)
 		end
-		verb.verb = self:pattern(t[n], ",")
+		verb.verb = self:pattern(mp.fmt(t[n]), ",")
 		n = n + 1
 		verb.dsc = {}
 	end
