@@ -788,7 +788,7 @@ end
 
 mp.msg.Exam = {}
 --- Display the object contents
-function mp:content(w)
+function mp:content(w, exam)
 	if w:type 'dlg' then
 		return
 	end
@@ -866,8 +866,7 @@ function mp:content(w)
 --	end
 	oo = ooo
 	if #oo == 0 then
---[[
-		if not inside and mp.first == w and not something then
+		if not inside and exam and mp.first == w and not something then
 			if w:has 'supporter' then
 				pnoun (w, mp.msg.Exam.ON)
 			else
@@ -875,7 +874,6 @@ function mp:content(w)
 			end
 			p (mp.msg.Exam.NOTHING)
 		end
-]]--
 	elseif #oo == 1 and not oo[1]:hint 'plural' then
 		if std.me():where() == w or std.here() == w then
 			p (mp.msg.Look.HEREIS)
@@ -1056,9 +1054,9 @@ function mp:after_Exam(w)
 		return false
 	end
 	if w:has 'container' and (w:has'transparent' or w:has'open') then
-		self:content(w)
+		self:content(w, true)
 	elseif w:has 'supporter' then
-		self:content(w)
+		self:content(w, true)
 	else
 		if w:has'openable' then
 			if w:has 'open' then
@@ -1298,7 +1296,7 @@ end
 function mp:after_Open(w)
 	p(mp.msg.Open.OPEN)
 	if w:has'container' then
-		self:content(w)
+		self:content(w, true)
 	end
 end
 
