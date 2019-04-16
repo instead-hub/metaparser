@@ -1047,16 +1047,18 @@ end
 
 function mp:after_Exam(w)
 	local r, v = std.call(w, 'description')
+	local something = false
 	if r then
 		p(r)
+		something = true
 	end
 	if v then
 		return false
 	end
 	if w:has 'container' and (w:has'transparent' or w:has'open') then
-		self:content(w, true)
+		self:content(w, not something)
 	elseif w:has 'supporter' then
-		self:content(w, true)
+		self:content(w, not something)
 	else
 		if w:has'openable' then
 			if w:has 'open' then
@@ -1296,7 +1298,7 @@ end
 function mp:after_Open(w)
 	p(mp.msg.Open.OPEN)
 	if w:has'container' then
-		self:content(w, true)
+		self:content(w)
 	end
 end
 
