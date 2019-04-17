@@ -524,6 +524,9 @@ function mp:objects(wh, oo, recurs)
 			end
 		end
 		if recurs == false or v:closed() then
+			if std.is_obj(wh, 'list') then
+				return -- just skip
+			end
 			return nil, false
 		end
 		if std.is_obj(wh, 'list') then

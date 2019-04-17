@@ -180,7 +180,7 @@ local everything = std.obj {
 		end
 		return false
 	end;
-}:persist()
+}:attr 'concealed':persist()
 
 --- Clear the metaparser window
 function mp:clear()
@@ -821,6 +821,9 @@ function mp:content(w, exam)
 		p(std.scene_delim)
 	end
 	self:objects(w, oo, false)
+	if w == std.here() then
+		self:objects(self.persistent, oo, false)
+	end
 	local something
 	for _, v in ipairs(oo) do
 		local r, rc, desc
