@@ -541,23 +541,25 @@ local darkness = std.obj {
 }
 
 function mp:nouns()
-	self.scope:zap()
+	local scope = self.scope
+	scope:zap()
 	if type(std.here().nouns) == 'function' then
 		return std.here():nouns()
 	end
 	local oo = {}
-	self:objects(std.me():inroom(), oo, true, self.scope)
-	self:objects(std.list { std.me() }, oo, true, self.scope)
-	self:objects(self.persistent, oo, true, self.scope)
-	table.insert(oo, std.me())
+	self:objects(std.me():inroom(), oo, true, scope)
+	self:objects(std.list { std.me() }, oo, true, scope)
+	self:objects(self.persistent, oo, true, scope)
+	local ob = std.list {}
 	if std.here().word then
-		table.insert(oo, std.here())
+		ob:add(std.here())
 	end
 	if self:thedark() then
-		table.insert(oo, darkness)
+		ob:add(darkness)
 	end
+	self:objects(ob, oo, false, scope)
 	local dups = {}
-	self.scope:for_each(function(v)
+	scope:for_each(function(v)
 		if not dups[v] then
 			table.insert(oo, v)
 			dups[v] = true
