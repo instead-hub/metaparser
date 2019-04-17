@@ -509,11 +509,12 @@ end)
 -- @param wh where to start scope
 -- @param oo table
 -- @param recurs recursive flag
-function mp:objects(wh, oo, recurs)
-	local scope = self.scope
+-- @param scope scope list (optional)
+
+function mp:objects(wh, oo, recurs, scope)
 	wh:for_each(function(v)
 		if v:disabled() then return nil, false end
-		if scope:lookup(v) or v:visible() then
+		if v:visible() or (scope and scope:lookup(v)) then
 			table.insert(oo, v)
 			if v.scope then
 				if std.is_obj(v.scope, 'list') then
@@ -530,7 +531,7 @@ function mp:objects(wh, oo, recurs)
 			return nil, false
 		end
 		if std.is_obj(wh, 'list') then
-			self:objects(v, oo, recurs)
+			self:objects(v, oo, recurs, scope)
 		end
 	end)
 end
@@ -545,9 +546,9 @@ function mp:nouns()
 		return std.here():nouns()
 	end
 	local oo = {}
-	self:objects(std.me():inroom(), oo)
-	self:objects(std.me(), oo)
-	self:objects(self.persistent, oo)
+	self:objects(std.me():inroom(), oo, true, self.scope)
+	self:objects(std.list { std.me() }, oo, true, self.scope)
+	self:objects(self.persistent, oo, true, self.scope)
 	table.insert(oo, std.me())
 	if std.here().word then
 		table.insert(oo, std.here())

@@ -10,6 +10,7 @@
   * internal cleanups;
   * persist objects may have dsc;
   * sorting content using pri;
+  * scope logic fix;
   * fixes in mplib.
 
 1.4
