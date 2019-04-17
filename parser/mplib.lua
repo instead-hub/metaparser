@@ -824,6 +824,14 @@ function mp:content(w, exam)
 	if w == std.here() then
 		self:objects(self.persistent, oo, false)
 	end
+	std.sort(oo, function (a, b)
+		a = std.tonum(a.pri) or 0
+		b = std.tonum(b.pri) or 0
+		if a == b then
+			return nil
+		end
+		return a < b
+	end)
 	local something
 	for _, v in ipairs(oo) do
 		local r, rc, desc

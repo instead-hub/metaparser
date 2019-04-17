@@ -8,6 +8,8 @@
   * main3.lua launcher;
   * onexit/exit calls when walk from object;
   * internal cleanups;
+  * persist objects may have dsc;
+  * sorting content using pri;
   * fixes in mplib.
 
 1.4
