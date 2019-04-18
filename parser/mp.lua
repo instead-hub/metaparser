@@ -240,7 +240,7 @@ mp = std.obj {
 	daemons = std.list {};
 	{
 		version = "1.5";
-		cache = { tokens = {} };
+		cache = { tokens = {}, nouns = false };
 		scope = std.list {};
 		logfile = false;
 		lognum = 0;
@@ -585,7 +585,7 @@ function mp.token.noun(w)
 			mp:objects(o, oo)
 		end
 	else
-		oo = mp:nouns()
+		oo = mp.cache.nouns
 	end
 
 	local sm_dup = {
@@ -1302,6 +1302,7 @@ function mp:compl(str)
 				end
 			end
 		else -- matches
+			self.cache.nouns = self:nouns()
 			poss, eol, vargs = self:compl_match(words)
 		end
 		self:compl_ctx_push(poss)
@@ -1978,6 +1979,7 @@ function mp:parse(inp)
 		r = false
 		v = nil
 	else
+		self.cache.nouns = self:nouns()
 		r, v = self:input(self:norm(inp))
 	end
 	self.cache = { tokens = {} }; -- to completion
@@ -2141,7 +2143,7 @@ end
 function mp:lookup_noun(w, lev)
 	local k, len
 	local res = {}
-	local oo = self:nouns()
+	local oo = self.cache.nouns
 	for _, o in ipairs(oo) do
 		local ww = {}
 		o:noun(ww)
