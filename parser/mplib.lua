@@ -1201,6 +1201,10 @@ function mp:Exit(w)
 			mp:xaction ("Disrobe", w)
 			return
 		end
+		if wh:inside(w) then
+			p (mp.msg.Enter.EXITBEFORE)
+			return
+		end
 		p (mp.msg.Exit.NOTHERE)
 		return
 	end
