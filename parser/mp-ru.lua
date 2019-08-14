@@ -60,7 +60,7 @@ mp.shorten_expert = {
 
 function mp:skip_filter(w)
 	for _, v in ipairs(w) do
-		if v == 'не' or v == 'кроме' then
+		if v == 'не' or v == 'кроме' or v == 'вместо' then
 			return false
 		end
 	end
