@@ -982,7 +982,9 @@ Verb {
 	"Jump",
 	"через {noun}/вн,scene : JumpOver",
 	"~ в {noun}/вн,scene : Enter",
-	"~ {noun}/вн,scene : JumpOver",
+	"~ на {noun}/вн,scene : Climb",
+	"~ с {noun}/рд,scene : GetOff",
+	"~ +через {noun}/вн,scene : JumpOver",
 }
 
 Verb {

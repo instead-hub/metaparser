@@ -1620,8 +1620,15 @@ function mp:match(verb, w, compl)
 		end
 	end
 
+	for k, v in ipairs(matches) do
+		v.nr = k
+	end
+
 	table.sort(matches,
 		function(a, b)
+			if #a == #b and a.wildcards == b.wildcards then
+				return a.nr < b.nr
+			end
 			if #a == #b then
 				return a.wildcards < b.wildcards
 			end
