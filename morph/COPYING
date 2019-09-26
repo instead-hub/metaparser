@@ -1,0 +1,10 @@
+NOTE on dictionary files.
+
+This code uses dictionary files from the http://aot.ru project that is
+covered by the terms of the LGPL license.
+
+Dictionary files:
+https://sourceforge.net/p/seman/svn/HEAD/tree/trunk/Dicts/Morph/Russian/
+
+License:
+https://sourceforge.net/p/seman/svn/HEAD/tree/trunk/copying
