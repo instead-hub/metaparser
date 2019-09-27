@@ -133,7 +133,7 @@ mp.msg.EMPTY = 'Простите?'
 mp.msg.UNKNOWN_VERB = "Непонятный глагол"
 mp.msg.UNKNOWN_VERB_HINT = "Возможно, вы имели в виду"
 mp.msg.INCOMPLETE = "Нужно дополнить предложение."
-mp.msg.INCOMPLETE_NOUN = "К чему вы хотите применить команду"
+mp.msg.INCOMPLETE_NOUN = "С чем вы хотите применить команду"
 mp.msg.UNKNOWN_OBJ = function(w)
 	if not w then
 		p "Об этом предмете ничего не известно."
@@ -674,16 +674,30 @@ Verb { "#Search",
 }
 
 Verb { "#Open",
-	"откр/ыть,распах/нуть,раскр/ыть,отпереть,отвори/ть,отопр/и",
+	"откр/ыть,распах/нуть,раскр/ыть,отвори/ть",
 	"{noun}/вн : Open",
 	"{noun}/вн {noun}/тв,held : Unlock",
 	"~ {noun}/тв,held {noun}/вн : Unlock reverse",
 }
 
+Verb { "#Unlock",
+	"отпереть,отопр/и",
+	"{noun}/вн {noun}/тв,held : Unlock",
+	"~ {noun}/тв,held {noun}/вн : Unlock reverse",
+}
+
 Verb { "#Close",
-	"закр/ыть,запереть",
+	"закр/ыть",
 	"{noun}/вн : Close",
 	"{noun}/вн {noun}/тв,held : Lock",
+	"~ {noun}/вн на {noun}/вн,held : Lock",
+	"~ {noun}/тв,held {noun}/вн : Lock reverse",
+}
+
+Verb { "#Lock",
+	"запереть",
+	"{noun}/вн {noun}/тв,held : Lock",
+	"~ {noun}/вн на {noun}/вн,held : Lock",
 	"~ {noun}/тв,held {noun}/вн : Lock reverse",
 }
 

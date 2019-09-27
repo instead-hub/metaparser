@@ -749,14 +749,24 @@ Verb { "#Search",
 }
 
 Verb { "#Open",
-	"open,unlock",
+	"open",
 	"{noun} : Open",
 	"{noun} with {noun}/held : Unlock"
 }
 
+Verb { "#Unlock",
+	"unlock",
+	"{noun} with {noun}/held : Unlock"
+}
+
 Verb { "#Close",
-	"close,lock",
+	"close",
 	"{noun} : Close",
+	"{noun} with {noun}/held : Lock",
+}
+
+Verb { "#Lock",
+	"lock",
 	"{noun} with {noun}/held : Lock",
 }
 
