@@ -624,7 +624,8 @@ function mp.token.noun(w)
 	for _, o in ipairs(oo) do
 		for _, v in ipairs(mp:synonyms(o, w.morph)) do
 			if not sm_dup[v] then
-				table.insert(ww, { optional = w.optional, word = v, ob = o, morph = attr, alias = o.alias, hidden = true, synonym = true })
+				table.insert(ww, { optional = w.optional, word = v, ob = o, morph = attr,
+					alias = o.alias, hidden = true, synonym = true })
 				sm_dup[v] = true
 			end
 		end

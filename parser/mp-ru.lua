@@ -133,7 +133,8 @@ mp.msg.EMPTY = 'Простите?'
 mp.msg.UNKNOWN_VERB = "Непонятный глагол"
 mp.msg.UNKNOWN_VERB_HINT = "Возможно, вы имели в виду"
 mp.msg.INCOMPLETE = "Нужно дополнить предложение."
-mp.msg.INCOMPLETE_NOUN = "С чем вы хотите применить команду"
+mp.msg.INCOMPLETE_NOUN = "К чему вы хотите применить команду"
+mp.msg.INCOMPLETE_SECOND_NOUN = "С чем вы хотите применить команду"
 mp.msg.UNKNOWN_OBJ = function(w)
 	if not w then
 		p "Об этом предмете ничего не известно."

@@ -90,7 +90,7 @@ function mp:err(err)
 		else
 			if need_noun then
 				if second_noun then
-					p (self.msg.INCOMPLETE_NOUN, " \"", second_noun, "\"?")
+					p (self.msg.INCOMPLETE_SECOND_NOUN or self.msg.INCOMPLETE_NOUN, " \"", second_noun, "\"?")
 				elseif parsed then
 					p (self.msg.INCOMPLETE_NOUN, " \"", parsed, "\"?")
 				else
