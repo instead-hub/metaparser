@@ -55,9 +55,10 @@ function mp:err(err)
 				end
 				if second_noun then second_noun = verb end
 			end
-			if v:find("^~?{noun}") then need_noun = true break end
+			if v:find("^~?{noun}") then need_noun = v break end
 		end
-		if #self.unknown > 0 then
+		if #self.unknown > 0 and (not need_noun or
+				self.unknown.lev == self.hints.lev) then
 			local unk = ''
 			for _, v in ipairs(self.unknown) do
 				if unk ~= '' then unk = unk .. ' ' end
@@ -90,7 +91,7 @@ function mp:err(err)
 		else
 			if need_noun then
 				if second_noun then
-					p (self.msg.INCOMPLETE_SECOND_NOUN or self.msg.INCOMPLETE_NOUN, " \"", second_noun, "\"?")
+					p (self.msg.INCOMPLETE_SECOND_NOUN or self.msg.INCOMPLETE_NOUN, " \"", second_noun, "\" ", mp:err_noun(need_noun), "?")
 				elseif parsed then
 					p (self.msg.INCOMPLETE_NOUN, " \"", parsed, "\"?")
 				else

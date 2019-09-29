@@ -585,7 +585,7 @@ function mp.token.noun(w)
 			mp:objects(o, oo)
 		end
 	else
-		oo = mp.cache.nouns
+		oo = mp.cache.nouns or {}
 	end
 
 	local sm_dup = {

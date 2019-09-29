@@ -134,7 +134,7 @@ mp.msg.UNKNOWN_VERB = "Непонятный глагол"
 mp.msg.UNKNOWN_VERB_HINT = "Возможно, вы имели в виду"
 mp.msg.INCOMPLETE = "Нужно дополнить предложение."
 mp.msg.INCOMPLETE_NOUN = "К чему вы хотите применить команду"
-mp.msg.INCOMPLETE_SECOND_NOUN = "С чем вы хотите применить команду"
+mp.msg.INCOMPLETE_SECOND_NOUN = "Уточните команду:"
 mp.msg.UNKNOWN_OBJ = function(w)
 	if not w then
 		p "Об этом предмете ничего не известно."
@@ -149,7 +149,7 @@ mp.msg.UNKNOWN_WORD = function(w)
 		p "Фраза не распознана."
 	else
 		p "Фраза не распознана "
-		p ("(",w,").")
+		p ("(",w,"?).")
 	end
 end
 mp.msg.HINT_WORDS = "Может быть"
@@ -533,26 +533,26 @@ end
 function mp:err_noun(noun)
 	if noun == '*' then return "{$fmt em|<любое слово>}" end
 	local hint = std.split(noun, "/")
-	local rc = "{$fmt em|существительное в"
+	local rc = "{$fmt em|"
 	if #hint == 2 then
 		local h = hints(hint[2])
-		local acc = 'именительном'
+		local acc = 'кто/что'
 		if h["им"] then
-			acc = 'именительном'
+			acc = 'кто/что'
 		elseif h["рд"] then
-			acc = 'родительном'
+			acc = 'кого/чего'
 		elseif h["дт"] then
-			acc = 'дательном'
+			acc = 'кому/чему'
 		elseif h["вн"] then
-			acc = 'винительном'
+			acc = 'кого/что'
 		elseif h["тв"] then
-			acc = 'творительном'
+			acc = 'кем/чем'
 		elseif h["пр"] or h["пр2"] then
-			acc = 'предложном'
+			acc = 'ком/чём'
 		end
-		rc = rc ..  " "..acc .. " падеже"
+		rc = rc ..  " "..acc
 	else
-		rc = rc .. " именительном падеже"
+		rc = rc .. " кто/что"
 	end
 	rc = rc .. "}"
 	return rc
@@ -638,7 +638,7 @@ end
 std.mod_init(function(_)
 Verb { "#Walk",
 	"идти,{#pref1}йти,{#pref1}йди,иди,бежать,{#pref2}бежать,бег/и,{#pref2}бег/и,влез/ть,"..
-	"[|{#pref3}]ехать,едь,сесть,сядь,лечь,ляг,[в|]ста/ть,[в|]стан/ь",
+	"[|{#pref3}]ехать,едь,сесть,сядь,лечь,ляг,[в|]стать,[в|]стан/ь",
 	"на {compass1} : Walk",
 	"на|в|во {noun}/вн,scene,enterable : Enter",
 	"внутрь {noun}/рд,scene,enterable : Enter",
@@ -723,8 +723,8 @@ Verb { "#Take",
 }
 
 Verb { "#Drop",
-	"полож/ить,постав/ить,посади/ть,класть,клади/,вставь/,помест/ить,"..
-	"[|про|за]сун/уть,воткн/уть,втык/ать,встав/ить,влож/ить",
+	"полож/ить,постав/ить,посади/ть,класть,клади/,помест/ить,"..
+	"[|про|за]сун/уть,воткн/уть,втык/ать,вставить,вставь/,влож/ить",
 	"{noun}/вн,held : Drop",
 	"{noun}/вн,held в|во {noun}/вн,inside : Insert",
 	"~ {noun}/вн,held внутрь {noun}/рд : Insert",
