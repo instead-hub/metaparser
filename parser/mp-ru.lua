@@ -550,9 +550,9 @@ function mp:err_noun(noun)
 		elseif h["пр"] or h["пр2"] then
 			acc = 'ком/чём'
 		end
-		rc = rc ..  " "..acc
+		rc = rc ..  acc
 	else
-		rc = rc .. " кто/что"
+		rc = rc .. "кто/что"
 	end
 	rc = rc .. "}"
 	return rc
