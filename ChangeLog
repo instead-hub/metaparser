@@ -1,5 +1,8 @@
 1.6
-  * not yet released
+  * better hint messages;
+  * some verb fixes (Jump, JumpOver);
+  * #Open/Close splitted into #Open,Unlock/Close,Lock;
+  * small fixes in verbs.
 
 1.5
   * fixed error while enter wrong cmd and mouse over menu;
