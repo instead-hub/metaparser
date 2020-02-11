@@ -86,9 +86,10 @@ local function utf_chars(b)
 	local i = 1
 	local s
 	local res = {}
+	local ff = std.rawget(_G, 'utf8_next') or utf_ff
 	while i <= b:len() do
 		s = i
-		i = i + utf_ff(b, i)
+		i = i + ff(b, i)
 		table.insert(res,  b:sub(s, i - 1))
 	end
 	return res
@@ -252,10 +253,10 @@ mp = std.obj {
 		inp = '';
 		cur = 1;
 		utf = {
-			bb = utf_bb;
-			ff = utf_ff;
-			len = utf_len;
-			char = utf_char;
+			bb = std.rawget(_G, 'utf8_prev') or utf_bb;
+			ff = std.rawget(_G, 'utf8_next') or utf_ff;
+			len = std.rawget(_G, 'utf8_len') or utf_len;
+			char = std.rawget(_G, 'utf8_char') or utf_char;
 		};
 		lev_thresh = 3;
 		lev_ratio = 0.20;
@@ -386,7 +387,7 @@ end
 
 function mp:inp_left()
 	if self.cur > 1 then
-		local i = utf_bb(self.inp, self.cur - 1)
+		local i = mp.utf.bb(self.inp, self.cur - 1)
 		self.cur = self.cur - i
 		return true
 	end
@@ -394,7 +395,7 @@ end
 
 function mp:inp_right()
 	if self.cur <= self.inp:len() then
-		local i = utf_ff(self.inp, self.cur)
+		local i = mp.utf.ff(self.inp, self.cur)
 		self.cur = self.cur + i
 		return true
 	end
@@ -417,7 +418,7 @@ function mp:inp_remove()
 	if not pre or pre == '' then
 		return false
 	end
-	local i = utf_bb(pre)
+	local i = mp.utf.bb(pre)
 	self.inp = self.inp:sub(1, pre:len() - i) .. post
 	self.cur = self.cur - i
 	return true
@@ -682,7 +683,7 @@ function mp:eq(t1, t2, lev)
 end
 
 local function starteq(t1, t2)
-	if t2:len() >= t1:len() or utf_len(t2) < mp.compare_len then
+	if t2:len() >= t1:len() or mp.utf.len(t2) < mp.compare_len then
 		return mp:eq(t1, t2)
 	end
 	t1 = t1:sub(1, t2:len())
@@ -999,7 +1000,7 @@ function mp:docompl(str, maxw)
 	local full
 	local force = maxw
 	local inp, pre = self:compl_ctx()
-	if utf_len(pre) < self.compl_thresh then
+	if mp.utf.len(pre) < self.compl_thresh then
 		return str
 	end
 	if not maxw then
@@ -1169,7 +1170,7 @@ function mp:compl_filter(v)
 		return false
 	end
 	local _, pre = self:compl_ctx()
-	if utf_len(pre) < self.compl_thresh then
+	if mp.utf.len(pre) < self.compl_thresh then
 		return false
 	end
 	if not v.ob or not v.morph then
@@ -1588,7 +1589,7 @@ function mp:match(verb, w, compl)
 				end
 				if not compl and mp.errhints then
 					for _, pp in ipairs(pat) do -- single argument
-						if utf_len(pp.word) >= 3 then
+						if mp.utf.len(pp.word) >= 3 then
 							local k, _ = word_search(a, pp.word, self.lev_thresh)
 							if k then table.insert(hints, { word = pp.word, lev = rlev, fuzzy = true, match = match }) end
 						end
