@@ -3,6 +3,8 @@ local curdir = std.getinfo(1).source:gsub("^(.+[\\/])[^\\/]+$", "%1"):gsub("^@",
 require "fmt"
 require "snapshots"
 
+local tostring = std.tostr
+
 --luacheck: no self
 if std.ref'@theme' then
 	std.ref'@theme'.set ('win.scroll.mode', 3)
