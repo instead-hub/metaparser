@@ -15,7 +15,10 @@ function mp:err(err)
 		return
 	end
 	if err == "UNKNOWN_VERB" then
-		local verbs = self:lookup_verb(self.words, true)
+		local verbs
+		if mp.errhints then
+			verbs = self:lookup_verb(self.words, true)
+		end
 		local hint = false
 		if verbs and #verbs > 0 then
 			for _, verb in ipairs(verbs) do
