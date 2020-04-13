@@ -1506,7 +1506,7 @@ std.obj.inside = function(s, wh)
 end
 
 std.obj.move = function(s, wh)
-	return mp:move(s, wh)
+	return mp:move(s, wh, true)
 end
 
 --- Move an object
