@@ -1233,7 +1233,7 @@ function mp:Exit(w)
 --	local r = std.call(w, 'out_to')
 --		mp:move(std.me(), wh:from())
 --	else
-		mp:move(std.me(), wh:where())
+		if not mp:move(std.me(), wh:where()) then return true end
 --	end
 	return false
 end
