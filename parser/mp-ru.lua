@@ -191,7 +191,7 @@ mp.msg.Look.SUPPORTER = function(o)
 end
 mp.msg.NOROOM = function(w)
 	if w == std.me() then
-		p ("У {#me/вн} слишком много вещей.")
+		p ("У {#me/рд} слишком много вещей.")
 	elseif w:has'supporter' then
 		p ("На ", w:noun'пр,2', " больше нет места.")
 	else
