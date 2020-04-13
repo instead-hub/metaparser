@@ -1,3 +1,9 @@
+1.7
+  * small fixes (errhints, mp:move() retval);
+  * LetIn event;
+  * use utf8 functions of upcoming INSTEAD 3.2.2;
+  * fixes in doc.
+
 1.6
   * better hint messages;
   * some verb fixes (Jump, JumpOver);
