@@ -1533,10 +1533,14 @@ function mp:move(w, wh, force)
 			return false
 		end
 		w:where(ww)
-	end
 
-	for _, o in ipairs(ww) do
-		if mp:runmethods('before', 'LetGo', o, w, wh) then
+		for _, o in ipairs(ww) do
+			if mp:runmethods('before', 'LetGo', o, w, wh) then
+				return false
+			end
+		end
+
+		if mp:runmethods('before', 'LetIn', wh, w) then
 			return false
 		end
 	end
@@ -1552,11 +1556,19 @@ function mp:move(w, wh, force)
 		end
 	end
 	w:attr 'moved'
-	for _, o in ipairs(ww) do
-		if mp:runmethods('after', 'LetGo', o, w, wh) then
+
+	if not force then
+		for _, o in ipairs(ww) do
+			if mp:runmethods('after', 'LetGo', o, w, wh) then
+				return false
+			end
+		end
+
+		if mp:runmethods('after', 'LetIn', wh, w) then
 			return false
 		end
 	end
+
 	return true
 end
 
