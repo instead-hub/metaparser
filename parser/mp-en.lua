@@ -687,11 +687,9 @@ function mp:before_Enter(w)
 	return false
 end
 
-function mp:MetaHelp()
+mp.msg.HELP = [[{$fmt b|INSTRUCTIONS}^^
 
-	pn("{$fmt b|INSTRUCTIONS}")
-
-	pn([[Enter your actions in verb noun form. For example:^
+Enter your actions in verb noun form. For example:^
 > open door^
 > unlock door with key^
 > go north^
@@ -706,8 +704,7 @@ To exam your inventory, enter "inv".^
 Use compass directions to walk. For example: "go north" or "north" or just "n".
 ^^
 You may use the "TAB" key for autocompletion.
-]])
-end
+]]
 
 function mp.token.compass1(_)
 	return "{noun_obj}/@n_to,compass|{noun_obj}/@ne_to,compass|{noun_obj}/@e_to,compass|{noun_obj}/@se_to,compass|{noun_obj}/@s_to,compass|{noun_obj}/@sw_to,compass|{noun_obj}/@w_to,compass|{noun_obj}/@nw_to,compass"

@@ -590,11 +590,9 @@ function mp:before_Enter(w)
 	return false
 end
 
-function mp:MetaHelp()
+mp.msg.HELP = [[{$fmt b|КАК ИГРАТЬ?}^^
 
-	pn("{$fmt b|КАК ИГРАТЬ?}")
-
-	pn([[Вводите ваши действия в виде простых предложений вида: глагол -- существительное. Например:^
+Вводите ваши действия в виде простых предложений вида: глагол -- существительное. Например:^
 > открыть дверь^
 > отпереть дверь ключом^
 > идти на север^
@@ -612,8 +610,7 @@ function mp:MetaHelp()
 Кроме сторон света можно перемещаться вверх ("вверх" или "вв") и вниз ("вниз" или "вн").
 ^^
 Вы можете воспользоваться клавишей "TAB" для автодополнения ввода.
-]])
-end
+]]
 
 function mp.token.compass1(_)
 	return "{noun_obj}/@n_to,compass|{noun_obj}/@ne_to,compass|{noun_obj}/@e_to,compass|{noun_obj}/@se_to,compass|{noun_obj}/@s_to,compass|{noun_obj}/@sw_to,compass|{noun_obj}/@w_to,compass|{noun_obj}/@nw_to,compass"

@@ -2715,6 +2715,10 @@ function mp:after_No()
 	p (mp.msg.Yes.YES)
 end
 
+function mp:MetaHelp()
+	pn(mp.msg.HELP)
+end
+
 function mp:MetaTranscript()
 	if self.logfile then
 		p("Log file: ", self.logfile)
