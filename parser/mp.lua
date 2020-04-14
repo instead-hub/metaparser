@@ -791,7 +791,7 @@ function mp:pref_pattern(v)
 	return ret
 end
 
-function mp:verb(t, w, extend)
+function mp:verb(t, w, extend, extend_words)
 	local rem
 	w = w or game
 	if type(t) ~= 'table' then
@@ -816,16 +816,28 @@ function mp:verb(t, w, extend)
 	if extend then
 		verb.verb = rem.verb
 		verb.dsc = rem.dsc
-	else
+	end
+	if not extend or extend_words then
 		if type(t[n]) ~= 'string' then
 			std.err("Wrong verb pattern in mp:verb()", 2)
 		end
-		verb.verb = self:pattern(mp.fmt(t[n]), ",")
+		local verbs = self:pattern(mp.fmt(t[n]), ",")
+		if extend then
+			for _, v in ipairs(verbs) do
+				table.insert(verb.verb, v)
+			end
+		else
+			verb.verb = verbs
+		end
 		n = n + 1
-		verb.dsc = {}
+		if not extend then
+			verb.dsc = {}
+		end
 	end
 	if type(t[n]) ~= 'string' then
-		std.err("Wrong verb descriptor mp:verb()", 2)
+		if t[n] or not extend_words then
+			std.err("Wrong verb descriptor mp:verb()", 2)
+		end
 	end
 	while type(t[n]) == 'string' do
 		local dsc = str_split(t[n], ":")
@@ -2336,6 +2348,10 @@ end
 
 function VerbExtend(t, w)
 	return mp:verb(t, w or false, true)
+end
+
+function VerbExtendWord(t, w)
+	return mp:verb(t, w or false, true, true)
 end
 
 function VerbRemove(t, w)
