@@ -3,6 +3,7 @@
   * obj:move() - moves in forced mode (same as move())
   * LetIn event;
   * use utf8 functions of upcoming INSTEAD 3.2.2;
+  * gameover -- do not redraw scene on look;
   * fixes in doc.
 
 1.6

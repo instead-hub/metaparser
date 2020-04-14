@@ -295,9 +295,10 @@ mp.gameover =
 std.class({
 	before_Default = function()
 		p(mp.msg.GAMEOVER_HELP);
-		std.me():need_scene(true)
 	end;
-	before_Look = function() return false end;
+	before_Look = function()
+		p(mp.msg.GAMEOVER_HELP);
+	end;
 	OnError = function()
 		p(mp.msg.GAMEOVER_HELP);
 	end;
