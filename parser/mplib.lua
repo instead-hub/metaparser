@@ -1803,7 +1803,7 @@ function mp:PutOn(w, wh)
 		return
 	end
 	if w == std.me() then
-		mp:xaction('Enter', wh)
+		mp:xaction('Climb', wh)
 		return
 	end
 	if wh == std.me():where() or mp:compass_dir(wh, 'd_to') then
