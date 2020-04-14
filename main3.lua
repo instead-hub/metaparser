@@ -20,6 +20,7 @@ obj {
 local function get_name(f)
 	local i = 1
 	for l in f:lines() do
+		l = l:gsub('\r', '')
 		if l:find("^[ \t]*--[ \t]*%$Name:") then
 			local nam = l:gsub("^--[ \t]*--[ \t]*%$Name:([^%$]+)%$?$", "%1");
 			return nam
