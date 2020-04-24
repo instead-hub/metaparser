@@ -671,7 +671,7 @@ end
 function mp:eq(t1, t2, lev)
 	if t1:find("%*$") then
 		local t = t1:gsub("%*$", "")
-		t = mrd.lang.norm(t)
+		t = self:norm(t)
 		return self:__startswith(t2, t)
 	end
 	if lev then
