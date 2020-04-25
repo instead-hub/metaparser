@@ -519,7 +519,7 @@ function mp:objects(wh, oo, recurs, scope)
 		if v:disabled() then return nil, false end
 		if v:visible() or (scope and scope:lookup(v)) then
 			table.insert(oo, v)
-			if v.scope then
+			if scope and v.scope then
 				if std.is_obj(v.scope, 'list') then
 					scope:cat(v.scope)
 				elseif type(v.scope) == 'function' then

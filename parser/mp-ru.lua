@@ -175,7 +175,7 @@ mp.msg.OPEN = function(w)
 	local hint = w:gram().hint
 	pr (" (",mp.mrd:word('открыт/' .. hint), ")")
 end
-mp.msg.EXITBEFORE = "Возможно, {#me/дт} нужно сначала {#if_has/#where,supporter,слезть с,вылезти из} {#where/рд}."
+mp.msg.EXITBEFORE = "Возможно, {#me/дт} нужно сначала {#if_has/#where,supporter,слезть с {#where/рд}.,покинуть {#where/вн}.}"
 
 mp.default_Event = "Exam"
 mp.default_Verb = "осмотреть"
