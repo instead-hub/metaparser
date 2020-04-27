@@ -1551,8 +1551,9 @@ function mp:move(w, wh, force)
 		r = w:walk(wh)
 		if r then p(r) end
 	else
+		local wpl =  mp:inside(std.me(), w)
 		place(w, wh)
-		if mp:inside(std.me(), w) then
+		if wpl then
 			r = std.me():walk(w)
 			if r then p(r) end
 		end
