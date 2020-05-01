@@ -108,7 +108,7 @@ end
 --"находиться"
 mp.msg.SCENE = "{#Me} {#word/находиться,#me,нст} {#if_has/#here,supporter,на,в} {#here/пр,2}.";
 mp.msg.INSIDE_SCENE = "{#Me} {#word/находиться,#me,нст} {#if_has/#where,supporter,на,в} {#where/пр,2}.";
-mp.msg.TITLE_INSIDE = "({#if_has/#where,supporter,на,в} {#where/пр,2})";
+mp.msg.TITLE_INSIDE = "{#if_has/#where,supporter,на,в} {#where/пр,2}";
 
 mp.msg.COMPASS_EXAM = function(dir, ob)
 	if dir == 'u_to' then

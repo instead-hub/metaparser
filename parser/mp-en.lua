@@ -307,7 +307,7 @@ end
 
 mp.msg.SCENE = "{#Me} {#is/#me} {#if_has/#here,supporter,on,in} {#thenoun/#here}.";
 mp.msg.INSIDE_SCENE = "{#Me} {#is/#me} {#if_has/#where,supporter,on,in} {#thenoun/#where}.";
-mp.msg.TITLE_INSIDE = "({#if_has/#where,supporter,on,in} {#thenoun/#where})";
+mp.msg.TITLE_INSIDE = "{#if_has/#where,supporter,on,in} {#thenoun/#where}";
 
 mp.msg.COMPASS_EXAM = function(dir, ob)
 	if dir == 'u_to' then

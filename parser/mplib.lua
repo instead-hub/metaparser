@@ -344,7 +344,8 @@ function std.obj:scene()
 	local sc = mp:visible_scope(s)
 	local title = iface:title(std.titleof(sc))
 	if s ~= sc then
-		title = title .. ' '..mp.fmt(mp.msg.TITLE_INSIDE)
+		local r = std.call(std.me():where(), "title")
+		title = title .. ' '..mp.fmt("(".. (r or mp.msg.TITLE_INSIDE) .. ")")
 	end
 	return title
 end
