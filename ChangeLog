@@ -1,3 +1,8 @@
+1.8
+  * fix while move object with player;
+  * pattern matching and case fix (with *);
+  * HEREIS/HEREARE msg.
+
 1.7
   * small fixes (errhints, mp:move() retval, verbs, messages etc);
   * VerbExtendWord() added;
