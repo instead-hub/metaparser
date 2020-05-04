@@ -153,14 +153,6 @@ local function use_text_event()
 	return instead.text_input and instead.text_input()
 end
 
-local function post_inp()
-	if mp.autohelp then
-		mp:compl_fill(mp:compl(mp.inp))
-	elseif mp.autocompl then
-		mp:compl(mp.inp)
-	end
-end
-
 if PLATFORM == "ANDROID" or PLATFORM == "IOS" or PLATFORM == "SFOS" then
 local oclick = input.click
 
@@ -196,7 +188,7 @@ function input:text(sym)
 		return false
 	end
 	mp:inp_insert(sym)
-	post_inp()
+	mp:post_inp()
 	return '@mp_key '..tostring(sym)
 end
 
@@ -216,7 +208,7 @@ function input:key(press, key)
 
 	if press and not mod and not (mp.ctrl or mp.alt) then
 		if mp:key(key) then
-			post_inp()
+			mp:post_inp()
 			if key == 'f6' and mp.autoplay then key = 'enter' end
 			return '@mp_key '..tostring(key)
 		end
@@ -310,6 +302,14 @@ mp = std.obj {
 	text = '';
 	-- dict = {};
 }
+
+function mp:post_inp()
+	if mp.autohelp then
+		mp:compl_fill(mp:compl(mp.inp))
+	elseif mp.autocompl then
+		mp:compl(mp.inp)
+	end
+end
 
 function mp:trim()
 	if self.winsize == 0 then
@@ -2158,7 +2158,7 @@ function mp:key_enter()
 	self:autoplay_inp()
 
 	self.cur = self.inp:len() + 1;
-	post_inp()
+	mp:post_inp()
 --	self:completion()
 	return r, v
 end
