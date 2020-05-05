@@ -2390,6 +2390,7 @@ function mp:Cut(w, wh)
 	if mp:check_live(w) then
 		return
 	end
+
 	if wh then
 		if mp:check_live(wh) then
 			return
@@ -2397,7 +2398,6 @@ function mp:Cut(w, wh)
 		if mp:check_held(wh) then
 			return
 		end
-		return
 	end
 	return false
 end
