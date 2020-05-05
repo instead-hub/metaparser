@@ -311,6 +311,9 @@ function mp:post_inp()
 	end
 end
 
+function mp:onedit()
+end
+
 function mp:trim()
 	if self.winsize == 0 then
 		self.text = ""
@@ -2382,6 +2385,7 @@ function(cmd)
 		if cmd[3] == '<clear>' then
 			mp.inp = '';
 			mp.cur = 1;
+			mp:onedit()
 			mp:compl_fill(mp:compl(mp.inp))
 			return true, false
 		elseif cmd[3] == '<enter>' then
@@ -2389,11 +2393,13 @@ function(cmd)
 		end
 		if cmd[3] == '<space>' then
 			mp:inp_insert(' ')
+			mp:onedit()
 			mp:compl_fill(mp:compl(mp.inp))
 			return true, false
 		end
 		if cmd[3] == '<backspace>' then
 			mp:inp_remove()
+			mp:onedit()
 			mp:compl_fill(mp:compl(mp.inp))
 			return true, false
 		end
@@ -2403,6 +2409,7 @@ function(cmd)
 		else
 			mp:completion(cmd[3])
 		end
+		mp:onedit()
 		return true, false
 	end
 	if (cmd[1] == '@mp_key' and cmd[2] == 'enter') or cmd[1] == 'look' then
@@ -2424,11 +2431,13 @@ function(cmd)
 			r, v = mp:key_enter(cmd[1] == 'look')
 			n = true
 		until not mp:autoplay_pending() or mp:noparser()
+		mp:onedit()
 		return r, v
 	end
 	if cmd[1] ~= '@mp_key' then
 		return
 	end
+	mp:onedit()
 	return true, false
 end)
 
