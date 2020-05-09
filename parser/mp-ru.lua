@@ -996,7 +996,6 @@ Verb {
 	"~ в {noun}/вн,scene : Enter",
 	"~ на {noun}/вн,scene : Climb",
 	"~ с|со {noun}/рд,scene : GetOff",
-	"~ + {compass2} : Walk",
 	"~ +через {noun}/вн,scene : JumpOver",
 }
 

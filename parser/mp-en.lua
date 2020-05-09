@@ -1032,7 +1032,6 @@ Verb {
 	"jump,hop,skip",
 	"Jump",
 	"over {noun}/scene : JumpOver",
-	"~ {compass2} : Walk",
 }
 
 Verb {
