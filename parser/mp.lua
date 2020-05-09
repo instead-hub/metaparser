@@ -1452,7 +1452,7 @@ function mp:match(verb, w, compl)
 	table.insert(parsed_verb, fixed_verb)
 	for _, d in ipairs(verb.dsc) do -- verb variants
 --		local was_noun = false
-		local match = { args = {}, vargs = {}, ev = d.ev, wildcards = 0, verb = parsed_verb }
+		local match = { args = {}, vargs = {}, ev = d.ev, wildcards = 0, verb = parsed_verb, defaults = 0 }
 		local a = {}
 		found = (#d.pat == 0)
 		for k, v in ipairs(w) do
@@ -1464,6 +1464,7 @@ function mp:match(verb, w, compl)
 		local all_optional = true
 		local rlev = 1
 		local need_required = false
+		local default = false
 		for lev, v in ipairs(d.pat) do -- pattern arguments
 			if v == '*' or v == '~*' then
 				vargs = true -- found
@@ -1486,6 +1487,7 @@ function mp:match(verb, w, compl)
 				end
 				if pp.default then
 					word = pp.word
+					default = true
 				end
 				local new_wildcard
 				local k, len = word_search(a, pp.word)
@@ -1617,6 +1619,9 @@ function mp:match(verb, w, compl)
 			else
 				if word then
 					table.insert(match, word)
+					if default then
+						match.defaults = match.defaults + 1
+					end
 				end
 				table.insert(match.args, { word = false, optional = true } )
 --				table.insert(hints, { word = v, lev = rlev })
@@ -1651,13 +1656,12 @@ function mp:match(verb, w, compl)
 
 	table.sort(matches,
 		function(a, b)
-			if #a == #b and a.wildcards == b.wildcards then
+			local na, nb = #a - a.defaults - a.wildcards,
+				#b - b.defaults - b.wildcards
+			if na == nb then
 				return a.nr < b.nr
 			end
-			if #a == #b then
-				return a.wildcards < b.wildcards
-			end
-			return #a > #b
+			return na > nb
 		end)
 
 	if #matches > 0 and matches[1].extra then
