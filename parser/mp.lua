@@ -1641,6 +1641,12 @@ function mp:match(verb, w, compl)
 
 	for k, v in ipairs(matches) do
 		v.nr = k
+--[[
+		print("-----------", k)
+		for kk, vv in ipairs(v) do
+			print(vv)
+		end
+]]--
 	end
 
 	table.sort(matches,
