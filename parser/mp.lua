@@ -1656,10 +1656,12 @@ function mp:match(verb, w, compl)
 
 	table.sort(matches,
 		function(a, b)
-			local na, nb = #a - a.defaults - a.wildcards,
-				#b - b.defaults - b.wildcards
-			if na == nb then
+			local na, nb = #a - a.defaults, #b - b.defaults
+			if na == nb and a.wildcards == b.wildcards then
 				return a.nr < b.nr
+			end
+			if na == nb then
+				return a.wildcards < b.wildcards
 			end
 			return na > nb
 		end)
