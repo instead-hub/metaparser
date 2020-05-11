@@ -1,3 +1,9 @@
+1.9
+  * Cut verb fix;
+  * Use verb added;
+  * Jump to compass2 -> walk;
+  * mp:onedit (keyboard sound).
+
 1.8
   * fix while move object with player;
   * pattern matching and case fix (with *);

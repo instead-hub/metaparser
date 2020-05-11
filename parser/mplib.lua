@@ -2718,6 +2718,19 @@ function mp:after_No()
 	p (mp.msg.Yes.YES)
 end
 
+mp.msg.Use = {}
+
+function mp:Use(w)
+	if mp:check_touch() then
+		return
+	end
+	return false
+end
+
+function mp:after_Use()
+	p (mp.msg.Use.USE)
+end
+
 function mp:MetaHelp()
 	pn(mp.msg.HELP)
 end
