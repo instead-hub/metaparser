@@ -2,7 +2,8 @@
   * Cut verb fix;
   * Use verb added;
   * Jump to compass2 -> walk;
-  * mp:onedit (keyboard sound).
+  * mp:onedit (keyboard sound);
+  * mp:pager_mode().
 
 1.8
   * fix while move object with player;
