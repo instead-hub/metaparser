@@ -298,6 +298,7 @@ mp = std.obj {
 		};
 		shorten = {};
 		shorten_expert = {};
+		_pager_mode = false;
 	};
 	text = '';
 	-- dict = {};
@@ -2070,8 +2071,19 @@ std.world.display = function(s, state)
 		    av or false, l or false,
 		    pv or false) or ''
 	mp:log(l)
-	mp.text = mp.text ..  l .. '^^' -- .. fmt.anchor()
+	if mp._pager_mode then
+		mp.text = mp.text ..  fmt.anchor() .. l .. '^^' -- .. fmt.anchor()
+	else
+		mp.text = mp.text ..  l .. '^^' -- .. fmt.anchor()
+	end
 	return mp.text
+end
+
+function mp:pager_mode(mode)
+	self._pager_mode = not not mode
+	if std.ref'@theme' then
+		std.ref'@theme'.set ('win.scroll.mode', mode and 1 or 3)
+	end
 end
 
 function mp:completion(word)
