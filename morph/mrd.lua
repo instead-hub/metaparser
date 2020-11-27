@@ -263,12 +263,12 @@ function mrd:load(path, dict)
 	self.words_nr = 0
 	self.words = {}
 	self.words_list = {}
-	collectgarbage("stop")
+--	collectgarbage("stop")
 	if not section(f, word_fn, self, dict) then
-		collectgarbage("restart")
+--		collectgarbage("restart")
 		return false, "Error in section 4"
 	end
-	collectgarbage("restart")
+--	collectgarbage("restart")
 	msg("Generated: "..tostring(self.words_nr).." word(s)");
 	local crc = f:read("*line")
 	if crc then crc = tonumber(crc) end
