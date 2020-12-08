@@ -5,6 +5,7 @@ clean:
 
 mp-manual-ru.tex: manual-ru.md
 	multimarkdown manual-ru.md -t latex -o mp-manual-ru.tex
+	sed -i -e 's/{verbatim}/{verbatimtab}[4]/g' mp-manual-ru.tex
 
 manual-ru.pdf: manual-ru.tex mp-manual-ru.tex
 	xelatex manual-ru.tex
