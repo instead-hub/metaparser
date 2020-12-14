@@ -900,7 +900,7 @@ function mp:content(w, exam)
 		end
 	elseif #oo == 1 and not oo[1]:hint 'plural' then
 		if std.me():where() == w or std.here() == w then
-			mp:message 'Look.HEREIS'
+			mp:message('Look.HEREIS', w)
 		else
 			if w:has 'supporter' then
 				pnoun (w, 'Exam.ON')
@@ -913,7 +913,7 @@ function mp:content(w, exam)
 		mp:multidsc(oo)
 	else
 		if std.me():where() == w or std.here() == w then
-			mp:message 'Look.HEREARE'
+			mp:message('Look.HEREARE', w)
 		else
 			if w:has 'supporter' then
 				pnoun (w, 'Exam.ON')
