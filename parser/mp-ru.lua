@@ -186,9 +186,7 @@ mp.msg.ACCESS2 = "{#Second} отсюда не{#word/доступен,#second}."
 
 mp.msg.Look.HEREIS = "Здесь находится"
 mp.msg.Look.HEREARE = "Здесь находятся"
-mp.msg.Look.SUPPORTER = function(o)
-	p ("На ",o:noun'пр,2')
-end
+
 mp.msg.NOROOM = function(w)
 	if w == std.me() then
 		p ("У {#me/рд} слишком много вещей.")

@@ -380,9 +380,6 @@ mp.msg.ACCESS2 = "{#Thesecond} {#is/#second} not accessible from here."
 
 mp.msg.Look.HEREIS = "Here is"
 mp.msg.Look.HEREARE = "Here are"
-mp.msg.Look.SUPPORTER = function(o)
-	p ("On ",o:the_noun())
-end
 
 mp.msg.NOROOM = function(w)
 	if w == std.me() then
