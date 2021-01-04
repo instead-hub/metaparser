@@ -283,7 +283,7 @@ mp.msg.Take.HAVE = "У {#me/вн} и так {#firstit} уже есть."
 mp.msg.Take.TAKE = "{#Me} {#verb/take} {#first/вн}."
 mp.msg.Take.SELF = "{#Me} есть у {#me/рд}."
 --"находиться"
-mp.msg.Take.WHERE = "Нельзя взять то, в/на чём {#me} {#word/находиться,#me}."
+mp.msg.Take.WHERE = "Нельзя взять то, {#if_hint/#where,supporter,на,в} чём {#me} {#word/находиться,#me}."
 
 mp.msg.Take.LIFE = "{#First/дт} это вряд ли понравится."
 --"закреплён"
