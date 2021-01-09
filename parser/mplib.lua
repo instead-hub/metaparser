@@ -790,9 +790,9 @@ function mp:multidsc(oo, inv)
 		else
 			pr (v)
 			if ob:has'worn' then
-				mp:message('WORN', ob)
+				pr(mp:mesg('WORN', ob))
 			elseif ob:has'openable' and ob:has'open' then
-				mp:message('OPEN', ob)
+				pr(mp:mesg('OPEN', ob))
 			end
 		end
 	end
