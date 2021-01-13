@@ -1,3 +1,11 @@
+1.10
+  * mp:pager_mode() experiment;
+  * for_plural is documented;
+  * #Drop splitted in #Drop and #Insert;
+  * use less memory while compiling dict;
+  * all mp.msg.* can be functions;
+  * bugfixes.
+
 1.9
   * Cut verb fix;
   * Use verb added;
