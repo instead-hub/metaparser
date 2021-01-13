@@ -720,9 +720,17 @@ Verb { "#Take",
 	"~ из|с|со|у {noun}/рд,inside,holder {noun}/вн,scene: Remove reverse",
 }
 
+Verb { "#Insert",
+	"воткн/уть,втык/ать,вставить,влож/ить",
+	"[|про|за]сун/уть,вставь/",
+	"{noun}/вн,held в|во {noun}/вн,inside : Insert",
+	"~ {noun}/вн,held внутрь {noun}/рд : Insert",
+	"~ в|во {noun}/вн {noun}/вн : Insert reverse",
+	"~ внутрь {noun}/рд {noun}/вн : Insert reverse",
+}
+
 Verb { "#Drop",
-	"полож/ить,постав/ить,посади/ть,класть,клади/,помест/ить,"..
-	"[|про|за]сун/уть,воткн/уть,втык/ать,вставить,вставь/,влож/ить",
+	"полож/ить,постав/ить,посади/ть,класть,клади/,помест/ить",
 	"{noun}/вн,held : Drop",
 	"{noun}/вн,held в|во {noun}/вн,inside : Insert",
 	"~ {noun}/вн,held внутрь {noun}/рд : Insert",
