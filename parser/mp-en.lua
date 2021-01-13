@@ -782,6 +782,11 @@ Verb { "#Drop",
 	"{noun}/held on|onto {noun} : PutOn",
 }
 
+Verb { "#Insert",
+	"insert",
+	"{noun}/held in|into|inside {noun}/inside : Insert",
+}
+
 Verb { "#Put",
 	"~put",
 	"~ {noun}/held : Drop",
