@@ -605,6 +605,7 @@ end
 std.phr.raw_word = function(s)
 	local dsc = std.call(s, 'dsc')
 	if (dsc == nil) then
+		error("Phrase without dsc", 2)
 		dsc = ''
 	end
 	return dsc .. '|'.. (tostring(s.__ph_idx) or std.dispof(s))
