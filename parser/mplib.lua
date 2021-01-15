@@ -604,6 +604,9 @@ end
 -- dialogs
 std.phr.raw_word = function(s)
 	local dsc = std.call(s, 'dsc')
+	if (dsc == nil) then
+		dsc = ''
+	end
 	return dsc .. '|'.. (tostring(s.__ph_idx) or std.dispof(s))
 end
 
