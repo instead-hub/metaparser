@@ -604,6 +604,9 @@ end
 -- dialogs
 std.phr.raw_word = function(s)
 	local dsc = std.call(s, 'dsc')
+	if type(dsc) ~= 'string' then
+		std.err("Empty dsc in phrase", 2)
+	end
 	return dsc .. '|'.. (tostring(s.__ph_idx) or std.dispof(s))
 end
 
