@@ -194,6 +194,9 @@ end
 
 function input:key(press, key)
 	local mod
+	if mp:noparser() then
+		return false
+	end
 	if key:find("alt") then
 		mp.alt = press
 		mod = true
