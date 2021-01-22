@@ -343,7 +343,14 @@ function mp:key(key)
 		self:autoscript()
 		return true
 	end
-
+	if key == 'home' or key == '[7]' then
+		self.cur = 1
+		return true
+	end
+	if key == 'end' or key == '[1]' then
+		self.cur = self.inp:len() + 1
+		return true
+	end
 	if key == 'left' then
 		return self:inp_left()
 	end
