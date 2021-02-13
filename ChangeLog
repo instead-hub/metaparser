@@ -4,6 +4,7 @@
   * #Drop splitted in #Drop and #Insert;
   * use less memory while compiling dict;
   * all mp.msg.* can be functions;
+  * home/end keys while edit line;
   * bugfixes.
 
 1.9
