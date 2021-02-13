@@ -802,6 +802,14 @@ function mp:multidsc(oo, inv)
 	p "."
 end
 
+-- Default priority in content
+function mp:defpri(w)
+	if mp:animate(w) then
+		return -1
+	end
+	return 0
+end
+
 mp.msg.Exam = {}
 --- Display the object contents
 function mp:content(w, exam)
@@ -841,8 +849,8 @@ function mp:content(w, exam)
 		self:objects(self.persistent, oo, false)
 	end
 	std.sort(oo, function (a, b)
-		a = std.tonum(a.pri) or 0
-		b = std.tonum(b.pri) or 0
+		a = std.tonum(a.pri) or mp:defpri(a)
+		b = std.tonum(b.pri) or mp:defpri(b)
 		if a == b then
 			return nil
 		end
