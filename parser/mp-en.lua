@@ -1204,7 +1204,7 @@ end)
 std.phr.default_Event = "Exam"
 
 Verb ({"~ say", "{select} : Exam" }, std.dlg)
-Verb ({'#Next', "more|next", "Next" }, mp.cutscene)
+Verb ({'#Next', "more,next", "Next" }, mp.cutscene)
 Verb ({'#Exam', "~ exam/ine", "Look" }, std.dlg)
 
 mp.cutscene.default_Verb = "more"
