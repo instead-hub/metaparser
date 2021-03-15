@@ -713,7 +713,7 @@ end
 
 std.mod_init(function(_)
 Verb { "#Walk",
-	"go,walk,run,enter",
+	"go,walk,run,enter,lie down",
 	"{compass1} : Walk",
 	"in|into|inside {noun}/scene,enterable : Enter",
 	"{noun}/scene : Walk",
