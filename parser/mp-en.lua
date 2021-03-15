@@ -136,7 +136,7 @@ end
 
 function mp.shortcut.thenoun(hint)
 	local w = str_split(hint, ",")
-	if #w ~= 2 then
+	if #w ~= 1 then
 		return ""
 	end
 	local ob = mp:shortcut_obj(w[1])
@@ -409,7 +409,7 @@ mp.msg.Enter.ALREADY = "{#Me} {#is/#me} already {#if_has/#first,supporter,on,in}
 mp.msg.Enter.INV = "{#Me} {#is/#me} unable to enter the thing {#me} {#is/#me} holding."
 mp.msg.Enter.IMPOSSIBLE = "But {#me} {#is/#me} unable to enter in/on {#thefirst}."
 mp.msg.Enter.CLOSED = "{#Thefirst} {#is/#first} closed and {#me} can't enter there."
-mp.msg.Enter.ENTERED = "{#Me} {#word/залезать,нст,#me} {#if_has/#first,supporter,на,в} {#first/вн}."
+mp.msg.Enter.ENTERED = "{#Me} {#present/#me,get} {#if_has/#first,supporter,on,into} {#thefirst}."
 mp.msg.Enter.DOOR_NOWHERE = "{#Thefirst} {#present/#first,lead} nowhere."
 mp.msg.Enter.DOOR_CLOSED = "{#Thefirst} {#is/#first} closed."
 
@@ -432,7 +432,7 @@ mp.msg.Inv.INV = "{#Me} {#have/#me}"
 
 mp.msg.Open.OPEN = "{#Me} {#present/#me,open} {#thefirst}."
 mp.msg.Open.NOTOPENABLE = "{#Thefirst} {#is/#first} not openable."
-mp.msg.Open.WHENOPEN = "{#Thenoun/first/} {#is/#first} already opened."
+mp.msg.Open.WHENOPEN = "{#Thenoun/#first} {#is/#first} already opened."
 mp.msg.Open.WHENLOCKED = "It's seems that {#thefirst} {#is/#first} locked."
 
 mp.msg.Close.CLOSE = "{#Me} {#present/#me,close} {#thefirst}."
