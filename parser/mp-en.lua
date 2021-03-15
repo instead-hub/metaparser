@@ -721,8 +721,12 @@ Verb { "#Walk",
 	"outside|out|away: Exit" }
 
 Verb { "#Sit",
-	"sit,lie down",
-	"on {noun}/scene,enterable : Enter" }
+	"sit,stand",
+	"?down in|into|inside|on {noun}/scene,enterable : Enter" }
+
+Verb { "#Lie",
+	"lie",
+	"down in|into|inside|on {noun}/scene,enterable : Enter" }
 
 Verb { "#Exit",
 	"exit,out",
