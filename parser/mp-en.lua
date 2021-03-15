@@ -818,6 +818,7 @@ Verb {
 
 Verb {
 	"#Remove",
+	"remove",
 	"~ {noun}/held : Disrobe",
 	"{noun} from {noun} : Remove",
 	"~ {noun}/scene : Take",
