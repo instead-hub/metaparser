@@ -418,7 +418,7 @@ mp.msg.Walk.WALK = "But {#thefirst} {#is/#first} already here."
 mp.msg.Walk.NOWHERE = "Where?"
 mp.msg.Walk.INV = "{#Me} {#is/#me} holding this."
 
-mp.msg.Enter.EXITBEFORE = "{#Me} {#present/#me,need} to {#if_has/#where,supporter,get off from,leave} {#thefirst} first."
+mp.msg.Enter.EXITBEFORE = "{#Me} {#present/#me,need} to {#if_has/#where,supporter,get off from,leave} {#thenoun/#where} first."
 
 mp.msg.Exit.NOTHERE = "But {#me} {#is/#me} not {#if_has/#first,supporter,on,in} {#thefirst}."
 mp.msg.Exit.NOWHERE = "But {#me} {#have/#me} no way to exit."
