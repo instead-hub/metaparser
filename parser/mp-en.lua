@@ -97,6 +97,17 @@ function mp.msg.SCORE(d)
 		pn ("{$fmt em|(Score is decreased by ", d, ")}")
 	end
 end
+
+function mp.msg.MULTIDSC(oo, inv)
+	if #oo > 0 then
+		local s = oo[1]
+		if not s:hint'proper' and not s:hint'surname' then
+			p "the"
+		end
+	end
+	mp:multidsc(oo, inv)
+end
+
 mp.door.word = "door"
 mp.msg.TITLE_SCORE = "Score: "
 mp.msg.TITLE_TURNS = "Turns: "
@@ -110,10 +121,10 @@ mp.msg.CUTSCENE_HELP = "Press <Enter> or enter {$fmt em|next} to continue."
 mp.msg.DLG_HELP = "Enter number to select the phrase."
 mp.msg.NO_ALL = "This verb can not be used with all."
 mp.msg.DROPPING_ALL = function(w)
-	pn (iface:em("(dropping "..w:noun'вн'..")"))
+	pn (iface:em("(dropping "..w:the_noun()..")"))
 end
 mp.msg.TAKING_ALL = function(w)
-	pn (iface:em("(taking "..w:noun'вн'..")"))
+	pn (iface:em("(taking "..w:the_noun()..")"))
 end
 mp.msg.TAKE_BEFORE = function(w)
 	pn (iface:em("(taking "..w:the_noun().." before)"))
@@ -355,7 +366,7 @@ mp.msg.HINT_WORDS = "Maybe you meant"
 mp.msg.HINT_OR = "or"
 mp.msg.HINT_AND = "and"
 mp.msg.AND = "and"
-mp.msg.MULTIPLE = "Here are"
+mp.msg.MULTIPLE = "Here is"
 mp.msg.LIVE_ACTION = function(w)
 	p (mp:It(w), " would not like it.")
 end
@@ -379,7 +390,7 @@ mp.msg.ACCESS1 = "{#Thefirst} {#is/#first} not accessible from here."
 mp.msg.ACCESS2 = "{#Thesecond} {#is/#second} not accessible from here."
 
 mp.msg.Look.HEREIS = "Here is"
-mp.msg.Look.HEREARE = "Here are"
+mp.msg.Look.HEREARE = "Here is"
 
 mp.msg.NOROOM = function(w)
 	if w == std.me() then

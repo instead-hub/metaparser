@@ -760,6 +760,10 @@ mp.compass_dir = function(_, w, dir)
 	return w ^ ('@'..dir)
 end
 
+mp.msg.MULTIDSC = function(oo, inv)
+	return mp:multidsc(oo, inv)
+end
+
 function mp:multidsc(oo, inv)
 	local t = {}
 	local dup = {}
@@ -921,7 +925,7 @@ function mp:content(w, exam)
 			mp:message 'Exam.IS'
 		end
 		-- p(oo[1]:noun(1), ".")
-		mp:multidsc(oo)
+		mp:message('MULTIDSC', oo)
 	else
 		if std.me():where() == w or std.here() == w then
 			mp:message('Look.HEREARE', w)
@@ -933,7 +937,7 @@ function mp:content(w, exam)
 			end
 			mp:message 'Exam.ARE'
 		end
-		mp:multidsc(oo)
+		mp:message('MULTIDSC', oo)
 	end
 -- expand?
 	for _, o in ipairs(expand) do
@@ -1318,7 +1322,7 @@ function mp:after_Inv()
 		mp:detailed_Inv(std.me(), 1)
 	else
 		p()
-		mp:multidsc(oo, true)
+		mp:message('MULTIDSC', oo, true)
 	end
 end
 
