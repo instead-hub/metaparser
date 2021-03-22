@@ -1456,7 +1456,6 @@ function mp:match(verb, w, compl)
 	local hints = {}
 	local unknown = {}
 	local multi = {}
-	local vargs
 	local parsed_verb = {}
 	local fixed_verb = verb.verb[verb.word_nr]
 	fixed_verb = fixed_verb.word .. (fixed_verb.morph or '')
@@ -1476,6 +1475,7 @@ function mp:match(verb, w, compl)
 		local rlev = 1
 		local need_required = false
 		local default = false
+		local vargs
 		for lev, v in ipairs(d.pat) do -- pattern arguments
 			if v == '*' or v == '~*' then
 				vargs = true -- found

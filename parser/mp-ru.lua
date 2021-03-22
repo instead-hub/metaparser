@@ -1053,7 +1053,7 @@ Verb {
 	"сказать,сообщи/ть,сообщу,рассказать,расскаж/ите",
 	"{noun}/дт,live о|об|обо|про * : Tell",
 	"~ * {noun}/дт,live : Tell reverse",
-	"~ {noun}/дт * : AskTo",
+	"~ {noun}/дт * : Tell"
 }
 
 Verb {
