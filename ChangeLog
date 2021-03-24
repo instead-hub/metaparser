@@ -1,3 +1,8 @@
+1.11
+  * mp:defprio() -- default obj priority. -1 for animated;
+  * Tell * fix;
+  * bugfixes in en library.
+
 1.10
   * mp:pager_mode() experiment;
   * for_plural is documented;
