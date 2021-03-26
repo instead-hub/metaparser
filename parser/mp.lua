@@ -1564,6 +1564,10 @@ function mp:match(verb, w, compl)
 					rlev = rlev + 1
 					vargs = false
 				end
+				if (wildcard or match.wildcards > 0) and best > 1 then -- do not skip words if wildcard used
+					found = false
+					break
+				end
 --				if false then
 --					a = tab_exclude(a, best, best + best_len - 1)
 --				else
