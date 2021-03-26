@@ -1496,9 +1496,9 @@ function mp:match(verb, w, compl)
 					need_required = true
 					all_optional = false
 				end
-				if pp.default then
+				default = pp.default
+				if default then
 					word = pp.word
-					default = true
 				end
 				local new_wildcard
 				local k, len = word_search(a, pp.word)
@@ -1508,6 +1508,7 @@ function mp:match(verb, w, compl)
 				else
 					new_wildcard = false
 				end
+				if not required and k ~= 1 then k = false end -- ?word is only in 1st pos
 				if k and ((k < best or len > best_len) or
 					(not new_wildcard and wildcard and k <= best and len >= best_len)) then
 					wildcard = new_wildcard
