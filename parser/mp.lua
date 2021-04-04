@@ -2830,5 +2830,12 @@ function std.obj:has(attr)
 end
 
 function iface:title(t)
-	return(iface:bold( mrd.lang.cap(t)))
+	return(iface:bold(mrd.lang.cap(t)))
+end
+
+std.getmt("").__pow = function(a, b)
+	if b and std.is_obj(b) then
+		return b ^ a
+	end
+	return false
 end
