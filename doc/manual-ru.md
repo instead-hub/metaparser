@@ -1464,7 +1464,7 @@ lockable -- дверь можно отпирать чем-либо. locked -- д
 открытой двери:
 
 ```
-	when_locked = [[Здесь есть закрытая дверь.]];
+	when_closed = [[Здесь есть закрытая дверь.]];
 	when_open = [[Дверь открыта.]];
 }: attr 'openable,lockable,locked'
 ```
@@ -1474,7 +1474,7 @@ lockable -- дверь можно отпирать чем-либо. locked -- д
 
 
 ```
-	when_locked = [[Здесь есть закрытая дверь.]];
+	when_closed = [[Здесь есть закрытая дверь.]];
 	when_open = [[Дверь открыта.]];
 }: attr 'openable,lockable,locked,static'
 ```
