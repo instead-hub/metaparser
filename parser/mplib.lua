@@ -3098,6 +3098,7 @@ instead.get_title = function(_)
 end
 
 --luacheck: globals content
-function content(...)
-	return mp:content(...)
+function content(w, ...)
+	w = std.object(w)
+	return mp:content(w, ...)
 end
