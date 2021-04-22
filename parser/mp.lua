@@ -2838,7 +2838,7 @@ std.getmt("").__pow = function(a, b)
 		if std.is_obj(b) then
 			return b ^ a
 		end
-		return a == b
+		return std.rawequal(a, b)
 	end
 	return false
 end
