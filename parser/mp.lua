@@ -2834,8 +2834,11 @@ function iface:title(t)
 end
 
 std.getmt("").__pow = function(a, b)
-	if b and std.is_obj(b) then
-		return b ^ a
+	if b then
+		if std.is_obj(b) then
+			return b ^ a
+		end
+		return a == b
 	end
 	return false
 end
