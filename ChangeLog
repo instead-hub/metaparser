@@ -1,5 +1,6 @@
 1.12
   * "object" ^ w as safe variant of w ^ "object";
+  * 'nonlive' words have higher priority;
   * better mp error messages.
 
 1.11
