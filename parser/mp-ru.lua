@@ -1098,6 +1098,26 @@ Verb {
 }
 
 if DEBUG then
+
+function mp:MetaForm(w)
+	if not w then return end
+	local t, hint
+	w = w:gsub("_", "/")
+	if w:find "/" then
+		hint = true
+	end
+	for _, f in ipairs { "им", "рд", "дт", "вн", "тв", "пр", "пр,2" } do
+		local ww = w
+		if hint then
+			ww = ww .. ','.. f
+		else
+			ww = ww .. '/' .. f
+		end
+		t = self.mrd:word(ww)
+		pn(t, " (", f, ")")
+	end
+end
+
 	MetaVerb {
 		"#MetaWord",
 		"~_слово",
@@ -1118,6 +1138,11 @@ if DEBUG then
 		"#MetaDump",
 		"~_дамп",
 		"MetaDump"
+	}
+	MetaVerb {
+		"#МетаForm",
+		"~_форм/ы",
+		"* :MetaForm"
 	}
 end
 MetaVerb {
