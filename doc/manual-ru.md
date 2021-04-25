@@ -356,10 +356,11 @@ init:
 
 ```
 function init()
-	pl.room = 'before_cottage'
-	-- то же самое можно было бы записать так:
-	-- me().room = 'before_cottage'
-	-- или move(pl, 'before_cottage')
+	move(pl, 'before_cottage')
+	-- Стартовую локацию можно было бы записать так:
+	-- pl.room = 'before_cottage'
+	-- или me().room = 'before_cottage'
+	-- но move() гарантирует, что 'before_cottage' действительно существует
 end
 
 ```
@@ -1109,7 +1110,7 @@ gameover {
 ```
 function init()
 	pl.word = -"ты/жр,2л"
-	pl.room = 'before_cottage'
+	move(pl, 'before_cottage')
 	pl.description = "Здесь нет зеркала."
 	pl.capacity = 1 -- задать максим размер инвентаря
 end
@@ -1633,7 +1634,7 @@ room {
 }
 
 function init()
-	pl.room = 'комната'
+	move(pl, 'комната')
 end
 ```
 
