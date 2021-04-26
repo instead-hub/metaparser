@@ -109,8 +109,12 @@ function mp.msg.MULTIDSC(oo, inv)
 end
 
 mp.door.word = "door"
-mp.msg.TITLE_SCORE = "Score: "
-mp.msg.TITLE_TURNS = "Turns: "
+mp.msg.TITLE_SCORE = function()
+	pr ("Score: ", mp.score)
+end
+mp.msg.TITLE_TURNS = function()
+	pr ("Turns: ", game:time() - 1)
+end
 mp.msg.YES = "Yes"
 mp.msg.WHEN_DARK = "Darkness."
 mp.msg.UNKNOWN_THEDARK = "Probably, it is because there is no light?"

@@ -77,8 +77,12 @@ function mp.msg.SCORE(d)
 	end
 end
 mp.door.word = -"дверь";
-mp.msg.TITLE_SCORE = "Счёт: "
-mp.msg.TITLE_TURNS = "Ходы: "
+mp.msg.TITLE_SCORE = function()
+	pr ("Счёт: ", mp.score)
+end
+mp.msg.TITLE_TURNS = function()
+	pr ("Ходы: ", game:time() - 1)
+end
 mp.msg.YES = "Да"
 mp.msg.WHEN_DARK = "Кромешная тьма."
 mp.msg.UNKNOWN_THEDARK = "Возможно, это потому что в темноте ничего не видно?"

@@ -3091,9 +3091,9 @@ instead.get_title = function(_)
 	local col = instead.theme_var('win.col.fg')
 	local score = ''
 	if mp.score then
-		score = fmt.tab('70%', 'center')..fmt.nb(mp:mesg('TITLE_SCORE') .. tostring(mp.score))
+		score = fmt.tab('70%', 'center')..fmt.nb(mp:mesg('TITLE_SCORE'))
 	end
-	local moves = fmt.tab('100%', 'right')..fmt.nb(mp:mesg('TITLE_TURNS') .. tostring(game:time() - 1))
+	local moves = fmt.tab('100%', 'right')..fmt.nb(mp:mesg('TITLE_TURNS'))
 	return iface:left((title.. score .. moves).."\n".. iface:img(string.format("box:%dx1,%s", w, col)))
 end
 
