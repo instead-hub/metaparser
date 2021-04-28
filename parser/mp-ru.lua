@@ -882,7 +882,7 @@ Verb {
 	"[|под]жечь,жг/и,подожги/,поджиг/ай,зажг/и,зажиг/ай,зажечь",
 	"{noun}/вн : Burn",
 	"{noun}/вн {noun}/тв,held : Burn",
-	"~ {noun}/тв,held {noun}/вн reverse",
+	"~ {noun}/тв,held {noun}/вн : Burn reverse",
 }
 
 Verb {
