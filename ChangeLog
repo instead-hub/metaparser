@@ -1,6 +1,8 @@
 1.12
   * "object" ^ w as safe variant of w ^ "object";
   * 'nonlive' words have higher priority;
+  * mp:pager_mode(true) by default;
+  * new theme;
   * MetaForm verb added;
   * documentation fixes;
   * Burn verb fix;
