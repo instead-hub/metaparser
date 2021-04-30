@@ -1,6 +1,8 @@
 1.12
   * "object" ^ w as safe variant of w ^ "object";
   * 'nonlive' words have higher priority;
+  * MetaForm verb added;
+  * documentation fixes;
   * Burn verb fix;
   * better mp error messages.
 
