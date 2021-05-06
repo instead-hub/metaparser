@@ -1606,9 +1606,9 @@ function mp:match(verb, w, compl)
 				else
 					found = false
 					if #a > 0 or #match.vargs > 0 then
-						table.insert(hints, { word = v, lev = rlev })
+						table.insert(hints, { word = v, lev = rlev, match = match })
 					else
-						table.insert(hints, { word = '*', lev = rlev })
+						table.insert(hints, { word = '*', lev = rlev, match = match })
 					end
 				end
 				if not found then
