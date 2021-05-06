@@ -1724,6 +1724,10 @@ function mp:Remove(w, wh)
 		mp:message 'Remove.WHERE'
 		return
 	end
+	if wh == std.me() then
+		mp:xaction('Disrobe', w, wh)
+		return
+	end
 	mp:xaction('Take', w, wh)
 end
 
