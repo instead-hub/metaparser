@@ -1640,7 +1640,11 @@ function mp:match(verb, w, compl)
 						match.defaults = match.defaults + 1
 					end
 				end
-				table.insert(match.args, { word = false, optional = true } )
+				if default then
+					table.insert(match.args, { word = word, default = true } )
+				else
+					table.insert(match.args, { word = false, optional = true } )
+				end
 --				table.insert(hints, { word = v, lev = rlev })
 				found = true
 			end
