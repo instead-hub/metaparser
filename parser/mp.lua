@@ -1624,10 +1624,14 @@ function mp:match(verb, w, compl)
 					end
 				end
 				if not compl and mp.errhints then
+					local objs = {}
 					for _, pp in ipairs(pat) do -- single argument
-						if mp.utf.len(pp.word) >= 3 and not pp.synonym then
+						if mp.utf.len(pp.word) >= 3 and not pp.synonym and not objs[pp.ob or 0] then
 							local k, _ = word_search(a, pp.word, self.lev_thresh)
-							if k then table.insert(hints, { word = pp.word, lev = rlev, fuzzy = true, match = match }) end
+							if k then
+								table.insert(hints, { word = pp.word, lev = rlev, fuzzy = true, match = match })
+								objs[pp.ob or 1] = true
+							end
 						end
 					end
 				end
