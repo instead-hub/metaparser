@@ -163,9 +163,8 @@ mp.msg.UNKNOWN_WORD = function(w)
 	end
 end
 mp.msg.HINT_WORDS = "Возможно"
-mp.msg.HINT_OR = "или"
-mp.msg.HINT_AND = "и"
 mp.msg.AND = "и"
+mp.msg.OR = "или"
 mp.msg.MULTIPLE = "Тут есть"
 mp.msg.LIVE_ACTION = function(w)
 	p (w:It'дт'," это не понравится.")

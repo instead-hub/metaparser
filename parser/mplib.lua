@@ -146,7 +146,7 @@ function mp:err(err)
 		for k, v in ipairs(words) do
 			if k ~= 1 then
 				if k == #words then
-					pr (" ", mp.msg.HINT_OR, " ")
+					pr (" ", mp.msg.OR, " ")
 				else
 					pr (", ")
 				end
@@ -160,7 +160,7 @@ function mp:err(err)
 		pr (mp:mesg 'MULTIPLE', " ", self.multi[1])
 		for k = 2, #self.multi do
 			if k == #self.multi then
-				pr (" ", mp.msg.HINT_AND, " ", self.multi[k])
+				pr (" ", mp.msg.AND, " ", self.multi[k])
 			else
 				pr (", ", self.multi[k])
 			end

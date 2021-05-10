@@ -372,9 +372,8 @@ mp.msg.UNKNOWN_WORD = function(w)
 end
 mp.msg.NOTHING_OBJ = "Nothing."
 mp.msg.HINT_WORDS = "Maybe you meant"
-mp.msg.HINT_OR = "or"
-mp.msg.HINT_AND = "and"
 mp.msg.AND = "and"
+mp.msg.OR = "or"
 mp.msg.MULTIPLE = "Here is"
 mp.msg.LIVE_ACTION = function(w)
 	p (mp:It(w), " would not like it.")
