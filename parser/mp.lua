@@ -271,7 +271,7 @@ mp = std.obj {
 	detailed_inv = false;
 	daemons = std.list {};
 	{
-		version = "1.11";
+		version = "1.12";
 		cache = { tokens = {}, nouns = false };
 		scope = std.list {};
 		logfile = false;
@@ -2113,11 +2113,16 @@ function mp:parse(inp)
 end
 
 std.world.display = function(s, state)
-	local l, av, pv
-	if not mp.started and mp.text == "" and game:time() == 1 and state ~= false then
+	local l, av, pv, first
+	if not mp.started and mp.text == '' and game:time() == 1 and state ~= false then
 		local r = std.call(game, 'dsc')
 		if type(r) == 'string' then
-			mp.text = r .. '^^'
+			first = true
+			if mp._pager_mode then
+				mp.text = fmt.anchor() .. r .. '^^' -- .. fmt.anchor()
+			else
+				mp.text = r .. '^^'
+			end
 		end
 		mp.started = true
 	end
@@ -2141,7 +2146,7 @@ std.world.display = function(s, state)
 		    av or false, l or false,
 		    pv or false) or ''
 	mp:log(l)
-	if mp._pager_mode then
+	if mp._pager_mode and not first then
 		mp.text = mp.text ..  fmt.anchor() .. l .. '^^' -- .. fmt.anchor()
 	else
 		mp.text = mp.text ..  l .. '^^' -- .. fmt.anchor()
@@ -2551,6 +2556,7 @@ end
 std.mod_init(
 function()
 	if DEBUG and mp.undo == 0 then mp.undo = 5 end
+	mp:pager_mode(true)
 	_'game'.__daemons = std.list {}
 end)
 
