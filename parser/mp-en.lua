@@ -110,6 +110,9 @@ end
 
 mp.door.word = "door"
 mp.msg.TITLE_SCORE = function()
+	if mp.maxscore then
+		pr ("Score: ", mp.score, "/", mp.maxscore)
+	end
 	pr ("Score: ", mp.score)
 end
 mp.msg.TITLE_TURNS = function()
@@ -1223,6 +1226,12 @@ std.mod_start(function()
 			"#MetaUndo",
 			"~undo",
 			"MetaUndo",
+		}
+	end
+	if mp.score then
+		MetaVerb {
+		"~ счёт",
+		"MetaScore",
 		}
 	end
 end)

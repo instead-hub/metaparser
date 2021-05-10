@@ -78,7 +78,11 @@ function mp.msg.SCORE(d)
 end
 mp.door.word = -"дверь";
 mp.msg.TITLE_SCORE = function()
-	pr ("Счёт: ", mp.score)
+	if mp.maxscore then
+		pr ("Счёт: ", mp.score, "/", mp.maxscore)
+	else
+		pr ("Счёт: ", mp.score)
+	end
 end
 mp.msg.TITLE_TURNS = function()
 	pr ("Ходы: ", game:time() - 1)
@@ -1206,6 +1210,12 @@ std.mod_start(function()
 			"#MetaUndo",
 			"~отмен/ить",
 			"MetaUndo",
+		}
+	end
+	if mp.score then
+		MetaVerb {
+			"~ счёт",
+			"MetaScore",
 		}
 	end
 end)

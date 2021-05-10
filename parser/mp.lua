@@ -255,7 +255,9 @@ end
 
 mp = std.obj {
 	nam = '@metaparser';
+	started = false;
 	score = false;
+	maxscore = false;
 	expert_mode = true;
 	autohelp = false;
 	autohelp_limit = 1000;
@@ -2112,11 +2114,12 @@ end
 
 std.world.display = function(s, state)
 	local l, av, pv
-	if mp.text == '' and game:time() == 1 and state ~= false then
+	if not mp.started and mp.text == "" and game:time() == 1 and state ~= false then
 		local r = std.call(game, 'dsc')
 		if type(r) == 'string' then
 			mp.text = r .. '^^'
 		end
+		mp.started = true
 	end
 	if mp.clear_on_move and game:time() ~= 1 then
 		if player_moved() then mp:clear() end

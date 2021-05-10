@@ -2787,6 +2787,11 @@ function mp:MetaHelp()
 	pn(mp:mesg 'HELP')
 end
 
+function mp:MetaScore()
+	mp:message'TITLE_TURNS'
+	mp:message'TITLE_SCORE'
+end
+
 function mp:MetaTranscript()
 	if self.logfile then
 		p("Log file: ", self.logfile)
