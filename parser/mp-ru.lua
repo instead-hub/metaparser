@@ -135,7 +135,9 @@ end
 mp.msg.enter = "<ввод>"
 mp.msg.EMPTY = 'Простите?'
 mp.msg.UNKNOWN_VERB = "Непонятный глагол"
-mp.msg.UNKNOWN_VERB_HINT = "Возможно, вы имели в виду"
+mp.msg.UNKNOWN_VERB_HINT = function(w)
+	p ("Самое похожее слово: ", iface:em(w), ".")
+end
 mp.msg.INCOMPLETE = "Нужно дополнить предложение."
 mp.msg.INCOMPLETE_NOUN = "К чему вы хотите применить команду"
 mp.msg.INCOMPLETE_SECOND_NOUN = "Уточните команду:"
@@ -156,7 +158,7 @@ mp.msg.UNKNOWN_WORD = function(w)
 		p ("(",w,"?).")
 	end
 end
-mp.msg.HINT_WORDS = "Может быть"
+mp.msg.HINT_WORDS = "Возможно"
 mp.msg.HINT_OR = "или"
 mp.msg.HINT_AND = "и"
 mp.msg.AND = "и"

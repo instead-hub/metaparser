@@ -97,6 +97,38 @@ local function utf_chars(b)
 	return res
 end
 
+function utf_similar(str1, str2, lev)
+	local chars1 = utf_chars(str1)
+	local chars2 = utf_chars(str2)
+	local len1 = #chars1
+	local len2 = #chars2
+	if len1 < lev or len2 < lev then
+		return false
+	end
+
+	for i = 0, len2 - lev do
+		local ok = true
+		for k = 1, lev do
+			if chars1[k] ~= chars2[i + k] then
+				ok = false
+				break
+			end
+		end
+		if ok then return true end
+	end
+
+	for i = 0, len1 - lev do
+		local ok = true
+		for k = 1, lev do
+			if chars2[k] ~= chars1[i + k] then
+				ok = false
+				break
+			end
+		end
+		if ok then return true end
+	end
+	return false
+end
 --- Returns the Levenshtein distance between the two given strings.
 -- https://gist.github.com/Badgerati/3261142
 
@@ -689,6 +721,11 @@ function mp:eq(t1, t2, lev)
 		return self:__startswith(t2, t)
 	end
 	if lev then
+		t1 = self:norm(t1)
+		t2 = self:norm(t2)
+		if not utf_similar(t1, t2, 3) then -- 3 is hardcoded
+			return false
+		end
 		local l = utf_lev(t1, t2)
 		if l < lev and l / (utf_len(t1) + utf_len(t2)) <= self.lev_ratio then
 			return l
@@ -708,7 +745,7 @@ end
 
 function mp:pattern(t, delim)
 	local words = {}
-	local pat = str_split(self:norm(t), delim or "|")
+	local pat = str_split(t, delim or "|")
 	for _, v in ipairs(pat) do
 		local w = { }
 		local ov = v
@@ -1626,7 +1663,7 @@ function mp:match(verb, w, compl)
 				if not compl and mp.errhints then
 					local objs = {}
 					for _, pp in ipairs(pat) do -- single argument
-						if mp.utf.len(pp.word) >= 3 and not pp.synonym and not objs[pp.ob or 0] then
+						if not pp.synonym and not objs[pp.ob or 0] then
 							local k, _ = word_search(a, pp.word, self.lev_thresh)
 							if k then
 								table.insert(hints, { word = pp.word, lev = rlev, fuzzy = true, match = match })

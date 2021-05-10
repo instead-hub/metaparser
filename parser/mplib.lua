@@ -26,7 +26,7 @@ function mp:err(err)
 				if verb.verb_nr == 1 then
 					hint = true
 					p (mp:mesg 'UNKNOWN_VERB', " ", iface:em(self.words[verb.verb_nr]), ".")
-					p (mp:mesg 'UNKNOWN_VERB_HINT', " ", iface:em(fixed.word .. (fixed.morph or "")), "?")
+					mp:message('UNKNOWN_VERB_HINT', fixed.word .. (fixed.morph or ""))
 					break
 				end
 			end
@@ -139,7 +139,7 @@ function mp:err(err)
 				end
 				p (mp:mesg 'HINT_WORDS', ", ", parsed or '')
 			else
-				p (mp:mesg 'HINT_WORDS', " ")
+				p (mp:mesg 'HINT_WORDS', ", ")
 			end
 		end
 

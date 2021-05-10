@@ -345,7 +345,9 @@ end
 mp.msg.enter = "<Enter>"
 mp.msg.EMPTY = 'Excuse me?'
 mp.msg.UNKNOWN_VERB = "Unknown verb"
-mp.msg.UNKNOWN_VERB_HINT = "Maybe you meant"
+mp.msg.UNKNOWN_VERB_HINT = function(w)
+	p ("The most similar word is ", iface:em(w), ".")
+end
 mp.msg.INCOMPLETE = "The sentence must be supplemented."
 mp.msg.INCOMPLETE_NOUN = "What do you want to apply the command to"
 mp.msg.UNKNOWN_OBJ = "Here is no such thing"
