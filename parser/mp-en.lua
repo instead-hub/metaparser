@@ -1188,6 +1188,7 @@ MetaVerb {
 	"~parser",
 	"expert on : MetaExpertOn",
 	"expert off : MetaExpertOff",
+	"verbs : MetaVerbs",
 }
 
 MetaVerb {

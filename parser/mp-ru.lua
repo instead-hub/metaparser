@@ -1167,6 +1167,7 @@ MetaVerb {
 	"~парсер",
 	"эксперт да : MetaExpertOn",
 	"эксперт нет : MetaExpertOff",
+	"глаголы : MetaVerbs",
 }
 
 MetaVerb {

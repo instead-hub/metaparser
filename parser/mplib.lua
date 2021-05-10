@@ -2,6 +2,7 @@
 --luacheck: no self
 
 local tostring = std.tostr
+local table = std.table
 
 --- Error handler
 -- @param err error code
@@ -2820,6 +2821,19 @@ function mp:MetaTranscriptOn()
 		f:close()
 		self.lognum = self.lognum + 1
 	end
+end
+
+function mp:MetaVerbs()
+	local verbs = {}
+	for _, v in ipairs(mp:verbs()) do
+		local vv = v.verb[1]
+		if vv and not vv.hidden then
+			local verb = vv.word .. (vv.morph or "")
+			table.insert(verbs, verb)
+		end
+	end
+	table.sort(verbs)
+	for _, v in ipairs(verbs) do p(v) end
 end
 
 mp.msg.MetaRestart = {}
