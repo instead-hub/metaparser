@@ -122,8 +122,15 @@ function mp:err(err)
 				end
 			else
 				local pat = self:pattern(v)
+				local empty = true
 				for _, vv in ipairs(pat) do
-					if not vv.hidden and not dups[vv.word] then
+					if not vv.hidden then
+						empty = false
+						break
+					end
+				end
+				for _, vv in ipairs(pat) do
+					if (empty or not vv.hidden) and not dups[vv.word] then
 						table.insert(words, vv.word)
 						dups[vv.word] = true
 					end
