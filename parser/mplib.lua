@@ -108,7 +108,7 @@ function mp:err(err)
 				mp:message 'INCOMPLETE'
 			end
 		end
-		if not mp.errhints then
+		if not mp.errhints or need_noun then
 			return
 		end
 		local words = {}
@@ -116,7 +116,7 @@ function mp:err(err)
 		for _, v in ipairs(self.hints) do
 			if v:find("^~?{noun}") or v == '*' then
 				v = mp:err_noun(v)
-				if not dups[v] and not need_noun then
+				if not dups[v] then
 					table.insert(words, v)
 					dups[v] = true
 				end
