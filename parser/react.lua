@@ -9,11 +9,14 @@ obj {
 
 --luacheck: globals mp
 --luacheck: no self
+
+require "parser/hooks"
+
 game.react_list = std.list {}
 
-function game:before_Any(ev, ...)
+mp:hook('before_Any', function(self, ev, ...)
 	for _, v in ipairs(game.react_list) do
-		if v:inroom() == std.here() then
+		if v:visible() then
 			local r = mp:runmethods('react', ev, v, ...)
 			if r ~= false then
 				return
@@ -21,11 +24,11 @@ function game:before_Any(ev, ...)
 		end
 	end
 	return false
-end
+end, -5)
 
-function game:post_Any(ev, ...)
+mp:hook('post_Any', function(self, ev, ...)
 	for _, v in ipairs(game.react_list) do
-		if v:inroom() == std.here() then
+		if v:visible() then
 			local r = mp:runmethods('postreact', ev, v, ...)
 			if r ~= false then
 				return
@@ -33,7 +36,7 @@ function game:post_Any(ev, ...)
 		end
 	end
 	return false
-end
+end, -5)
 
 function std.obj.listen(s)
 	game.react_list:add(s)

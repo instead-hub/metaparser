@@ -1,18 +1,27 @@
+--[[ include 'orders'
+obj {
+	nam = 'npc';
+	before_Order = function(s, ev, w, wh)
+		p(ev, ' ', w, ' ', wh)
+	end
+};
+-- > npc take apple
+]]--
+
+--luacheck: globals mp
+--luacheck: no self
+
+require "parser/hooks"
+
 local table = std.table
 mp.order = false
 
-if not mp.pre_input then
-	function mp:pre_input(str)
-		return str
-	end
-end
-
-function mp:before_Any(ev, ...)
+mp:hook('before_Any', function(s, ev, ...)
 	if not mp.order or ev == 'Order' then
 		return false
 	end
 	mp:xaction("Order", mp.order, ev, ...)
-end
+end, -10)
 
 function mp:Order(ev)
 	if not mp:animate(mp.order) then
@@ -22,7 +31,7 @@ function mp:Order(ev)
 	end
 end
 
-mp.pre_input = std.hook(mp.pre_input, function(f, self, str)
+mp:hook('pre_input', function(self, str)
 	local w = std.split(str, " ")
 	if #w > 1 then
 		local ww = {}
@@ -33,10 +42,11 @@ mp.pre_input = std.hook(mp.pre_input, function(f, self, str)
 			local o = mp:lookup_noun(ww)
 			if #o > 0 and o[1].ob then
 				mp.order = o[1].ob
-				return f(self, table.concat(w, ' '))
+				mp.hook_args = {self, table.concat(w, ' ')}
+				return mp.hook_args[2]
 			end
 		end
 	end
 	mp.order = false
-	return f(self, str)
-end)
+	return false, str
+end, -10)
