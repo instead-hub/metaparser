@@ -303,8 +303,10 @@ mp.msg.Take.SCENERY = "{#First/вн} невозможно взять."
 mp.msg.Take.WORN = "{#First} {#word/надет,#first} на {#firstwhere/вн}."
 mp.msg.Take.PARTOF = "{#First} {#if_hint/#first,plural,являются,является} частью {#firstwhere/рд}."
 
-mp.msg.Remove.WHERE = "{#First} не находится {#if_has/#second,supporter,на,в} {#second/пр,2}."
-mp.msg.Remove.REMOVE = "{#First} {#if_has/#second,supporter,поднят,извлечён из} {#second/рд}."
+mp.msg.Remove.WHERE = "{#First} не {#word/находиться,#first,нст} {#if_has/#second,supporter,на,в} {#second/пр,2}."
+--"поднят"
+--"извлечён"
+mp.msg.Remove.REMOVE = "{#First} {#if_has/#second,supporter,{#word/поднят с,#first},{#word/извлечён из,#first}} {#second/рд}."
 
 mp.msg.Drop.SELF = "У {#me/рд} не хватит ловкости."
 mp.msg.Drop.WORN = "{#First/вн} сначала нужно снять."
