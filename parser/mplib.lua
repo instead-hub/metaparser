@@ -48,10 +48,10 @@ function mp:err(err)
 					verb = verb .. vv .. ' '
 				end
 				verb = verb:gsub(" $", "")
+				for _, vv in ipairs(self.hints.match) do
+					verb = verb .. ' '.. vv
+				end
 				for _, vv in pairs(self.hints.match.args) do
-					if vv.word then
-						verb = verb .. ' '.. vv.word
-					end
 					if vv.ob then
 						second_noun = true
 					end

@@ -1,5 +1,5 @@
 local curdir = std.getinfo(1).source:gsub("^(.+[\\/])[^\\/]+$", "%1"):gsub("^@", "");
-
+local table = std.table
 require "fmt"
 require "snapshots"
 
@@ -1602,24 +1602,27 @@ function mp:match(verb, w, compl)
 						break
 					end
 					rlev = rlev + 1
-					vargs = false
 				end
 				if (wildcard or match.wildcards > 0) and best > 1 then -- do not skip words if wildcard used
 					found = false
+					vargs = false
 					break
 				end
 --				if false then
 --					a = tab_exclude(a, best, best + best_len - 1)
 --				else
 --				if not was_noun then
+				if not vargs then
 					match.skip = match.skip + (best - 1)
 					for i = 1, best - 1 do
 						table.insert(skip, a[i])
 					end
+				end
 --				end
 					a = tab_sub(a, best + best_len)
 --					table.remove(a, 1)
 --				end
+				vargs = false
 				table.insert(match, word)
 				table.insert(match.args, found)
 				if wildcard then
@@ -1645,6 +1648,11 @@ function mp:match(verb, w, compl)
 				else
 					found = false
 					if #a > 0 or #match.vargs > 0 then
+						while #a > 0 do
+							table.insert(match.vargs, a[1])
+							table.insert(match, a[1])
+							table.remove(a, 1)
+						end
 						table.insert(hints, { word = v, lev = rlev, match = match })
 					else
 						table.insert(hints, { word = '*', lev = rlev, match = match })
@@ -1698,12 +1706,14 @@ function mp:match(verb, w, compl)
 --		end
 		if found or all_optional then
 			match.extra = (#a ~= 0)
-			table.insert(match, 1, fixed_verb) -- w[verb.verb_nr])
-			if self:skip_filter(skip) then
-				table.insert(matches, match)
-			end
-			if #match.vargs == 0 and not vargs then
-				match.vargs = false
+			if not match.extra or match.wildcards == 0 then
+				table.insert(match, 1, fixed_verb) -- w[verb.verb_nr])
+				if self:skip_filter(skip) then
+					table.insert(matches, match)
+				end
+				if #match.vargs == 0 and not vargs then
+					match.vargs = false
+				end
 			end
 		end
 	end
