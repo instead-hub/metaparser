@@ -97,7 +97,7 @@ local function utf_chars(b)
 	return res
 end
 
-function utf_similar(str1, str2, lev)
+local function utf_similar(str1, str2, lev)
 	local chars1 = utf_chars(str1)
 	local chars2 = utf_chars(str2)
 	local len1 = #chars1
