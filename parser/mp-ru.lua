@@ -679,8 +679,8 @@ Verb { "#Search",
 	"{noun}/вн : Search",
 	"в|во|на {noun}/пр,2 : Search",
 	"под {noun}/тв : LookUnder",
-	"~ в|во {noun}/пр,2 * : Consult",
-	"~ * в|во {noun}/пр,2 : Consult reverse",
+	"~ в|во {noun}/пр,2 ?о|?об|?обо|?про * : Consult",
+	"~ ?о|?об|?обо|?про * в|во {noun}/пр,2 : Consult reverse",
 }
 
 Verb { "#Open",
