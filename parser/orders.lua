@@ -1,4 +1,4 @@
---[[ include 'orders'
+--[[ include 'parser/orders'
 obj {
 	nam = 'npc';
 	before_Order = function(s, ev, w, wh)

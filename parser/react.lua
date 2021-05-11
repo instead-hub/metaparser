@@ -1,6 +1,6 @@
 -- react_ and postreact_ event module for reactions near the object
 
---[[ include 'listen'
+--[[ include 'parser/react'
 obj {
 	nam = 'npc';
 	react_Take = "Player in this room is taking something. Reject!";
