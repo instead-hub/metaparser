@@ -16,11 +16,19 @@ require "parser/hooks"
 local table = std.table
 mp.order = false
 
-mp:hook('before_Any', function(s, ev, ...)
+mp:hook('before_Any', function(s, ev, w, wh, ...)
+	if (ev == 'AskTo' or ev == 'AskFor') and not mp.order then
+		mp.order = w
+		mp:parse(wh)
+		std.pclr()
+		return
+	end
 	if not mp.order or ev == 'Order' then
 		return false
 	end
-	mp:xaction("Order", mp.order, ev, ...)
+	local o = mp.order
+	mp.order = false
+	mp:xaction("Order", o, ev, w, wh, ...)
 end, -10)
 
 function mp:Order(ev)
@@ -47,6 +55,5 @@ mp:hook('pre_input', function(self, str)
 			end
 		end
 	end
-	mp.order = false
 	return false, str
 end, -10)
