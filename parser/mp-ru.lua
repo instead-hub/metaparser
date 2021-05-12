@@ -249,7 +249,7 @@ mp.msg.Exit.CLOSED = "Но {#first} {#word/закрыт,#first}."
 
 --"покидать"
 --"слезать"
-mp.msg.Exit.EXITED = "{#Me} {#if_has/#first,supporter,{#word/слезать с,#me,нст} {#first/рд},{#word/покидать,#me,нст} {#first/вн}}."
+mp.msg.Exit.EXITED = "{#Me} {#if_has/#first,supporter,{#word/слезать {#so/{#first/рд},#me,нст}},{#word/покидать,#me,нст} {#first/вн}}."
 
 mp.msg.GetOff.NOWHERE = "Но {#me/дт} не с чего слезать."
 
@@ -571,27 +571,52 @@ function mp:err_noun(noun)
 end
 
 function mp.shortcut.vo(hint)
+	local w = std.split(hint)
+	local utf = mp.utf
+	local vow = lang.is_vowel
+	local char = utf.char
+	local excl = {
+		["льве"] = true,
+		["львах"] = true,
+		["льду"] = true,
+		["льдах"] = true,
+		["льне"] = true,
+		["льнах"] = true,
+		["лбу"] = true,
+		["лбах"] = true,
+		["лжи"] = true,
+		["лжах"] = true,
+		["мху"] = true,
+		["мхах"] = true,
+		["рву"] = true,
+		["рвах"] = true,
+		["ржи"] = true,
+		["ржах"] = true,
+		["рту"] = true,
+		["ртах"] = true,
+		["мне"] = true,
+		["что"] = true,
+	}
+	w = w[#w]
+	if mp.utf.len(w) > 2 and
+		(vow(char(w, 1) == 'в' or vow(char(w, 1) == 'ф') and
+		not vow(char(w, 2)))) or excl[w] then
+		return "во ".. hint
+	end
 	return "в ".. hint
---	local w = std.split(hint)
---	w = w[#w]
---	if mp.utf.len(w) > 2 and
---		(lang.is_vowel(utf.char(w, 1)) or
---		lang.is_vowel(utf.char(w, 2))) then
---		return "в ".. hint
---	end
---	return "во ".. hint
 end
 
 function mp.shortcut.so(hint)
+	local w = std.split(hint)
+	local utf = mp.utf
+	w = w[#w]
+	if utf.len(w) > 2 and
+		(not lang.is_vowel(utf.char(w, 1) and
+		not lang.is_vowel(utf.char(w, 2))))
+		or utf.char(w, 1) == 'щ' then
+		return "со ".. hint
+	end
 	return "с ".. hint
---	local w = std.split(hint)
---	w = w[#w]
---	if mp.utf.len(w) > 2 and
---		(lang.is_vowel(utf.char(w, 1)) or
---		lang.is_vowel(utf.char(w, 2))) then
---		return "с ".. hint
---	end
---	return "со ".. hint
 end
 
 function mp:before_Enter(w)
