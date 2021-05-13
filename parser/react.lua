@@ -14,7 +14,7 @@ require "parser/hooks"
 
 game.react_list = std.list {}
 
-mp:hook('before_Any', function(self, ev, ...)
+mp:hook('before_Any', function(_, ev, ...)
 	for _, v in ipairs(game.react_list) do
 		if v:visible() then
 			local r = mp:runmethods('react', ev, v, ...)
@@ -26,7 +26,7 @@ mp:hook('before_Any', function(self, ev, ...)
 	return false
 end, -5)
 
-mp:hook('post_Any', function(self, ev, ...)
+mp:hook('post_Any', function(_, ev, ...)
 	for _, v in ipairs(game.react_list) do
 		if v:visible() then
 			local r = mp:runmethods('postreact', ev, v, ...)

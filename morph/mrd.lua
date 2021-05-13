@@ -605,9 +605,9 @@ end
 function mrd:dict(dict, word)
 	if not dict then return end
 	local tab = {}
-	local w, hints = str_hint(word)
+	local wrd, hints = str_hint(word)
 	hints = str_split(hints, ",")
-	local tt = dict[w]
+	local tt = dict[wrd]
 
 	if not tt then
 		return

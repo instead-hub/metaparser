@@ -16,7 +16,7 @@ require "parser/hooks"
 local table = std.table
 mp.order = false
 
-mp:hook('before_Any', function(s, ev, w, wh, ...)
+mp:hook('before_Any', function(_, ev, w, wh, ...)
 	if (ev == 'AskTo' or ev == 'AskFor') and not mp.order then
 		mp.order = w
 		mp:parse(wh)
@@ -31,7 +31,7 @@ mp:hook('before_Any', function(s, ev, w, wh, ...)
 	mp:xaction("Order", o, ev, w, wh, ...)
 end, -10)
 
-function mp:Order(w, ev)
+function mp:Order(w)
 	if not mp:animate(w) then
 		mp:message 'Talk.NOTLIVE'
 	else
@@ -44,7 +44,7 @@ mp:hook('pre_input', function(self, str)
 	if #w > 1 then
 		local ww = {}
 		local len = #w - 1
-		for i = 1, len do
+		for _ = 1, len do
 			table.insert(ww, w[1])
 			table.remove(w, 1)
 			local o = mp:lookup_noun(ww)

@@ -25,6 +25,7 @@ globals = {
 	'VerbHint',
 	'VerbRemove',
 	'VerbExtend',
+	'VerbExtendWord',
 	'DaemonStart',
 	'DaemonStop',
 	'isDaemon',

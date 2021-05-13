@@ -1,3 +1,6 @@
+--luacheck: globals mp
+--luacheck: no self
+
 local table = std.table
 
 local hooks = { }

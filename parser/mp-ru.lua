@@ -67,7 +67,9 @@ function mp:skip_filter(w)
 	return true
 end
 
-_'@compass'.before_Default = function() p('"{#First}" это направление. Вы не можете {#firstit/вн} ', mp.parsed[1], ".") end
+_'@compass'.before_Default = function()
+	p('"{#First}" это направление. Вы не можете {#firstit/вн} ', mp.parsed[1], ".")
+end
 
 function mp.msg.SCORE(d)
 	if d > 0 then
@@ -184,7 +186,8 @@ mp.msg.OPEN = function(w)
 	local hint = w:gram().hint
 	pr (" (",mp.mrd:word('открыт/' .. hint), ")")
 end
-mp.msg.EXITBEFORE = "Возможно, {#me/дт} нужно сначала {#if_has/#where,supporter,слезть с {#where/рд}.,покинуть {#where/вн}.}"
+mp.msg.EXITBEFORE = "Возможно, {#me/дт} нужно сначала "..
+	"{#if_has/#where,supporter,слезть с {#where/рд}.,покинуть {#where/вн}.}"
 
 mp.default_Event = "Exam"
 mp.default_Verb = "осмотреть"
@@ -249,7 +252,8 @@ mp.msg.Exit.CLOSED = "Но {#first} {#word/закрыт,#first}."
 
 --"покидать"
 --"слезать"
-mp.msg.Exit.EXITED = "{#Me} {#if_has/#first,supporter,{#word/слезать {#so/{#first/рд},#me,нст}},{#word/покидать,#me,нст} {#first/вн}}."
+mp.msg.Exit.EXITED = "{#Me} {#if_has/#first,supporter,{#word/слезать {#so/{#first/рд},#me,нст}},"..
+	"{#word/покидать,#me,нст} {#first/вн}}."
 
 mp.msg.GetOff.NOWHERE = "Но {#me/дт} не с чего слезать."
 
@@ -306,7 +310,8 @@ mp.msg.Take.PARTOF = "{#First} {#if_hint/#first,plural,являются,явля
 mp.msg.Remove.WHERE = "{#First} не {#word/находиться,#first,нст} {#if_has/#second,supporter,на,в} {#second/пр,2}."
 --"поднят"
 --"извлечён"
-mp.msg.Remove.REMOVE = "{#First} {#if_has/#second,supporter,{#word/поднят с,#first},{#word/извлечён из,#first}} {#second/рд}."
+mp.msg.Remove.REMOVE = "{#First} {#if_has/#second,supporter,{#word/поднят с,#first},"..
+	"{#word/извлечён из,#first}} {#second/рд}."
 
 mp.msg.Drop.SELF = "У {#me/рд} не хватит ловкости."
 mp.msg.Drop.WORN = "{#First/вн} сначала нужно снять."
@@ -650,7 +655,10 @@ mp.msg.HELP = [[{$fmt b|КАК ИГРАТЬ?}^^
 ]]
 
 function mp.token.compass1(_)
-	return "{noun_obj}/@n_to,compass|{noun_obj}/@ne_to,compass|{noun_obj}/@e_to,compass|{noun_obj}/@se_to,compass|{noun_obj}/@s_to,compass|{noun_obj}/@sw_to,compass|{noun_obj}/@w_to,compass|{noun_obj}/@nw_to,compass"
+	return "{noun_obj}/@n_to,compass|{noun_obj}/@ne_to,compass|"..
+		"{noun_obj}/@e_to,compass|{noun_obj}/@se_to,compass|"..
+		"{noun_obj}/@s_to,compass|{noun_obj}/@sw_to,compass|"..
+		"{noun_obj}/@w_to,compass|{noun_obj}/@nw_to,compass"
 end
 
 function mp.token.compass2(_)
