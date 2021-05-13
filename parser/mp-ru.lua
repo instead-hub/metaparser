@@ -67,7 +67,7 @@ function mp:skip_filter(w)
 	return true
 end
 
-_'@compass'.before_Default = 'Попробуйте глагол "идти".'
+_'@compass'.before_Default = function() p('"{#First}" это направление. Вы не можете {#firstit/вн} ', mp.parsed[1], ".") end
 
 function mp.msg.SCORE(d)
 	if d > 0 then

@@ -88,7 +88,7 @@ function mp:skip_filter(w)
 	return true
 end
 
-_'@compass'.before_Default = 'Try to verb "go".'
+_'@compass'.before_Default = function() p('"{#First}" is the direction. You can not ', mp.parsed[1], ' {#firstit}.') end
 
 function mp.msg.SCORE(d)
 	if d > 0 then
@@ -353,6 +353,7 @@ mp.msg.UNKNOWN_VERB_HINT = function(w)
 end
 mp.msg.INCOMPLETE = "The sentence must be supplemented."
 mp.msg.INCOMPLETE_NOUN = "What do you want to apply the command to"
+mp.msg.INCOMPLETE_SECOND_NOUN = "Clarify the command:"
 mp.msg.UNKNOWN_OBJ = "Here is no such thing"
 mp.msg.UNKNOWN_OBJ = function(w)
 	if not w then
