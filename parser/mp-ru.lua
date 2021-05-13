@@ -571,7 +571,7 @@ function mp:err_noun(noun)
 end
 
 function mp.shortcut.vo(hint)
-	local w = std.split(hint)
+	local w = std.split(mp.mrd.lang.norm(hint))
 	local utf = mp.utf
 	local vow = lang.is_vowel
 	local char = utf.char
@@ -607,7 +607,7 @@ function mp.shortcut.vo(hint)
 end
 
 function mp.shortcut.so(hint)
-	local w = std.split(hint)
+	local w = std.split(mp.mrd.lang.norm(hint))
 	local utf = mp.utf
 	w = w[#w]
 	if utf.len(w) > 2 and
