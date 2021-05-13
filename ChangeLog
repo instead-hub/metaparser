@@ -2,6 +2,9 @@
   * mp.maxscore;
   * MetaScore command;
   * MetaVerbs command;
+  * better @compass default verb;
+  * #vo/#so in shortcuts;
+  * orders module, react module rework, hooks module;
   * better hints messages.
 
 1.12
