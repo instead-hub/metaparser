@@ -68,7 +68,7 @@ function mp:skip_filter(w)
 end
 
 _'@compass'.before_Default = function()
-	p('"{#First}" это направление. Вы не можете {#firstit/вн} ', mp.parsed[1], ".")
+	p('"{#First}" это направление. {#Firstit/вн} нельзя ', mp.parsed[1], ".")
 end
 
 function mp.msg.SCORE(d)
