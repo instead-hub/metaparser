@@ -25,7 +25,7 @@ if EXPERIMENTAL then
 		return std.ref(std.me():inroom()) or false
 	end
 
-	plyer_moved = std.hook(player_moved, function (f, pl)
+	player_moved = std.hook(player_moved, function (f, pl)
 		if not std.is_obj(std.ref(pl), 'player') then
 			return false
 		end
