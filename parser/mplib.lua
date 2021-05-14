@@ -2829,7 +2829,9 @@ function mp:MetaTranscriptOn()
 		self.lognum = self.lognum + 1
 	end
 end
-
+function mp:MetaVersion()
+	p(mp.version)
+end
 function mp:MetaVerbs()
 	local verbs = {}
 	for _, v in ipairs(mp:verbs()) do

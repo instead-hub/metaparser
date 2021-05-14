@@ -1203,6 +1203,7 @@ MetaVerb {
 	"эксперт да : MetaExpertOn",
 	"эксперт нет : MetaExpertOff",
 	"глаголы : MetaVerbs",
+	"версия : MetaVersion",
 }
 
 MetaVerb {

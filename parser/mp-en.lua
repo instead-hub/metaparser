@@ -1194,6 +1194,7 @@ MetaVerb {
 	"expert on : MetaExpertOn",
 	"expert off : MetaExpertOff",
 	"verbs : MetaVerbs",
+	"version : MetaVersion",
 }
 
 MetaVerb {
