@@ -21,7 +21,7 @@ if EXPERIMENTAL then
 	std.obj.inventory = std.player.inventory
 
 	function std.here()
-		return std.ref(std.me():inroom())
+		return std.ref(std.me():inroom()) or false
 	end
 end
 
