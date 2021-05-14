@@ -23,6 +23,13 @@ if EXPERIMENTAL then
 	function std.here()
 		return std.ref(std.me():inroom()) or false
 	end
+
+	plyer_moved = std.hook(player_moved, function (f, pl)
+		if not std.is_obj(std.ref(pl), 'player') then
+			return false
+		end
+		return f(pl)
+	end)
 end
 
 mp.correct = std.hook(mp.correct, function(f, self, inp)
