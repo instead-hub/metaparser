@@ -705,7 +705,8 @@ function mp:before_Enter(w)
 	return false
 end
 
-mp.msg.HELP = [[{$fmt b|INSTRUCTIONS}^^
+mp.msg.HELP = function()
+	p [[{$fmt b|INSTRUCTIONS}^^
 
 Enter your actions in verb noun form. For example:^
 > open door^
@@ -719,10 +720,11 @@ To examine whole scene, enter "exam" or press "Enter".^
 ^
 To exam your inventory, enter "inv".^
 ^
-Use compass directions to walk. For example: "go north" or "north" or just "n".
-^^
-You may use the "TAB" key for autocompletion.
-]]
+Use compass directions to walk. For example: "go north" or "north" or just "n".]]
+	if not instead.tiny then
+		p [[^^You may use the "TAB" key for autocompletion.]]
+	end
+end
 
 function mp.token.compass1(_)
 	return "{noun_obj}/@n_to,compass|{noun_obj}/@ne_to,compass|"..
