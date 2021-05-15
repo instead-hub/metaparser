@@ -720,7 +720,7 @@ To examine whole scene, enter "exam" or press "Enter".^
 ^
 To exam your inventory, enter "inv".^
 ^
-Use compass directions to walk. For example: "go north" or "north" or just "n".]]
+Use compass directions to walk. For example: "go north" or "north" or just "n". There are also up and down directions, outside and inside.]]
 	if not instead.tiny then
 		p [[^^You may use the "TAB" key for autocompletion.]]
 	end
