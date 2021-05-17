@@ -2558,7 +2558,7 @@ function mp:autoscript(w)
 	end
 	self.autoplay = io.open(w or 'autoscript') or false
 	if self.autoplay then
-		self:MetaTranscriptOn();
+		-- self:MetaTranscriptOn();
 		std.cmd = { 'autoscript' }
 		return true
 	end
