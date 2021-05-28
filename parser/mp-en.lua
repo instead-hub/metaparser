@@ -383,11 +383,17 @@ mp.msg.NO_LIVE_ACTION = "{#Me} can only do that to something animate."
 mp.msg.NOTINV = function(t)
 	p (lang.cap(t:the_noun()) .. " must be taken first.")
 end
-mp.msg.WORN = function(_)
-	pr (" (worn)")
+mp.msg.HAS_WORN = function(_)
+	return "worn"
 end
-mp.msg.OPEN = function(_)
-	pr (" (opened)")
+mp.msg.HAS_OPEN = function(_)
+	return "opened"
+end
+mp.msg.HAS_ON = function(_)
+	return "switched on"
+end
+mp.msg.HAS_LIGHT = function(_)
+	return "providing light"
 end
 
 mp.msg.EXITBEFORE = "May be, {#me} should to {#if_has/#where,supporter,get off,get out of} {#thenoun/#where}."

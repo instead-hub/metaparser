@@ -772,6 +772,49 @@ mp.msg.MULTIDSC = function(oo, inv)
 	return mp:multidsc(oo, inv)
 end
 
+mp.msg.INFODSC = function(o)
+	return mp:infodsc(o)
+end
+
+mp.detailed_attr = {
+	{ 'worn' },
+	{ 'open', 'openable'},
+--	{ 'on', 'switchable'},
+--	{ 'light' }
+}
+
+function mp:infodsc(ob)
+	local info = {}
+	for _, v in ipairs(self.detailed_attr) do
+		local hit = #v > 0
+		for _, vv in ipairs(v) do
+			if ob:hasnt(vv) then
+				hit = false
+				break
+			end
+		end
+		if hit then
+			local n = 'HAS_'..string.upper(v[1])
+			if mp.msg[n] then
+				table.insert(info, mp:mesg(n, ob))
+			end
+		end
+	end
+
+	if #info > 0 then
+		pr(" (")
+		for k, i in ipairs(info) do
+			if #info > 1 and k == #info then
+				pr(' ', mp.msg.AND, ' ')
+			elseif k > 1 then
+				pr(", ")
+			end
+			pr(i)
+		end
+		pr(")")
+	end
+end
+
 function mp:multidsc(oo, inv)
 	local t = {}
 	local dup = {}
@@ -801,14 +844,10 @@ function mp:multidsc(oo, inv)
 			end
 		end
 		if dup[v] > 1 then
-			pr (vv.ob:noun(self.mrd.lang.gram_t.plural, 1), " (", dup[v], " ", mp.msg.ENUM, ")")
+			pr (ob:noun(self.mrd.lang.gram_t.plural, 1), " (", dup[v], " ", mp:mesg('ENUM', dup[v], ob), ")")
 		else
 			pr (v)
-			if ob:has'worn' then
-				pr(mp:mesg('WORN', ob))
-			elseif ob:has'openable' and ob:has'open' then
-				pr(mp:mesg('OPEN', ob))
-			end
+			pr(mp:mesg('INFODSC', ob))
 		end
 	end
 	p "."
@@ -1296,11 +1335,7 @@ function mp:detailed_Inv(wh, indent)
 			for _ = 1, indent do pr(iface:nb' ') end
 			local inv = std.call(o, 'inv') or o:noun(1)
 			pr(inv)
-			if o:has'worn' then
-				mp:message('WORN', o)
-			elseif o:has'openable' and o:has'open' then
-				mp:message('OPEN', o)
-			end
+			mp:message('INFODSC', o)
 			pn()
 			if o:has'supporter' or o:has'container' then
 				mp:detailed_Inv(o, indent + 1)

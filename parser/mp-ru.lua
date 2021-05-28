@@ -177,15 +177,26 @@ mp.msg.NOTINV = function(t)
 	p (lang.cap(t:noun'вн') .. " сначала нужно взять.")
 end
 --"надет"
-mp.msg.WORN = function(w)
+mp.msg.HAS_WORN = function(w)
 	local hint = w:gram().hint
-	pr (" (",mp.mrd:word('надет/' .. hint), ")")
+	return mp.mrd:word('надет/' .. hint)
 end
 --"открыт"
-mp.msg.OPEN = function(w)
+mp.msg.HAS_OPEN = function(w)
 	local hint = w:gram().hint
-	pr (" (",mp.mrd:word('открыт/' .. hint), ")")
+	return mp.mrd:word('открыт/' .. hint)
 end
+--"включён"
+mp.msg.HAS_ON = function(w)
+	local hint = w:gram().hint
+	return mp.mrd:word('включён/' .. hint)
+end
+--"светится"
+mp.msg.HAS_LIGHT = function(w)
+	local hint = w:gram().hint
+	return mp.mrd:word('светится/' .. hint)
+end
+
 mp.msg.EXITBEFORE = "Возможно, {#me/дт} нужно сначала "..
 	"{#if_has/#where,supporter,слезть с {#where/рд}.,покинуть {#where/вн}.}"
 
