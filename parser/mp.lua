@@ -1541,7 +1541,7 @@ function mp:match(verb, w, compl)
 				end
 				local new_wildcard
 				local k, len = word_search(a, pp.word)
-				if not k and mp.compare_len > 0 then
+				if not k and mp.compare_len > 0 and not pp.synonym then
 					k, len = word_search(a, pp.word, starteq)
 					new_wildcard = true
 				else
