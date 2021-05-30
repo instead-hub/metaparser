@@ -27,15 +27,14 @@ function mp:err(err)
 				local fixed = verb.verb[verb.word_nr]
 				if verb.verb_nr == 1 then
 					hint = true
-					p (mp:mesg 'UNKNOWN_VERB', " ", iface:em(self.words[verb.verb_nr]), ".")
+					mp:message('UNKNOWN_VERB', self.words[verb.verb_nr])
 					mp:message('UNKNOWN_VERB_HINT', fixed.word .. (fixed.morph or ""))
 					break
 				end
 			end
 		end
 		if not hint then
-			p (mp:mesg('UNKNOWN_VERB') or "Unknown verb:",
-			   " ", iface:em(self.words[1]), ".")
+			mp:message('UNKNOWN_VERB', self.words[1])
 		end
 	elseif err == "EMPTY_INPUT" then
 		p (mp:mesg('EMPTY') or "Empty input.")

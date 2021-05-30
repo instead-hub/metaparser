@@ -140,7 +140,9 @@ end
 
 mp.msg.enter = "<ввод>"
 mp.msg.EMPTY = 'Простите?'
-mp.msg.UNKNOWN_VERB = "Непонятный глагол"
+mp.msg.UNKNOWN_VERB = function(w)
+	p ("Непонятный глагол ", iface:em(w), ".")
+end
 mp.msg.UNKNOWN_VERB_HINT = function(w)
 	p ("Самое похожее слово: ", iface:em(w), ".")
 end

@@ -342,7 +342,9 @@ end
 
 mp.msg.enter = "<Enter>"
 mp.msg.EMPTY = 'Excuse me?'
-mp.msg.UNKNOWN_VERB = "Unknown verb"
+mp.msg.UNKNOWN_VERB = function(w)
+	p ("Unknown verb ", iface:em(w), ".")
+end
 mp.msg.UNKNOWN_VERB_HINT = function(w)
 	p ("The most similar word is ", iface:em(w), ".")
 end
