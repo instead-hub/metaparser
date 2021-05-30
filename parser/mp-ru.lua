@@ -145,8 +145,18 @@ mp.msg.UNKNOWN_VERB_HINT = function(w)
 	p ("Самое похожее слово: ", iface:em(w), ".")
 end
 mp.msg.INCOMPLETE = "Нужно дополнить предложение."
-mp.msg.INCOMPLETE_NOUN = "К чему вы хотите применить команду"
-mp.msg.INCOMPLETE_SECOND_NOUN = "Уточните команду:"
+mp.msg.INCOMPLETE_NOUN = function(w)
+	if w then
+		p('К чему вы хотите применить команду "',w, '"?')
+	else
+		p"К чему вы хотите применить команду?"
+	end
+end
+
+mp.msg.INCOMPLETE_SECOND_NOUN = function(w)
+	p ('Уточните команду: "',w,'"?')
+end
+
 mp.msg.UNKNOWN_OBJ = function(w)
 	if not w then
 		p "Об этом предмете ничего не известно."

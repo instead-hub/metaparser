@@ -352,8 +352,16 @@ mp.msg.UNKNOWN_VERB_HINT = function(w)
 	p ("The most similar word is ", iface:em(w), ".")
 end
 mp.msg.INCOMPLETE = "The sentence must be supplemented."
-mp.msg.INCOMPLETE_NOUN = "What do you want to apply the command to"
-mp.msg.INCOMPLETE_SECOND_NOUN = "Clarify the command:"
+mp.msg.INCOMPLETE_NOUN = function(w)
+	if w then
+		p ('What do you want to apply the command "'..w..'" to?')
+	else
+		p "What do you want to apply the command to?"
+	end
+end
+mp.msg.INCOMPLETE_SECOND_NOUN = function(w)
+	p ('Clarify the command: "', w, '"?')
+end
 mp.msg.UNKNOWN_OBJ = "Here is no such thing"
 mp.msg.UNKNOWN_OBJ = function(w)
 	if not w then
