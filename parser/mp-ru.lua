@@ -244,12 +244,17 @@ end
 mp.msg.Exam.CONTENT = function(w, oo)
 	local single = #oo == 1 and not oo[1]:hint 'plural'
 	if std.me():where() == w or std.here() == w then
+if false then
 		if single then
 			p "Здесь находится"
 		else
 			p "Здесь находятся"
 		end
 		mp:multidsc(oo)
+else
+		p "{#Me} {#word/видеть,#me,нст} здесь";
+		mp:multidsc(oo, 'вн')
+end
 		p "."
 		return
 	end

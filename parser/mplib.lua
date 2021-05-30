@@ -814,16 +814,17 @@ end
 function mp:multidsc(oo, inv)
 	local t = {}
 	local dup = {}
+	local hint = type(inv) == 'string' and inv or ''
 	for _, v in ipairs(oo) do
 		local n
 		if not v:has'concealed' then
-			if inv then
+			if inv == true then
 				n = std.call(v, 'inv')
 			end
 			if type(v.a_noun) == 'function' then
-				n = n or v:a_noun(1)
+				n = n or v:a_noun(hint, 1)
 			else
-				n = n or v:noun(1)
+				n = n or v:noun(hint, 1)
 			end
 			if dup[n] then
 				dup[n] = dup[n] + 1
