@@ -124,14 +124,14 @@ mp.msg.TAKING_ALL = function(w)
 	pn (iface:em("(taking "..w:the_noun()..")"))
 end
 mp.msg.TAKE_BEFORE = function(w)
-	pn (iface:em("(taking "..w:the_noun().." before)"))
+	pn (iface:em("(taking "..w:the_noun().." first)"))
 end
 mp.msg.DISROBE_BEFORE = function(w)
-	pn (iface:em("(disrobing "..w:the_noun().." before)"))
+	pn (iface:em("(disrobing "..w:the_noun().." first)"))
 end
 
 mp.msg.CLOSE_BEFORE = function(w)
-	pn (iface:em("(closing "..w:the_noun() .. " before)"))
+	pn (iface:em("(closing "..w:the_noun() .. " first)"))
 end
 
 local function str_split(str, delim)
@@ -770,7 +770,13 @@ Verb { "#Walk",
 	"in|into|inside|on {noun}/scene,enterable : Enter",
 	"{noun}/scene : Walk",
 	"{compass2}: Walk",
-	"outside|out|away: Exit" }
+	"outside|out|away: Exit"
+}
+
+Verb { "#Enter",
+	"enter",
+	"{noun}/scene,enterable : Enter"
+}
 
 Verb { "#Sit",
 	"sit,stand",
@@ -1131,8 +1137,7 @@ Verb {
 Verb {
 	"#Talk",
 	"talk",
-	"with {noun}/live : Talk"
-
+	"with|to {noun}/live : Talk"
 }
 
 Verb {
