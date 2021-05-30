@@ -99,10 +99,8 @@ function mp:err(err)
 			if need_noun then
 				if second_noun then
 					mp:message('INCOMPLETE_SECOND_NOUN', second_noun .." " ..mp:err_noun(need_noun))
-				elseif parsed then
-					mp:message('INCOMPLETE_NOUN', parsed)
 				else
-					mp:message 'INCOMPLETE_NOUN'
+					mp:message('INCOMPLETE_NOUN', parsed)
 				end
 			else
 				mp:message 'INCOMPLETE'

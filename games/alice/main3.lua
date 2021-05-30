@@ -150,8 +150,8 @@ obj {
 	nam = 'rug';
 	founded = false;
 	found_in = 'Drawing_Room';
-	description = function()
-		p [[Красивый каминный коврик из какой-то далекой страны -- может быть, Индии или Аравии.]];
+	description = function(s)
+--		p [[Красивый каминный коврик из какой-то далекой страны -- может быть, Индии или Аравии.]];
 		return false;
 	end;
 	before_Take = "Но коврик слишком большой и тяжелый!";
@@ -176,7 +176,7 @@ obj {
 		end
 		return false
 	end
-}: attr 'concealed,static,supporter,enterable'
+}: attr 'static,supporter,enterable'
 
 obj {
 	-"кресло|стул";
