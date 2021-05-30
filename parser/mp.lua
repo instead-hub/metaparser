@@ -977,7 +977,9 @@ end
 function mp:skip_filter()
 	return true
 end
-
+function mp:ignore_filter(w)
+	return false
+end
 function mp:lookup_verb(words, lev)
 	local ret = {}
 	local w = self:verbs()
@@ -2040,6 +2042,14 @@ function mp:correct(inp)
 		if rinp ~= '' then rinp = rinp .. ' ' end
 		rinp = rinp .. v
 	end
+	local strip_inp = str_split(inp, inp_split)
+	inp = ''
+	for _, v in ipairs(strip_inp) do
+		if not mp:ignore_filter(v) then
+			if inp ~= '' then inp = inp .. ' ' end
+			inp = inp .. v
+		end
+	end
 	local cmprinp = rinp:gsub("["..inp_split.."]+", " ")
 	if not self:eq(cmprinp, inp) then
 		pn(fmt.em("("..rinp..")"))
@@ -2345,6 +2355,19 @@ function mp:shorten_input(w)
 	end
 end
 
+function mp:strip_input(w)
+	local i = 1
+	local len = #w
+	while i < len do
+		if mp:ignore_filter(w[i]) then
+			table.remove(w, i)
+			len = len - 1
+		else
+			i = i + 1
+		end
+	end
+end
+
 function mp:input(str)
 --	self.cache = { tokens = {} };
 	local hints = {}
@@ -2362,6 +2385,7 @@ function mp:input(str)
 		if not str then return false end
 	end
 	local w = str_split(str, inp_split)
+	mp:strip_input(w)
 	mp:shorten_input(w)
 	self.words = w
 	if #w == 0 then

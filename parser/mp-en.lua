@@ -87,7 +87,12 @@ function mp:skip_filter(w)
 	end
 	return true
 end
-
+function mp:ignore_filter(w)
+	if w == 'the' or w == 'a' or w == 'an' then
+		return true
+	end
+	return false
+end
 _'@compass'.before_Default = function() p('"{#First}" is the direction. You can not ', mp.parsed[1], ' {#firstit}.') end
 
 function mp.msg.SCORE(d)
@@ -766,7 +771,7 @@ end
 
 std.mod_init(function(_)
 Verb { "#Walk",
-	"go,walk,run,enter",
+	"go,walk,run,enter,come",
 	"{compass1} : Walk",
 	"in|into|inside|on {noun}/scene,enterable : Enter",
 	"{noun}/scene : Walk",
@@ -788,7 +793,7 @@ Verb { "#Lie",
 	"down in|into|inside|on {noun}/scene,enterable : Enter" }
 
 Verb { "#Exit",
-	"exit,out",
+	"exit,out,leave",
 	"?from {noun}/scene : Exit",
 	": Exit"}
 
