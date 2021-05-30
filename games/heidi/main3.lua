@@ -68,7 +68,6 @@ obj {
 		p "Гнездо сплетено из прутиков и аккуратно устлано мхом.";
 		mp:content(s)
 	end;
-	before_Exit = 'xxx';
 }: attr 'container,open'
 
 obj {
