@@ -845,7 +845,7 @@ function mp:multidsc(oo, inv)
 			end
 		end
 		if dup[v] > 1 then
-			pr (ob:noun(self.mrd.lang.gram_t.plural, 1), " (", dup[v], " ", mp:mesg('ENUM', dup[v], ob), ")")
+			pr (ob:noun(hint .. ','..self.mrd.lang.gram_t.plural, 1), " (", dup[v], " ", mp:mesg('ENUM', dup[v], ob), ")")
 		else
 			pr (v)
 			pr(mp:mesg('INFODSC', ob))
