@@ -219,7 +219,6 @@ mp.msg.ACCESS2 = "{#Second} отсюда не{#word/доступен,#second}."
 
 mp.msg.Look.HEREIS = "Здесь находится"
 mp.msg.Look.HEREARE = "Здесь находятся"
-
 mp.msg.NOROOM = function(w)
 	if w == std.me() then
 		p ("У {#me/рд} слишком много вещей.")
@@ -232,11 +231,42 @@ end
 --"включён"
 --"выключен"
 mp.msg.Exam.SWITCHSTATE = "{#First} сейчас {#if_has/#first,on,{#word/включён,#first},{#word/выключен,#first}}."
-mp.msg.Exam.NOTHING = "ничего нет."
-mp.msg.Exam.IS = "находится"
-mp.msg.Exam.ARE = "находятся"
-mp.msg.Exam.IN = "В {#first/пр,2}"
-mp.msg.Exam.ON = "На {#first/пр,2}"
+
+mp.msg.Exam.NOTHING = function(w)
+	if w:has 'supporter' then
+		mp:pnoun (w, "На {#first/пр,2}")
+	else
+		mp:pnoun (w, "В {#first/пр,2}")
+	end
+	p "ничего нет."
+end
+
+mp.msg.Exam.CONTENT = function(w, oo)
+	local single = #oo == 1 and not oo[1]:hint 'plural'
+	if std.me():where() == w or std.here() == w then
+		if single then
+			p "Здесь находится"
+		else
+			p "Здесь находятся"
+		end
+		mp:multidsc(oo)
+		p "."
+		return
+	end
+	if w:has 'supporter' then
+		mp:pnoun (w, "На {#first/пр,2}")
+	else
+		mp:pnoun (w, "В {#first/пр,2}")
+	end
+	if single then
+		p "находится"
+	else
+		p "находятся"
+	end
+	mp:multidsc(oo)
+	p "."
+end
+
 --"видеть"
 mp.msg.Exam.DEFAULT = "{#Me} не {#word/видеть,#me,нст} {#vo/{#first/пр}} ничего необычного.";
 mp.msg.Exam.SELF = "{#Me} не {#word/видеть,#me,нст} в себе ничего необычного.";

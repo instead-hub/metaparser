@@ -3,7 +3,8 @@
 
 local tostring = std.tostr
 local table = std.table
-
+local type = type
+local string = string
 --- Error handler
 -- @param err error code
 function mp:err(err)
@@ -241,11 +242,11 @@ mp.door = std.class({
 	end;
 }, std.obj):attr 'enterable,openable,door'
 
-local function pnoun(noun, m, ...)
+function mp:pnoun(noun, msg)
 	local ctx = mp:save_ctx()
 	mp.first = noun
 	mp.first_hint = noun:gram().hint
-	mp:message(m, ...)
+	p(msg)
 	mp:restore_ctx(ctx)
 end
 
@@ -767,10 +768,6 @@ mp.compass_dir = function(_, w, dir)
 	return w ^ ('@'..dir)
 end
 
-mp.msg.MULTIDSC = function(oo, inv)
-	return mp:multidsc(oo, inv)
-end
-
 mp.msg.INFODSC = function(o)
 	return mp:infodsc(o)
 end
@@ -823,7 +820,11 @@ function mp:multidsc(oo, inv)
 			if inv then
 				n = std.call(v, 'inv')
 			end
-			n = n or v:noun(1)
+			if type(v.a_noun) == 'function' then
+				n = n or v:a_noun(1)
+			else
+				n = n or v:noun(1)
+			end
 			if dup[n] then
 				dup[n] = dup[n] + 1
 			else
@@ -849,7 +850,6 @@ function mp:multidsc(oo, inv)
 			pr(mp:mesg('INFODSC', ob))
 		end
 	end
-	p "."
 end
 
 -- Default priority in content
@@ -952,38 +952,10 @@ function mp:content(w, exam)
 	oo = ooo
 	if #oo == 0 then
 		if not inside and exam and mp.first == w and not something then
-			if w:has 'supporter' then
-				pnoun (w, 'Exam.ON')
-			else
-				pnoun (w, 'Exam.IN')
-			end
-			mp:message 'Exam.NOTHING'
+			mp:message ('Exam.NOTHING', w)
 		end
-	elseif #oo == 1 and not oo[1]:hint 'plural' then
-		if std.me():where() == w or std.here() == w then
-			mp:message('Look.HEREIS', w)
-		else
-			if w:has 'supporter' then
-				pnoun (w, 'Exam.ON')
-			else
-				pnoun (w, 'Exam.IN')
-			end
-			mp:message 'Exam.IS'
-		end
-		-- p(oo[1]:noun(1), ".")
-		mp:message('MULTIDSC', oo)
 	else
-		if std.me():where() == w or std.here() == w then
-			mp:message('Look.HEREARE', w)
-		else
-			if w:has 'supporter' then
-				pnoun (w, 'Exam.ON')
-			else
-				pnoun (w, 'Exam.IN')
-			end
-			mp:message 'Exam.ARE'
-		end
-		mp:message('MULTIDSC', oo)
+		mp:message('Exam.CONTENT', w, oo)
 	end
 -- expand?
 	for _, o in ipairs(expand) do
@@ -1364,7 +1336,8 @@ function mp:after_Inv()
 		mp:detailed_Inv(std.me(), 1)
 	else
 		p()
-		mp:message('MULTIDSC', oo, true)
+		mp:multidsc(oo, true)
+		p "."
 	end
 end
 
@@ -1435,7 +1408,7 @@ function mp:mesg(m, ...)
 	for _, n in ipairs(t) do
 		m = m[n]
 		if not m then
-			std.err("Wrong message id", 2)
+			std.err("Wrong message id: "..tostring(n), 2)
 		end
 	end
 	if type(m) ~= 'function' then

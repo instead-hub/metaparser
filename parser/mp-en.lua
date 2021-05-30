@@ -98,16 +98,6 @@ function mp.msg.SCORE(d)
 	end
 end
 
-function mp.msg.MULTIDSC(oo, inv)
-	if #oo > 0 then
-		local s = oo[1]
-		if not s:hint'proper' and not s:hint'surname' then
-			p "the"
-		end
-	end
-	mp:multidsc(oo, inv)
-end
-
 mp.door.word = "door"
 mp.msg.TITLE_SCORE = function()
 	if mp.maxscore then
@@ -426,12 +416,34 @@ mp.msg.NOROOM = function(w)
 end
 
 mp.msg.Exam.SWITCHSTATE = "{#Thefirst} {#is/#first} switched {#if_has/#first,on,on,off}."
-mp.msg.Exam.NOTHING = "nothing."
-mp.msg.Exam.IS = "there is"
-mp.msg.Exam.ARE = "there are"
-mp.msg.Exam.IN = "In {#thefirst}"
-mp.msg.Exam.ON = "On {#thefirst}"
-
+mp.msg.Exam.NOTHING = function(w)
+	p "There is nothing "
+	if w:has 'supporter' then
+		mp:pnoun (w, "on {#thefirst}.")
+	else
+		mp:pnoun (w, "in {#thefirst}.")
+	end
+end
+mp.msg.Exam.CONTENT = function(w, oo)
+	local single = not oo[1]:hint 'plural'
+	if std.me():where() == w or std.here() == w then
+		p "{#Me} can see"
+		mp:multidsc(oo)
+		p " here."
+		return
+	end
+	if single then
+		p "There is"
+	else
+		p "There are"
+	end
+	mp:multidsc(oo)
+	if w:has 'supporter' then
+		mp:pnoun (w, " on {#thefirst}.")
+	else
+		mp:pnoun (w, " in {#thefirst}.")
+	end
+end
 mp.msg.Exam.DEFAULT = "{#Me} {#does/#me} not see anything unusual in {#thefirst}.";
 mp.msg.Exam.SELF = "{#Me} {#does/#me} not see anything unusual in {#yourself/#me}.";
 
