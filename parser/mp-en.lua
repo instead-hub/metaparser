@@ -655,7 +655,8 @@ mp.msg.Answer.EMPTY = "{#Me} can't find anything to answer."
 mp.msg.Answer.SELF = "Good answer."
 
 mp.msg.Yes.YES = "That was a rhetorical question."
-mp.msg.Buy.USE = "How exactly?"
+mp.msg.Buy.BUY = "Nothing is on sale."
+mp.msg.Use.USE = "How exactly?"
 
 mp.keyboard_space = '<space>'
 mp.keyboard_backspace = '<backspace>'
