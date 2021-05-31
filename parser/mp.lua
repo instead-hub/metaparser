@@ -271,7 +271,7 @@ mp = std.obj {
 	detailed_inv = false;
 	daemons = std.list {};
 	{
-		version = "2.0";
+		version = "2.1";
 		cache = { tokens = {}, nouns = false };
 		scope = std.list {};
 		logfile = false;
