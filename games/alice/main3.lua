@@ -151,8 +151,7 @@ obj {
 	founded = false;
 	found_in = 'Drawing_Room';
 	description = function(s)
---		p [[Красивый каминный коврик из какой-то далекой страны -- может быть, Индии или Аравии.]];
-		return false;
+		p [[Красивый каминный коврик из какой-то далекой страны -- может быть, Индии или Аравии.]];
 	end;
 	before_Take = "Но коврик слишком большой и тяжелый!";
 	['before_Push,Pull'] = "Но место каминного коврика -- рядом с камином!";
@@ -176,7 +175,7 @@ obj {
 		end
 		return false
 	end
-}: attr 'static,supporter,enterable'
+}: attr 'concealed,static,supporter,enterable'
 
 obj {
 	-"кресло|стул";
