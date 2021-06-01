@@ -70,7 +70,8 @@ mp.shorten = {
 	["se"] = "southeast";
 	["sw"] = "southwest";
 	["nw"] = "northwest";
-
+	["u"] = "up";
+	["d"] = "down";
 }
 
 mp.shorten_expert = {
