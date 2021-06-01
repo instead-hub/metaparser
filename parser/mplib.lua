@@ -465,8 +465,8 @@ std.player.look = function(s)
 	if s:need_scene() then
 		scene = r:scene()
 	end
-	return (std.par(std.scene_delim, scene or false, r:display() or false))
-end;
+	return (std.par(std.scene_delim, scene or false, r:display() or false, std.call(mp, 'footer') or false))
+end
 
 --
 local function check_persist(w)

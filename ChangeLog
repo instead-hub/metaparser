@@ -3,6 +3,7 @@
   * mp.detailed_attr;
   * mp.msg.INCOMPLETE_NOUN/SECOND_NOUN/UNKNOWN_VERB rewrite;
   * mp:content rewrite;
+  * mp:footer();
   * English library fixes.
 
 2.0
