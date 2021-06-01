@@ -1374,13 +1374,15 @@ function mp:compl(str)
 			end
 		else -- matches
 			self.cache.nouns = self:nouns()
-			poss, eol, vargs = self:compl_match(words)
+			poss, eol = self:compl_match(words)
 		end
 		self:compl_ctx_push(poss)
 	end
 	local _, pre = self:compl_ctx()
 	for _, v in ipairs(poss) do
-		if v.word == '*' then vargs = true end
+		if v.word == '*' and not v.hidden then
+			vargs = true
+		end
 		if self:startswith(v.word, pre) and not v.word:find("%*$") then
 			if not dups[v.word] then
 				dups[v.word] = v
@@ -1519,7 +1521,7 @@ function mp:match(verb, w, compl)
 		local vargs
 		for lev, v in ipairs(d.pat) do -- pattern arguments
 			if v == '*' or v == '~*' then
-				vargs = true -- found
+				vargs = v -- found
 				v = '*'
 			end
 			local noun = not not v:find("^~?{noun}")
@@ -1657,7 +1659,7 @@ function mp:match(verb, w, compl)
 						end
 						table.insert(hints, { word = v, lev = rlev, match = match })
 					else
-						table.insert(hints, { word = '*', lev = rlev, match = match })
+						table.insert(hints, { word = vargs, lev = rlev, match = match })
 					end
 				end
 				if not found then
