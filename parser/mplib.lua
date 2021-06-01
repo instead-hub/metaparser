@@ -112,6 +112,7 @@ function mp:err(err)
 		local dups = {}
 		for _, v in ipairs(self.hints) do
 			if v:find("^~?{noun}") or v == '*' or v == '~*' then
+				if v:sub(1,1) == '~' then v = v:sub(2) end
 				v = mp:err_noun(v)
 				if not dups[v] then
 					table.insert(words, v)
