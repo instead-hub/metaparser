@@ -71,12 +71,15 @@ local function endswith(w, t)
 	return not not w:find(t..'$')
 end
 
-function mp:verb_filter(w)
+function mp:verb_filter(w, v)
 	if #w > 1 then
 		return true
 	end
 	local utf = mp.utf
 	local verb = w[1]
+	if v:find(verb, 1, true) == 1 then
+		return true
+	end
 	local t = utf.chars(w[1])
 	if endswith(verb, 'ся') or endswith(verb, 'сь') or endswith(verb, 'те') then
 		local len = #verb
@@ -92,7 +95,7 @@ function mp:verb_filter(w)
 		['о'] = true, ['у'] = true, ['ы'] = true,
 		['ю'] = true, ['я'] = true };
 	local len = #t
-	if len >= 2 and a[t[len - 1]] and t[len] == 'й' or a[t[len]] then
+	if len >= 2 and a[t[len - 1]] and t[len] == 'й' then -- or a[t[len]] then
 		return true
 	end
 	return false

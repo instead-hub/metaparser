@@ -999,11 +999,11 @@ function mp:lookup_verb(words, lev)
 			if not i and not lev and verb ~= vv.word then
 				i, len = self:lookup_short(words, vv.word)
 				if i then
-					local verb = {}
+					local v = {}
 					for k = i, i + len - 1 do
-						table.insert(verb, words[k])
+						table.insert(v, words[k])
 					end
-					if not self:verb_filter(verb) then
+					if not self:verb_filter(v, verb) then
 						i = false
 					end
 				end
