@@ -67,6 +67,37 @@ function mp:skip_filter(w)
 	return true
 end
 
+local function endswith(w, t)
+	return not not w:find(t..'$')
+end
+
+function mp:verb_filter(w)
+	if #w > 1 then
+		return true
+	end
+	local utf = mp.utf
+	local verb = w[1]
+	local t = utf.chars(w[1])
+	if endswith(verb, 'ся') or endswith(verb, 'сь') or endswith(verb, 'те') then
+		local len = #verb
+		len = len - utf.bb(verb, len)
+		len = len - utf.bb(verb, len)
+		verb = verb:sub(1, len)
+	end
+	if endswith(verb, 'и') or endswith(verb, 'ь') then
+		return true
+	end
+	local t = utf.chars(verb)
+	local a = { ['а'] = true, ['е'] = true, ['и'] = true,
+		['о'] = true, ['у'] = true, ['ы'] = true,
+		['ю'] = true, ['я'] = true };
+	local len = #t
+	if len >= 2 and a[t[len - 1]] and t[len] == 'й' or a[t[len]] then
+		return true
+	end
+	return false
+end
+
 _'@compass'.before_Default = function()
 	p('"{#First}" это направление. {#Firstit/вн} нельзя ', mp.parsed[1], ".")
 end

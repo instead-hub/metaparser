@@ -288,6 +288,7 @@ mp = std.obj {
 			ff = std.rawget(_G, 'utf8_next') or utf_ff;
 			len = std.rawget(_G, 'utf8_len') or utf_len;
 			char = std.rawget(_G, 'utf8_char') or utf_char;
+			chars = utf_chars;
 		};
 		lev_thresh = 3;
 		lev_ratio = 0.20;
@@ -977,9 +978,15 @@ end
 function mp:skip_filter()
 	return true
 end
+
 function mp:ignore_filter(w)
 	return false
 end
+
+function mp:verb_filter(words)
+	return true
+end
+
 function mp:lookup_verb(words, lev)
 	local ret = {}
 	local w = self:verbs()
@@ -991,6 +998,15 @@ function mp:lookup_verb(words, lev)
 			i, len, rlev = word_search(words, verb, lev and self.lev_thresh)
 			if not i and not lev and verb ~= vv.word then
 				i, len = self:lookup_short(words, vv.word)
+				if i then
+					local verb = {}
+					for k = i, i + len - 1 do
+						table.insert(verb, words[k])
+					end
+					if not self:verb_filter(verb) then
+						i = false
+					end
+				end
 			end
 			if i and i > 1 and not self:skip_filter({words[i - 1]}) then
 				i = nil
