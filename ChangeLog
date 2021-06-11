@@ -5,6 +5,7 @@
   * mp:content rewrite;
   * mp:footer();
   * mp:verb_filter() (ru: better verb detection);
+  * ru: #Insert fix;
   * English library fixes.
 
 2.0
