@@ -1003,7 +1003,8 @@ function mp:lookup_verb(words, lev)
 					for k = i, i + len - 1 do
 						table.insert(v, words[k])
 					end
-					if not self:verb_filter(v, verb) then
+					if verb:find(table.concat(v, ' '), 1, true) ~= 1 and
+						not self:verb_filter(v) then
 						i = false
 					end
 				end
