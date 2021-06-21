@@ -676,18 +676,18 @@ function mp:myself(ob)
 		return { "myself", "me" }
 	end
 	if ob:hint'second' then
-		return { "yourself", "me", "myself" }
+		return { "yourself", "myself", "me" }
 	end
 	if ob:hint'plural' then
-		return { "themselves", "our" }
+		return { "themselves", "ourselves" }
 	end
 	if ob:hint'female' then
-		return { "herself", "me" }
+		return { "herself", "myself", "me" }
 	end
 	if ob:hint'male' then
-		return { "himself", "me" }
+		return { "himself", "myself", "me" }
 	end
-	return { "itself" }
+	return { "itself", "myself", "me" }
 end
 
 function mp:it(w)

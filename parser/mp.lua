@@ -646,24 +646,28 @@ function mp.token.noun(w)
 	for _, o in ipairs(oo) do
 		local d = {}
 		local r = o:noun(attr, d)
-		for k, v in ipairs(d) do
-			local hidden = (k ~= 1) or w.hidden
-			if o:has 'multi' then
-				hidden = w.hidden or (v.idx ~= 1)
-			end
-			if o == std.me() and mp.myself then
-				for _, vm in ipairs(mp:myself(o, w.morph)) do
-					table.insert(ww, { optional = w.optional, word = vm, morph = attr, ob = o, alias = o.alias, hidden = hidden })
-				end
-				break
-			else
-				table.insert(ww, { optional = w.optional, word = r[k], ob = o, morph = attr, alias = v.alias, hidden = hidden })
+		if o == std.me() and mp.myself then
+			for _, vm in ipairs(mp:myself(o, w.morph)) do
+				table.insert(ww, { optional = w.optional, word = vm, morph = attr, ob = o, alias = o.alias, hidden = w.hidden })
 			end
 		end
-		if o == mp.first_it then
-			table.insert(syms, 1, o)
-		elseif o == mp.second_it then
-			table.insert(syms, o)
+		if o ~= std.me() or (not o:hint'first' and not o:hint'second') then
+			for k, v in ipairs(d) do
+				local hidden = (k ~= 1) or w.hidden
+				if o:has 'multi' then
+					hidden = w.hidden or (v.idx ~= 1)
+				end
+				table.insert(ww,
+					{ optional = w.optional,
+						word = r[k], ob = o,
+						morph = attr, alias = v.alias,
+						hidden = hidden })
+			end
+			if o == mp.first_it then
+				table.insert(syms, 1, o)
+			elseif o == mp.second_it then
+				table.insert(syms, o)
+			end
 		end
 	end
 
