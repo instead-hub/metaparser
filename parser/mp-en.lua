@@ -807,6 +807,7 @@ Verb { "#Exam",
 	"inventory : Inv",
 	"~ under {noun} : LookUnder",
 	"~ in|inside|into|through|on {noun} : Search",
+	"~ ?at {noun} : Exam",
 	"~ up * in {noun} : Consult reverse",
 }
 
