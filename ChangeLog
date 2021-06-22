@@ -6,6 +6,7 @@
   * mp:footer();
   * mp:verb_filter() (ru: better verb detection);
   * ru: #Insert fix;
+  * fixes in autocompletion;
   * English library fixes.
 
 2.0
