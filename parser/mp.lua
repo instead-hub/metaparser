@@ -648,7 +648,8 @@ function mp.token.noun(w)
 		local r = o:noun(attr, d)
 		if o == std.me() and mp.myself then
 			for _, vm in ipairs(mp:myself(o, w.morph)) do
-				table.insert(ww, { optional = w.optional, word = vm, morph = attr, ob = o, alias = o.alias, hidden = w.hidden })
+				table.insert(ww, { optional = w.optional, word = vm, morph = attr, ob = o, alias = o.alias,
+					hidden = w.hidden or _ ~= 1 })
 			end
 		end
 		if o ~= std.me() or (not o:hint'first' and not o:hint'second') then
