@@ -1037,7 +1037,7 @@ Verb {
 
 Verb {
 	"#Listen",
-	"listen.hear",
+	"listen,hear",
 	"Listen",
 	"?to {noun}: Listen",
 }
