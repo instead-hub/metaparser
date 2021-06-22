@@ -673,21 +673,21 @@ mp.msg.GAMEOVER_HELP = [[Use restart to restart game.]];
 
 function mp:myself(ob)
 	if ob:hint'first' then
-		return { "myself", "me" }
+		return { "myself", "self", "me" }
 	end
 	if ob:hint'second' then
-		return { "yourself", "myself", "me" }
+		return { "yourself", "myself", "self", "me" }
 	end
 	if ob:hint'plural' then
-		return { "themselves", "ourselves" }
+		return { "themselves", "ourselves", "self" }
 	end
 	if ob:hint'female' then
-		return { "herself", "myself", "me" }
+		return { "herself", "myself", "self", "me" }
 	end
 	if ob:hint'male' then
-		return { "himself", "myself", "me" }
+		return { "himself", "myself", "self", "me" }
 	end
-	return { "itself", "myself", "me" }
+	return { "itself", "myself", "self", "me" }
 end
 
 function mp:it(w)
@@ -910,6 +910,7 @@ Verb {
 
 Verb {
 	"#SwitchOff",
+	"switch",
 	"off {noun}: SwitchOff",
 	"~ {noun} off : SwitchOff",
 }
