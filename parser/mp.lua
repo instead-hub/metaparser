@@ -1257,11 +1257,12 @@ function mp:compl_filter(v)
 			hidden = not v.ob.hint_noun
 		end
 	end
-	if hidden and self.compl_thresh == 0 then
+	local _, pre = self:compl_ctx()
+	local nsym = mp.utf.len(pre)
+	if hidden and self.compl_thresh == 0 and nsym == 0 then
 		return false
 	end
-	local _, pre = self:compl_ctx()
-	if mp.utf.len(pre) < self.compl_thresh then
+	if nsym < self.compl_thresh then
 		return false
 	end
 	if not v.ob or not v.morph then
@@ -1367,6 +1368,7 @@ function mp:compl_ctx_poss()
 			table.insert(res, v)
 		end
 	end
+	res.eol = ctx.eol
 	return res
 end
 
@@ -1381,6 +1383,7 @@ function mp:compl(str)
 	collectgarbage("stop")
 	self:compl_ctx_current();
 	poss = self:compl_ctx_poss()
+	eol = poss.eol
 	if (#poss == 0 and e) or #words == 0 then -- no context
 		if #words == 0 or (#words == 1 and not e) then -- verb?
 			poss, eol = self:compl_verb(words)
@@ -1398,6 +1401,7 @@ function mp:compl(str)
 			self.cache.nouns = self:nouns()
 			poss, eol = self:compl_match(words)
 		end
+		poss.eol = eol
 		self:compl_ctx_push(poss)
 	end
 	local _, pre = self:compl_ctx()
