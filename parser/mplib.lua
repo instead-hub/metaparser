@@ -244,7 +244,7 @@ function mp:pnoun(noun, msg)
 	local ctx = mp:save_ctx()
 	mp.first = noun
 	mp.first_hint = noun:gram().hint
-	p(msg)
+	std.p(mp.fmt(msg)) -- first is available only here, so fmt is forced
 	mp:restore_ctx(ctx)
 end
 
