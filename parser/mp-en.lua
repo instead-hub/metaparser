@@ -741,7 +741,7 @@ function mp:before_Enter(w)
 end
 
 mp.msg.HELP = function()
-	p [[{$fmt b|INSTRUCTIONS}^^
+	local help = [[{$fmt b|INSTRUCTIONS}^^
 
 Enter your actions in verb noun form. For example:^
 > open door^
@@ -757,8 +757,9 @@ To exam your inventory, enter "inv".^
 ^
 Use compass directions to walk. For example: "go north" or "north" or just "n". There are also up and down directions, outside and inside.]]
 	if not instead.tiny then
-		p [[^^You may use the "TAB" key for autocompletion.]]
+		help = help .. [[^^You may use the "TAB" key for autocompletion.]]
 	end
+    return help
 end
 
 function mp.token.compass1(_)
