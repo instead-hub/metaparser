@@ -2581,7 +2581,7 @@ function(cmd)
 			std.game:__start()
 		end
 		if mp:noparser() then
-			return true, false
+			return
 		end
 --		mp.inp = mp:docompl(mp.inp)
 		local r, v, n
