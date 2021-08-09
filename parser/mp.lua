@@ -2648,10 +2648,10 @@ instead.mouse_filter(0)
 -- speedup undo
 local obusy = std.busy
 local busy_count = 0
-function std.busy(...)
+function std.busy(b)
 	busy_count = busy_count + 1
-	if (busy_count % 100) == 0 then
-		obusy(...)
+	if not b or (busy_count % 100) == 0 then
+		obusy(b)
 	end
 end
 function instead.fading()
