@@ -2098,7 +2098,7 @@ function mp:show_prompt(inp)
 	if std.cmd[1] == 'look' then
 		return false
 	end
-	if std.here():has 'cutscene' or std.here():has 'noprompt' or player_moved() or std.abort_cmd then
+	if std.here():has 'noprompt' then
 		return false
 	end
 	if self.prompt then
