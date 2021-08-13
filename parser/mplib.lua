@@ -1008,17 +1008,15 @@ function mp:step()
 end
 local last_gfx = false
 function mp:post_action()
-	if (self.event and self.event:find("Meta", 1, true)) or self:comment() then
+	if (self.event and self.event:find("Meta", 1, true)) or self:comment() or self:noparser() then
 		local s = std.game
 		local r = mp:strip(std.pget())
 		s:reaction(r or false)
 		std.pclr()
-		r = mp:strip(s:display(false))
+		r = mp:strip(s:display(self:noparser()))
 		s:lastdisp(r)
 		std.pr(r)
 		std.abort_cmd = true
-	elseif self:noparser() then
-		return
 	end
 	if mp.undo > 0 then
 		local nr = #snapshots.data
