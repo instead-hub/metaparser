@@ -1017,6 +1017,7 @@ function mp:post_action()
 		s:lastdisp(r)
 		std.pr(r)
 		std.abort_cmd = true
+		return
 	end
 	if mp.undo > 0 then
 		local nr = #snapshots.data
