@@ -966,6 +966,14 @@ end
 
 std.room:attr 'enterable,light'
 
+function mp:strip(r)
+	if std.strip_call and type(r) == 'string' then
+		r = r:gsub("^[%^\n\r\t ]+", "") -- extra heading ^ and spaces
+		r = r:gsub("[%^\n\r\t ]+$", "") -- extra trailing ^ and spaces
+	end
+	return r
+end
+
 function mp:step()
 	local old_daemons = {}
 	game.__daemons:for_each(function(o)
@@ -988,19 +996,11 @@ function mp:step()
 		end
 	end
 	local s = std.game -- after reset game is recreated
-	local r = std.pget()
-	if std.strip_call and type(r) == 'string' then
-		r = r:gsub("^[%^\n\r\t ]+", "") -- extra heading ^ and spaces
-		r = r:gsub("[%^\n\r\t ]+$", "") -- extra trailing ^ and spaces
-	end
+	local r = mp:strip(std.pget())
 	s:reaction(r or false)
 	std.pclr()
 	s:step()
-	r = s:display(true)
-	if std.strip_call and type(r) == 'string' then
-		r = r:gsub("^[%^\n\r\t ]+", "") -- extra heading ^ and spaces
-		r = r:gsub("[%^\n\r\t ]+$", "") -- extra trailing ^ and spaces
-	end
+	r = mp:strip(s:display(true))
 	s:lastreact(s:reaction() or false)
 	s:lastdisp(r)
 	std.pr(r)
@@ -1011,6 +1011,11 @@ function mp:post_action()
 	if self:noparser() or
 		(self.event and self.event:find("Meta", 1, true)) or
 		self:comment() then
+		local s = std.game
+		s:reaction(mp:strip(std.pget()))
+		local r = s:display(false)
+		s:lastdisp(mp:strip(r))
+		std.abort_cmd = true
 		return
 	end
 	if mp.undo > 0 then
