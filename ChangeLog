@@ -1,3 +1,9 @@
+2.2
+  * fix crash with mp:myself();
+  * fixes with Meta commands;
+  * fix in std.busy();
+  * backports from re:instead project.
+
 2.1
   * disable transcript while autoscript cmd;
   * mp.detailed_attr;
