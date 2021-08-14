@@ -1046,14 +1046,12 @@ function mp:post_action()
 		if not gfx and std.game.gfx ~= nil then
 			gfx = std.call(std.game, 'gfx')
 		end
-		if gfx ~= last_gfx then
-			if gfx then
-				pn(fmt.c(fmt.img(gfx)))
-			end
-			p(l, std.scene_delim)
-			game.player:need_scene(false)
+		if gfx and gfx ~= last_gfx then
+			pn(fmt.c(fmt.img(gfx)))
 			last_gfx = gfx
 		end
+		p(l, std.scene_delim)
+		game.player:need_scene(false)
 	end
 	mp:step()
 end
