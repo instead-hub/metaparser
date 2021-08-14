@@ -2195,7 +2195,9 @@ std.world.display = function(s, state)
 	l = std.par(std.scene_delim, reaction or false,
 		    av or false, l or false,
 		    pv or false) or ''
-	mp:log(l)
+	if l ~= '' then
+		mp:log(l)
+	end
 	if mp._pager_mode and not first then
 		mp.text = mp.text ..  fmt.anchor() .. l .. '^^' -- .. fmt.anchor()
 	else
