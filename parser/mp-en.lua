@@ -759,7 +759,7 @@ Use compass directions to walk. For example: "go north" or "north" or just "n". 
 	if not instead.tiny then
 		p [[^^You may use the "TAB" key for autocompletion.]]
 	else
-		p [[^^Use "save" and "load" to save and load game. For ex. "save 1".]]
+		p [[^^Use "save" and "load" to save and load game.]]
 	end
 
 end
