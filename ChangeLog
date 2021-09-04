@@ -1,3 +1,6 @@
+2.2.1
+  * fix with so shortcut.
+
 2.2
   * fix crash with mp:myself();
   * fixes with Meta commands;
