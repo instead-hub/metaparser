@@ -701,13 +701,26 @@ function mp.shortcut.vo(hint)
 end
 
 function mp.shortcut.so(hint)
+	local so = {
+		["с"] = true,
+		["з"] = true,
+		["ш"] = true,
+		["ж"] = true,
+		["л"] = true,
+		["р"] = true,
+		["м"] = true,
+	}
+
 	local w = std.split(mp.mrd.lang.norm(hint))
 	local utf = mp.utf
 	w = w[#w]
 	if utf.len(w) > 2 and
-		(not lang.is_vowel(utf.char(w, 1) and
-		not lang.is_vowel(utf.char(w, 2))))
-		or utf.char(w, 1) == 'щ' then
+		((so[utf.char(w, 1)] and
+		not lang.is_vowel(utf.char(w, 2))) or utf.char(w, 1) == 'щ') then
+		return "со ".. hint
+	end
+	if utf.len(w) > 2 and utf.char(w, 1) == 'л' and utf.char(w, 2) == 'ь' and
+		not lang.is_vowel(utf.char(w, 2)) then
 		return "со ".. hint
 	end
 	return "с ".. hint
