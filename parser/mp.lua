@@ -1578,7 +1578,7 @@ function mp:match(verb, w, compl)
 					new_wildcard = false
 				end
 				if not required and k ~= 1 then k = false end -- ?word is only in 1st pos
-				if k and ((k < best or len > best_len) or
+				if k and ((k < best or (k == best and len > best_len)) or
 					(not new_wildcard and wildcard and k <= best and len >= best_len)) then
 					wildcard = new_wildcard
 					best = k
