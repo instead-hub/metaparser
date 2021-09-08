@@ -2100,7 +2100,7 @@ function mp:show_prompt(inp)
 	if std.cmd[1] == 'look' then
 		return false
 	end
-	if std.here():has 'noprompt' then
+	if std.here():has 'cutscene' or std.here():has 'noprompt' then
 		return false
 	end
 	if self.prompt then
