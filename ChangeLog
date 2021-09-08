@@ -1,3 +1,7 @@
+2.2.2
+  * fix with :match;
+  * mp.strict_mode experiment.
+
 2.2.1
   * fix with so shortcut.
 
