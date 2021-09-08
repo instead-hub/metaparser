@@ -259,6 +259,7 @@ mp = std.obj {
 	score = false;
 	maxscore = false;
 	expert_mode = true;
+	strict_mode = false;
 	autohelp = false;
 	autohelp_limit = 1000;
 	autohelp_noverbs = false;
@@ -1000,9 +1001,10 @@ function mp:lookup_verb(words, lev)
 		for _, vv in ipairs(v.verb) do
 			local verb = vv.word .. (vv.morph or "")
 			local i, len, rlev
-			i, len, rlev = word_search(words, verb, lev and self.lev_thresh)
+			local vwords = mp.strict_mode and { words[1] } or words
+			i, len, rlev = word_search(vwords, verb, lev and self.lev_thresh)
 			if not i and not lev and vv.morph then
-				i, len = self:lookup_short(words, vv.word)
+				i, len = self:lookup_short(vwords, vv.word)
 				if i then
 					local v = {}
 					for k = i, i + len - 1 do
@@ -1577,7 +1579,7 @@ function mp:match(verb, w, compl)
 				else
 					new_wildcard = false
 				end
-				if not required and k ~= 1 then k = false end -- ?word is only in 1st pos
+				if (not required or mp.strict_mode) and k ~= 1 then k = false end -- ?word is only in 1st pos
 				if k and ((k < best or (k == best and len > best_len)) or
 					(not new_wildcard and wildcard and k <= best and len >= best_len)) then
 					wildcard = new_wildcard
@@ -2127,7 +2129,7 @@ function mp:parse(inp)
 
 	mp:log("> "..inp)
 
-	local noprompt = not mp:show_prompt(inp)
+	local prompt = not mp:show_prompt(inp)
 
 	inp = inp:gsub("[ ]+", " "):gsub("["..inp_split.."]+", " "):gsub("[ \t]+$", "")
 
@@ -2153,7 +2155,7 @@ function mp:parse(inp)
 			return r
 		end
 	else
-		if std.cmd[1] ~= 'look' and not noprompt then
+		if std.cmd[1] ~= 'look' and prompt ~= false then
 			self:correct(inp)
 		end
 		-- here we do action
