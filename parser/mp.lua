@@ -2129,7 +2129,7 @@ function mp:parse(inp)
 
 	mp:log("> "..inp)
 
-	local prompt = not mp:show_prompt(inp)
+	local prompt = mp:show_prompt(inp)
 
 	inp = inp:gsub("[ ]+", " "):gsub("["..inp_split.."]+", " "):gsub("[ \t]+$", "")
 
