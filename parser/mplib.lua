@@ -1656,6 +1656,14 @@ local function cont_taken(ob, taken)
 	end
 end
 
+--- Check if object is part of parent
+-- @param w       what
+function mp:partof(w)
+	return w:where() and not w:where():type'room' and
+		not w:where():has'container' and
+		not w:where():has'supporter'
+end
+
 function mp:TakeAll(wh)
 	local empty = true
 	wh = wh or std.me():where()
@@ -1666,6 +1674,7 @@ function mp:TakeAll(wh)
 		if o:hasnt 'static' and o:hasnt'scenery' and o:hasnt 'concealed'
 			and not mp:animate(o)
 			and not cont_taken(o, taken) then
+			and not partof(o) then
 			empty = false
 			mp:message('TAKING_ALL', o)
 			mp:subaction('Take', o)
@@ -1714,9 +1723,7 @@ function mp:Take(w, wh)
 		mp:message 'Take.SCENERY'
 		return
 	end
-	if w:where() and not w:where():type'room' and
-		not w:where():has'container' and
-		not w:where():has'supporter' then
+	if mp:partof(w) then
 		if w:has'worn' and mp:animate(w:where()) then
 			mp:message 'Take.WORN'
 		else
