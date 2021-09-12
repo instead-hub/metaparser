@@ -127,6 +127,9 @@ mp.msg.COMPASS_NOWAY = "Этот путь недоступен."
 mp.msg.COMPASS_EXAM_NO = "В этом направлении не видно ничего примечательного."
 mp.msg.ENUM = "шт."
 mp.msg.CUTSCENE_HELP = "Для продолжения нажмите <ввод> или введите {$fmt em|дальше}."
+if instead.reinstead then
+	mp.msg.CUTSCENE_MORE = "^{$fmt em|(дальше)}"
+end
 mp.msg.DLG_HELP = "Для выбора фразы введите цифру."
 mp.msg.NO_ALL = "Это действие нельзя применить на всё."
 mp.msg.DROPPING_ALL = function(w)
@@ -757,6 +760,13 @@ mp.msg.HELP = function()
 	else
 		p [[^^Вы можете сокращать названия объектов.]]
 		p [[^^Чтобы сохранять и загружать игру используйте "сохранить" и "загрузить".]]
+		if instead.tiny then
+			p [[Например, "сохранить 1".]]
+		end
+		p [[Начать заново: "заново".]]
+		if instead.reinstead then
+			p [[^^Также доступны команды: /restart, /quit, /info, /save, /load и /font <размер>.]]
+		end
 	end
 end
 

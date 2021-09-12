@@ -121,6 +121,9 @@ mp.msg.COMPASS_NOWAY = "{#Me} can't go that way."
 mp.msg.COMPASS_EXAM_NO = "Nothing interesting in that direction."
 mp.msg.ENUM = "items."
 mp.msg.CUTSCENE_HELP = "Press <Enter> or enter {$fmt em|next} to continue."
+if instead.reinstead then
+	mp.msg.CUTSCENE_MORE = "^{$fmt em|(more)}"
+end
 mp.msg.DLG_HELP = "Enter number to select the phrase."
 mp.msg.NO_ALL = "This verb can not be used with all."
 mp.msg.DROPPING_ALL = function(w)
@@ -760,6 +763,13 @@ Use compass directions to walk. For example: "go north" or "north" or just "n". 
 		p [[^^You may use the "TAB" key for autocompletion.]]
 	else
 		p [[^^Use "save" and "load" to save and load game.]]
+		if instead.tiny then
+			p [[For ex. "save 1".]]
+		end
+		p [[Restart game: "restart".]]
+		if instead.reinstead then
+			p [[^^Also available: /restart, /quit, /info, /save, /load and /font <size>.]]
+		end
 	end
 
 end
