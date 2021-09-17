@@ -2818,6 +2818,7 @@ end
 
 function mp:MetaScore()
 	mp:message'TITLE_TURNS'
+	pn()
 	mp:message'TITLE_SCORE'
 end
 
