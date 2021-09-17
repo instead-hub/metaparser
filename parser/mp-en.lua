@@ -768,7 +768,7 @@ Use compass directions to walk. For example: "go north" or "north" or just "n". 
 		end
 		p [[Restart game: "restart".]]
 		if instead.reinstead then
-			p [[^^Also available: /restart, /quit, /info, /save, /load and /font <size>.]]
+			p [[^^Also available: !restart, !quit, !info, !save, !load and !font <size>.]]
 		end
 	end
 

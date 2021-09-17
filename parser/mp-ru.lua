@@ -765,7 +765,7 @@ mp.msg.HELP = function()
 		end
 		p [[Начать заново: "заново".]]
 		if instead.reinstead then
-			p [[^^Также доступны команды: /restart, /quit, /info, /save, /load и /font <размер>.]]
+			p [[^^Также доступны команды: !restart, !quit, !info, !save, !load и !font <размер>.]]
 		end
 	end
 end
