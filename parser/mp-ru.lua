@@ -344,7 +344,7 @@ mp.msg.Exit.CLOSED = "Но {#first} {#word/закрыт,#first}."
 
 --"покидать"
 --"слезать"
-mp.msg.Exit.EXITED = "{#Me} {#if_has/#first,supporter,{#word/слезать {#so/{#first/рд},#me,нст}},"..
+mp.msg.Exit.EXITED = "{#Me} {#if_has/#first,supporter,{#word/слезать,#me,нст} {#so/{#first/рд}},"..
 	"{#word/покидать,#me,нст} {#first/вн}}."
 
 mp.msg.GetOff.NOWHERE = "Но {#me/дт} не с чего слезать."
