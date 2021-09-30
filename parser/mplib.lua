@@ -460,13 +460,23 @@ std.obj.display = function(s)
 	return c
 end
 
+local last_gfx = false
+
 std.player.look = function(s)
-	local scene
+	local scene, img
 	local r = s:where()
 	if s:need_scene() then
-		scene = r:scene()
+		local gfx
+		gfx = std.call(std.here(), 'gfx') or std.call(std.game, 'gfx')
+		if not gfx and instead.tiny then
+			gfx = stead.call(std.here(), 'pic') or stead.call(std.ref 'game', 'pic')
+		end
+		if gfx and gfx ~= last_gfx then
+			img = fmt.c(fmt.img(gfx))
+			last_gfx = gfx
+		end
 	end
-	return (std.par(std.scene_delim, scene or false, r:display() or false, std.call(mp, 'footer') or false))
+	return (std.par(std.scene_delim, img or false, scene or false, r:display() or false, std.call(mp, 'footer') or false))
 end
 
 --
@@ -1006,7 +1016,7 @@ function mp:step()
 	std.pr(r)
 	std.abort_cmd = true
 end
-local last_gfx = false
+
 function mp:post_action()
 	if (self.event and self.event:find("Meta", 1, true)) or self:comment() or self:noparser() then
 		if std.abort_cmd then
@@ -1039,17 +1049,6 @@ function mp:post_action()
 	if game.player:need_scene() then
 --		pn(iface:nb'')
 		local l = game.player:look() -- objects [and scene]
-		local gfx
-		if std.here().gfx ~= nil then
-			gfx = std.call(std.here(), 'gfx')
-		end
-		if not gfx and std.game.gfx ~= nil then
-			gfx = std.call(std.game, 'gfx')
-		end
-		if gfx and gfx ~= last_gfx then
-			pn(fmt.c(fmt.img(gfx)))
-			last_gfx = gfx
-		end
 		p(l, std.scene_delim)
 		game.player:need_scene(false)
 	end
