@@ -475,6 +475,7 @@ std.player.look = function(s)
 			img = fmt.c(fmt.img(gfx))
 			last_gfx = gfx
 		end
+		scene = r:scene()
 	end
 	return (std.par(std.scene_delim, img or false, scene or false, r:display() or false, std.call(mp, 'footer') or false))
 end
