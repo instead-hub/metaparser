@@ -244,7 +244,7 @@ mp.msg.HAS_LIGHT = function(w)
 end
 
 mp.msg.EXITBEFORE = "Возможно, {#me/дт} нужно сначала "..
-	"{#if_has/#where,supporter,слезть с {#where/рд}.,покинуть {#where/вн}.}"
+	"{#if_has/#where,supporter,слезть {#so/{#where/рд}}.,покинуть {#where/вн}.}"
 
 mp.default_Event = "Exam"
 mp.default_Verb = "осмотреть"
@@ -336,7 +336,7 @@ mp.msg.Walk.WALK = "Но {#first} и так находится здесь."
 mp.msg.Walk.NOWHERE = "Куда именно?"
 mp.msg.Walk.INV = "Но {#first} у {#me/рд} с собой."
 
-mp.msg.Enter.EXITBEFORE = "Сначала нужно {#if_has/#where,supporter,слезть с {#where/рд}.,покинуть {#where/вн}.}"
+mp.msg.Enter.EXITBEFORE = "Сначала нужно {#if_has/#where,supporter,слезть {#so/{#where/рд}}.,покинуть {#where/вн}.}"
 
 mp.msg.Exit.NOTHERE = "Но {#me} сейчас не {#if_has/#first,supporter,на,в} {#first/пр,2}."
 mp.msg.Exit.NOWHERE = "Но {#me/дт} некуда выходить."
