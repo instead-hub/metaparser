@@ -1019,10 +1019,10 @@ function mp:step()
 end
 
 function mp:post_action()
+	if std.abort_cmd then
+		return
+	end
 	if (self.event and self.event:find("Meta", 1, true)) or self:comment() or self:noparser() then
-		if std.abort_cmd then
-			return
-		end
 		local s = std.game
 		local r = mp:strip(std.pget())
 		s:reaction(r or false)
