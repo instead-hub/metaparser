@@ -460,24 +460,21 @@ std.obj.display = function(s)
 	return c
 end
 
-local last_gfx = false
-
 std.player.look = function(s)
 	local scene, img
 	local r = s:where()
 	if s:need_scene() then
-		local gfx
-		gfx = std.call(std.here(), 'gfx') or std.call(std.game, 'gfx')
+		local gfx = std.call(std.here(), 'gfx') or std.call(std.game, 'gfx')
 		if not gfx and instead.tiny then
 			gfx = stead.call(std.here(), 'pic') or stead.call(std.ref 'game', 'pic')
 		end
-		if gfx and gfx ~= last_gfx then
+		if gfx and gfx ~= mp.last_gfx then
 			img = fmt.c(fmt.img(gfx))
-			last_gfx = gfx
+			mp.last_gfx = gfx
 		end
-		scene = r:scene()
+		scene = std.par('^', img, r:scene())
 	end
-	return (std.par(std.scene_delim, img or false, scene or false, r:display() or false, std.call(mp, 'footer') or false))
+	return (std.par(std.scene_delim, scene or false, r:display() or false, std.call(mp, 'footer') or false))
 end
 
 --

@@ -270,6 +270,7 @@ mp = std.obj {
 	compl_thresh = 0;
 	compare_len = 3;
 	detailed_inv = false;
+	last_gfx = false;
 	daemons = std.list {};
 	{
 		version = "2.2.2";
@@ -2646,6 +2647,7 @@ end
 std.mod_start(function()
 	mp:compl_reset()
 	mp:compl_fill(mp:compl(""))
+	mp.last_gfx = false
 --	if instead.text_input then instead.text_input(true) end
 end, 2)
 instead.mouse_filter(0)
