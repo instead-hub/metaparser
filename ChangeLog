@@ -1,7 +1,12 @@
-2.2.2
+2.3
   * TakeAll do not take partofs;
+  * mp.strict_mode experiment;
+  * mp.inp_delim;
   * fix with :match;
-  * mp.strict_mode experiment.
+  * fix in post_action when abort_cmd (snapshots);
+  * fix in ru so/s;
+  * fix in Exit.EXITED msg;
+  * better gfx attr support (instead.tiny uses pic).
 
 2.2.1
   * fix with so shortcut.
