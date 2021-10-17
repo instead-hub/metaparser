@@ -11,7 +11,6 @@ if std.ref'@theme' then
 end
 
 local mrd = require "morph/mrd"
-local inp_split = " :.,!?-"
 
 local input = std.ref '@input'
 
@@ -271,6 +270,7 @@ mp = std.obj {
 	compare_len = 3;
 	detailed_inv = false;
 	last_gfx = false;
+	inp_delim = " :.,!?-";
 	daemons = std.list {};
 	{
 		version = "2.2.2";
@@ -938,7 +938,7 @@ end
 
 local function word_search(t, w, lev)
 	local rlev
-	w = str_split(w, inp_split)
+	w = str_split(w, mp.inp_delim)
 	for k = 1, #t - #w + 1 do
 		local found = true
 		for i = 1, #w do
@@ -1376,7 +1376,7 @@ function mp:compl_ctx_poss()
 end
 
 function mp:compl(str)
-	local words = str_split(self:norm(str), inp_split)
+	local words = str_split(self:norm(str), mp.inp_delim)
 	local poss
 	local ret = {}
 	local dups = {}
@@ -2073,7 +2073,7 @@ function mp:correct(inp)
 		if rinp ~= '' then rinp = rinp .. ' ' end
 		rinp = rinp .. v
 	end
-	local strip_inp = str_split(inp, inp_split)
+	local strip_inp = str_split(inp, mp.inp_delim)
 	inp = ''
 	for _, v in ipairs(strip_inp) do
 		if not mp:ignore_filter(v) then
@@ -2081,7 +2081,7 @@ function mp:correct(inp)
 			inp = inp .. v
 		end
 	end
-	local cmprinp = rinp:gsub("["..inp_split.."]+", " ")
+	local cmprinp = rinp:gsub("["..mp.inp_delim.."]+", " ")
 	if not self:eq(cmprinp, inp) then
 		pn(fmt.em("("..rinp..")"))
 	end
@@ -2132,7 +2132,7 @@ function mp:parse(inp)
 
 	local prompt = mp:show_prompt(inp)
 
-	inp = inp:gsub("[ ]+", " "):gsub("["..inp_split.."]+", " "):gsub("[ \t]+$", "")
+	inp = inp:gsub("[ ]+", " "):gsub("["..mp.inp_delim.."]+", " "):gsub("[ \t]+$", "")
 
 	local r, v
 
@@ -2381,7 +2381,7 @@ function mp:shorten_input(w)
 	if not str then
 		return
 	end
-	local t = str_split(str, inp_split)
+	local t = str_split(str, mp.inp_delim)
 	table.remove(w, 1)
 	for i, v in ipairs(t) do
 		table.insert(w, i, v)
@@ -2417,7 +2417,7 @@ function mp:input(str)
 		str = mp:pre_input(str)
 		if not str then return false end
 	end
-	local w = str_split(str, inp_split)
+	local w = str_split(str, mp.inp_delim)
 	mp:strip_input(w)
 	mp:shorten_input(w)
 	self.words = w
