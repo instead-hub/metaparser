@@ -767,6 +767,9 @@ obj {
 -- @param w the object to check
 -- @param dir optional arg to check againist selected dir
 mp.compass_dir = function(_, w, dir)
+	if not w then
+		return false
+	end
 	if not dir then
 		local nam = tostring(w.nam):gsub("^@", "")
 		return w:where() and w:where() ^ '@compass' and nam
