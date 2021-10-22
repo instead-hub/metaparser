@@ -121,7 +121,7 @@ mp.msg.COMPASS_NOWAY = "{#Me} can't go that way."
 mp.msg.COMPASS_EXAM_NO = "Nothing interesting in that direction."
 mp.msg.ENUM = "items."
 mp.msg.CUTSCENE_HELP = "Press <Enter> or enter {$fmt em|next} to continue."
-if instead.reinstead then
+if instead.tiny then
 	mp.msg.CUTSCENE_MORE = "^{$fmt em|(more)}"
 end
 mp.msg.DLG_HELP = "Enter number to select the phrase."

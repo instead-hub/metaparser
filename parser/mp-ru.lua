@@ -127,7 +127,7 @@ mp.msg.COMPASS_NOWAY = "Этот путь недоступен."
 mp.msg.COMPASS_EXAM_NO = "В этом направлении не видно ничего примечательного."
 mp.msg.ENUM = "шт."
 mp.msg.CUTSCENE_HELP = "Для продолжения нажмите <ввод> или введите {$fmt em|дальше}."
-if instead.reinstead then
+if instead.tiny then
 	mp.msg.CUTSCENE_MORE = "^{$fmt em|(дальше)}"
 end
 mp.msg.DLG_HELP = "Для выбора фразы введите цифру."
