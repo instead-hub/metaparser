@@ -3097,14 +3097,26 @@ function Class(t, w)
 	return std.class(t, w)
 end
 
-std.obj.once = function(s, n)
-	if type(n) == 'string' then
-		n = '__once_'..n
+local function get_once_tag(n)
+  if type(n) == 'string' then
+		return '__once_'..n
 	else
-		n = '__once'
+		return '__once'
 	end
+end
+
+std.obj.once = function(s, n)
+	n = get_once_tag(n)
 	if not s[n] then
 		s[n] = true
+		return true
+	end
+	return false
+end
+
+std.obj.is_once = function(s, n)
+	n = get_once_tag(n)
+	if s[n] then
 		return true
 	end
 	return false
