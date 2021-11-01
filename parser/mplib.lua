@@ -3098,7 +3098,7 @@ function Class(t, w)
 end
 
 local function get_once_tag(n)
-  if type(n) == 'string' then
+	if type(n) == 'string' then
 		return '__once_'..n
 	else
 		return '__once'
