@@ -3116,10 +3116,7 @@ end
 
 std.obj.is_once = function(s, n)
 	n = get_once_tag(n)
-	if s[n] then
-		return true
-	end
-	return false
+	return not not s[n]
 end
 
 std.obj.daemonStart = function(s)
