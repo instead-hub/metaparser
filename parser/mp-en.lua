@@ -363,7 +363,6 @@ end
 mp.msg.INCOMPLETE_SECOND_NOUN = function(w)
 	p ('Clarify the command: "', w, '"?')
 end
-mp.msg.UNKNOWN_OBJ = "Here is no such thing"
 mp.msg.UNKNOWN_OBJ = function(w)
 	if not w then
 		p "No information about this object."
