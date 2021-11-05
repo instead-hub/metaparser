@@ -2590,6 +2590,10 @@ function mp:after_Consult()
 	mp:message 'Consult.CONSULT'
 end
 
+function mp:Read(o)
+	mp:xaction('Exam', o)
+end
+
 mp.msg.Fill = {}
 function mp:Fill(w)
 	if mp:check_touch() then

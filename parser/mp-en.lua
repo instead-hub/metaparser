@@ -1111,7 +1111,7 @@ Verb {
 	"#Consult",
 	"read",
 	"* in {noun}: Consult reverse",
-	"~ {noun} : Exam",
+	"~ {noun} : Read",
 }
 
 Verb {
