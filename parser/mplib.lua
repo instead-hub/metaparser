@@ -1630,7 +1630,9 @@ function mp:move(w, wh, force)
 		end
 	end
 	w:attr 'moved'
-
+	if wh:type'player' then
+		w:attr '~concealed'
+	end
 	if not force then
 		for _, o in ipairs(ww) do
 			if mp:runmethods('after', 'LetGo', o, w, wh) then
