@@ -365,9 +365,9 @@ mp.msg.INCOMPLETE_SECOND_NOUN = function(w)
 end
 mp.msg.UNKNOWN_OBJ = function(w)
 	if not w then
-		p "No information about this object."
+		p "Nothing is known about this thing."
 	else
-		p "No information about this object "
+		p "Nothing is known about this thing "
 		p ("(", w, ").")
 	end
 end
