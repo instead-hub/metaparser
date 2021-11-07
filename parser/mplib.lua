@@ -303,6 +303,9 @@ std.class({
 
 mp.gameover =
 std.class({
+	enter = function()
+		getDaemons():zap()
+	end;
 	before_Default = function()
 		mp:message 'GAMEOVER_HELP';
 	end;
@@ -3143,6 +3146,10 @@ end
 
 function isDaemon(w)
 	return std.object(w):isDaemon()
+end
+
+function getDaemons()
+	return game.__daemons
 end
 
 instead.notitle = true
