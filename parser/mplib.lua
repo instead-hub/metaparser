@@ -315,7 +315,7 @@ std.class({
 	OnError = function()
 		mp:message 'GAMEOVER_HELP';
 	end;
-}, std.room)
+}, std.room):attr'gameover'
 
 -- player
 mp.msg.Look = {}
