@@ -1,3 +1,12 @@
+2.4
+  * new gameover scene has 'gameover' attr;
+  * new getDaemons();
+  * new gameover does getDaemons():zap() on enter;
+  * new concealed attr is removed while item moves to player;
+  * new obj.is_once();
+  * doc updates;
+  * better UNKNOWN_OBJ msg.
+
 2.3
   * TakeAll do not take partofs;
   * mp.strict_mode experiment;
