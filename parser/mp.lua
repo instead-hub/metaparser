@@ -273,7 +273,7 @@ mp = std.obj {
 	inp_delim = " :.,!?-";
 	daemons = std.list {};
 	{
-		version = "2.3";
+		version = "2.4";
 		cache = { tokens = {}, nouns = false };
 		scope = std.list {};
 		logfile = false;
