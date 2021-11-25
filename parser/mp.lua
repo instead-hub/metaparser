@@ -803,7 +803,12 @@ function mp:pattern(t, delim)
 				end
 			end
 		else
-			local vv = mp:pref_pattern(v)
+			local vv = {}
+			for _, w in ipairs(mp:pref_pattern(v)) do
+				for _, w in ipairs(mp:suff_pattern(w)) do
+					table.insert(vv, w)
+				end
+			end
 			if #vv == 1 then
 				w.word = v
 				table.insert(words, w)
@@ -848,6 +853,23 @@ function mp:pref_pattern(v)
 	local ret = {}
 	for _, pref in ipairs(pre) do
 		table.insert(ret, pref .. post)
+	end
+	return ret
+end
+
+function mp:suff_pattern(v)
+	if not v:find("%[[^%]]+%]$") then
+		return { v }
+	end
+	local s, _ = v:find("[", 1, true)
+	local e, _ = v:find("]", 1, true)
+	local suff = v:sub(s + 1, e - 1)
+	local pref = v:sub(1, s - 1)
+	suff = suff:gsub("^|", " |"):gsub("|$", "| "):gsub("||", "| |");
+	suff = str_split(suff, "|")
+	local ret = {}
+	for _, suff in ipairs(suff) do
+		table.insert(ret, pref .. suff)
 	end
 	return ret
 end
