@@ -1305,6 +1305,18 @@ end
 		"* :MetaForm"
 	}
 end
+mp.msg.MetaTranscript.ON = function(file)
+	p ("Запись транскрипта началась: ", file)
+end
+
+mp.msg.MetaTranscript.OFF = function(file)
+	p ("Транскрипт остановлен: ", file)
+end
+
+mp.msg.MetaTranscript.FILE = function(file)
+	p ("Файл транскрипта: ", file)
+end
+
 MetaVerb {
 	"#MetaTranscript",
 	"~транскрипт",

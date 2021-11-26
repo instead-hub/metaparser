@@ -1230,6 +1230,19 @@ if DEBUG then
 		"MetaDump"
 	}
 end
+
+mp.msg.MetaTranscript.ON = function(file)
+	p ("Logging is started: ", file)
+end
+
+mp.msg.MetaTranscript.OFF = function(file)
+	p ("Logging is stopped: ", file)
+end
+
+mp.msg.MetaTranscript.FILE = function(file)
+	p ("Log file: ", file)
+end
+
 MetaVerb {
 	"#MetaTranscript",
 	"~transcript",

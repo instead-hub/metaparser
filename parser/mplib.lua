@@ -2827,18 +2827,20 @@ function mp:MetaScore()
 	mp:message'TITLE_SCORE'
 end
 
+mp.msg.MetaTranscript = {}
+
 function mp:MetaTranscript()
 	if self.logfile then
-		p("Log file: ", self.logfile)
+		mp:message("MetaTranscript.FILE", self.logfile)
 	else
 		self:MetaTranscriptOn()
 	end
 end
 
 function mp:MetaTranscriptOff()
+	mp:message("MetaTranscript.OFF", self.logfile)
 	self.logfile = false
 	self.lognum = self.lognum + 1
-	p("Logging is stopped.")
 end
 
 function mp:MetaTranscriptOn()
@@ -2848,7 +2850,7 @@ function mp:MetaTranscriptOn()
 		if not f then
 			self.logfile = logfile
 			if std.cctx() then
-				p ("Logging is enabled: ", logfile)
+				mp:message("MetaTranscript.ON", logfile)
 			end
 			return
 		end

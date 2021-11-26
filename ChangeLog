@@ -5,6 +5,7 @@
   * new concealed attr is removed while item moves to player;
   * new obj.is_once();
   * doc updates;
+  * MetaTranscript i18n;
   * better UNKNOWN_OBJ msg.
 
 2.3
