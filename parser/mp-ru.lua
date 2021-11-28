@@ -494,7 +494,8 @@ mp.msg.Kiss.MYSELF = "Ну уж нет."
 
 mp.msg.Think.THINK = "Отличная идея!"
 mp.msg.Smell.SMELL = "Никакого необычного запаха нет."
-mp.msg.Smell.SMELL2 = "Пахнет как {#first}."
+--"пахнуть"
+mp.msg.Smell.SMELL2 = "{#Word/пахнуть,#first,нст} как {#first}."
 
 mp.msg.Listen.LISTEN = "Никаких необычных звуков нет."
 --"прислушаться"
