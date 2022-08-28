@@ -11,6 +11,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install Packages
         run: |
+          echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
           sudo apt-get update -qq
           sudo apt-get install -y git wget texlive-xetex texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-lang-cyrillic ttf-mscorefonts-installer
       - name: multimarkdown
