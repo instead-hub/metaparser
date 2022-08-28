@@ -12,7 +12,7 @@ jobs:
       - name: Install Packages
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y git wget texlive-xetex texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-lang-cyrillic
+          sudo apt-get install -y git wget texlive-xetex texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-lang-cyrillic ttf-mscorefonts-installer
       - name: multimarkdown
         run: |
           git clone https://github.com/fletcher/MultiMarkdown-5.git
