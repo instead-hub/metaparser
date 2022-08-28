@@ -1,3 +1,7 @@
+2.5
+  * new github workflow;
+  * doc fixes.
+
 2.4
   * new gameover scene has 'gameover' attr;
   * new getDaemons();
