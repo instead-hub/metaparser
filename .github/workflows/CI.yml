@@ -12,7 +12,14 @@ jobs:
       - name: Install Packages
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y wget texlive-xetex texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-lang-cyrillic
+          sudo apt-get install -y git wget texlive-xetex texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-lang-cyrillic
+      - name: multimarkdown
+        run: |
+          git clone https://github.com/fletcher/MultiMarkdown-5.git
+          git submodule init
+          git submodule update
+          make
+          sudo make install
 
       - name: Create Artifact
         run: |
