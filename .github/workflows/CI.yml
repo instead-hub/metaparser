@@ -20,6 +20,7 @@ jobs:
           git submodule init
           git submodule update
           make
+          cd build
           sudo make install
 
       - name: Create Artifact
