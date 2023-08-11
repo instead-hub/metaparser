@@ -478,7 +478,7 @@ function mrd:__lookup(w, g)
 
 	return w, gram
 end
-local word_match = "[^ \t,%-!/:%+&]+"
+local word_match = "[^ \t,!/:%+&]+"
 local missed_words = {}
 
 local word_cache = { list = {}, hash = {} }
@@ -513,6 +513,8 @@ function mrd:word(w, ob)
 	local found = true
 	local noun = false
 	local lang = self.lang
+	w = std.strip(w)
+	w = w:gsub("%-+$", ""):gsub("^%-+", ""):gsub("%-?[ ]+%-?", " ")
 	w = w:gsub(word_match,
 		function(t)
 			if noun then return t end
