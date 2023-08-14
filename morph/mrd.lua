@@ -478,10 +478,24 @@ function mrd:__lookup(w, g)
 
 	return w, gram
 end
-local word_match = "[^ \t,!/:%+&]+"
+local word_match = "[^ \t,%-!/:%+&]+"
 local missed_words = {}
 
 local word_cache = { list = {}, hash = {} }
+
+function mrd:dicts(what, ob)
+	local ww, gg
+	if ob then
+		ww, gg = self:dict(ob.__dict, what)
+	end
+	if not ww then
+		ww, gg = self:dict(game.__dict, what)
+	end
+	if not ww then
+		ww, gg = self:dict(self.__dict, what)
+	end
+	return ww, gg
+end
 
 function mrd:word(w, ob)
 	local cache = word_cache
@@ -513,21 +527,17 @@ function mrd:word(w, ob)
 	local found = true
 	local noun = false
 	local lang = self.lang
-	w = std.strip(w)
-	w = w:gsub("%-+$", ""):gsub("^%-+", ""):gsub("%-?[ ]+%-?", " ")
+
+	local ww, gg = self:dicts(w .. '/' .. hints, ob)
+	if ww then
+		table.insert(grams, gg)
+		cache_add(cache, key, { w, grams })
+		return ww, grams
+	end
 	w = w:gsub(word_match,
 		function(t)
 			if noun then return t end
-			local ww, gg
-			if ob then
-				ww, gg = self:dict(ob.__dict, t..'/'..hints)
-			end
-			if not ww then
-				ww, gg = self:dict(game.__dict, t..'/'..hints)
-			end
-			if not ww then
-				ww, gg = self:dict(self.__dict, t..'/'..hints)
-			end
+			ww, gg = self:dicts(t .. '/' .. hints, ob)
 			noun = gg and gg[lang.gram_t.noun]
 			if not ww then
 				ww, gg = self:lookup(t, g)
