@@ -76,8 +76,16 @@ mp.shorten = {
 
 mp.shorten_expert = {
 	["x"] = "examine";
+	["x *"] = "examine";
 	["i"] = "inventory";
 	["z"] = "wait";
+}
+
+mp.shorten_custom = {
+	["to *"] = "walk";
+	["in *"] = "walk";
+	["into *"] = "walk";
+	["on *"] = "walk";
 }
 
 function mp:skip_filter(w)

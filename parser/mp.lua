@@ -338,6 +338,7 @@ mp = std.obj {
 		};
 		shorten = {};
 		shorten_expert = {};
+		shorten_custom = {};
 		_pager_mode = false;
 	};
 	text = '';
@@ -2393,12 +2394,16 @@ function mp:shorten_input(w)
 		return
 	end
 	local str
+	local key = #w > 1 and (w[1] .. ' *') or w[1]
 	if #w == 1 and self.shorten[w[1]] then
 		str = self.shorten[w[1]]
 	end
 	if self.expert_mode and not str and
-		self.shorten_expert[w[1]] then
-		str = self.shorten_expert[w[1]]
+		self.shorten_expert[key] then
+		str = self.shorten_expert[key]
+	end
+	if not str and self.shorten_custom[key] then
+		str = self.shorten_custom[key]
 	end
 	if not str then
 		return
@@ -2423,6 +2428,13 @@ function mp:strip_input(w)
 	end
 end
 
+function mp:pre_input(str)
+	return str
+end
+
+function mp:custom_input(_)
+end
+
 function mp:input(str)
 --	self.cache = { tokens = {} };
 	local hints = {}
@@ -2435,14 +2447,20 @@ function mp:input(str)
 	if (self.default_Verb or std.here().default_Verb) and str == "" then
 		str = std.here().default_Verb or self.default_Verb
 	end
-	if type(mp.pre_input) == 'function' then
-		str = mp:pre_input(str)
-		if not str then return false end
-	end
+
+	str = mp:pre_input(str)
+	if not str then return false end
+
 	local w = str_split(str, mp.inp_delim)
 	mp:strip_input(w)
 	mp:shorten_input(w)
 	self.words = w
+
+	local r, v = mp:custom_input(w)
+	if r ~= nil or v ~= nil then
+		return r, v
+	end
+
 	if #w == 0 then
 		return false, "EMPTY_INPUT"
 	end
