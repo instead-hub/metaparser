@@ -531,7 +531,7 @@ function mrd:word(w, ob)
 	local ww, gg = self:dicts(w .. '/' .. hints, ob)
 	if ww then
 		table.insert(grams, gg)
-		cache_add(cache, key, { w, grams })
+		cache_add(cache, key, { ww, grams })
 		return ww, grams
 	end
 	w = w:gsub(word_match,
