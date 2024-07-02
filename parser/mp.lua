@@ -1849,9 +1849,20 @@ if false then
 --	end
 end
 ]]--
-	hints = lev_sort(hints)
-	unknown = lev_sort(unknown)
-	multi = lev_sort(multi)
+	if #matches > 0 and #unknown > 0 and
+		not matches[1].extra and
+		matches[1].skip == 0 and
+		not matches[1].vargs then
+		hints = {}
+		unknown = {}
+		multi = {}
+		matches = { matches[1] }
+	else
+		hints = lev_sort(hints)
+		unknown = lev_sort(unknown)
+		multi = lev_sort(multi)
+	end
+
 	if #hints > 0 and #unknown > 0 then
 		if hints.lev > unknown.lev then
 			unknown = {}
