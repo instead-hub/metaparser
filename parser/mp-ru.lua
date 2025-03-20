@@ -547,7 +547,7 @@ mp.msg.Talk.SELF = "Беседы не получилось."
 --"уметь"
 mp.msg.Talk.NOTLIVE = "{#First} не {#word/уметь,#first,нст} разговаривать."
 --"отреагировать"
-mp.msg.Talk.LIVE = "{#First} никак не {#word/отреагировать,#first}."
+mp.msg.Talk.LIVE = "{#First} никак не {#word/отреагировать,прш,#first}."
 
 mp.msg.Tell.SELF = "Беседы не получилось."
 
